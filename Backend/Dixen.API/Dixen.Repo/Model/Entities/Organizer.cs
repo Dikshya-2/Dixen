@@ -11,6 +11,8 @@ namespace Dixen.Repo.Model.Entities
         public int Id { get; set; }
         public string OrganizationName { get; set; } = string.Empty;
         public string ContactEmail { get; set; } = string.Empty;
+        public bool IsDeleted { get; set; } = false;  
         public List<Evnt> Events { get; set; } = new();
+
     }
 }

@@ -17,5 +17,7 @@ namespace Dixen.Repo.Model.Entities
         //public List<EventAttendance> Attendances { get; set; } = new();
         public int VenueId { get; set; }
         public Venue Venue { get; set; }
+        public bool IsDeleted { get; set; } = false;
+
     }
 }

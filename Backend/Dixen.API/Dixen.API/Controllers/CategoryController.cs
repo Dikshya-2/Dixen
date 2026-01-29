@@ -1,4 +1,5 @@
-﻿using Dixen.Repo.Model.Entities;
+﻿using Dixen.Repo.DTOs.Category;
+using Dixen.Repo.Model.Entities;
 using Dixen.Repo.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,29 +28,46 @@ namespace Dixen.API.Controllers
             return Ok(category);
         }
         [HttpPost]
-        public async Task<ActionResult<Category>> Create(Category category)
+        public async Task<ActionResult<CategoryResponse>> Create([FromBody] CategoryDto categoryDto)
         {
+            var category = new Category
+            {
+                Name = categoryDto.Name,
+                ImageUrl = categoryDto.ImageUrl
+            };
+
             await _categoryRepo.Create(category);
-            return CreatedAtAction(nameof(GetById), new { id = category.Id }, category);
+            return CreatedAtAction(nameof(GetById), new { id = category.Id },
+                new CategoryResponse
+                {
+                    Id = category.Id,
+                    Name = category.Name,
+                    ImageUrl = category.ImageUrl,
+                    EventCount = 0
+                });
         }
+
         [HttpPut("{id}")]
-        public async Task<ActionResult<Category>> Update(int id, Category category)
+        public async Task<ActionResult<CategoryResponse>> Update(int id, [FromBody] CategoryDto categoryDto)
         {
-            var updated = await _categoryRepo.Update(id, category);
+            var updateData = new Category
+            {
+                Id = id,
+                Name = categoryDto.Name,
+                ImageUrl = categoryDto.ImageUrl
+            };
+
+            var updated = await _categoryRepo.Update(id, updateData);
             if (updated == null) return NotFound();
-            return Ok(updated);
+
+            return Ok(new CategoryResponse
+            {
+                Id = updated.Id,
+                Name = updated.Name,
+                ImageUrl = updated.ImageUrl,
+                EventCount = 0
+            });
         }
-        //[HttpDelete("{hallId}")]
-        //public async Task<IActionResult> DeleteHall(int hallId, [FromQuery] int eventId)
-        //{
-        //    Console.WriteLine($"DEBUG: hallId={hallId}, eventId={eventId}");
-
-        //    var success = await _hallService.DeleteHallAsync(eventId, hallId);
-        //    Console.WriteLine($"DEBUG: service returned success={success}");
-
-        //    if (!success) return NotFound();
-        //    return NoContent();
-        //}
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)

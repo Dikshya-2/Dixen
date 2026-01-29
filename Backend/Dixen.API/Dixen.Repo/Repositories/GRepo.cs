@@ -42,7 +42,7 @@ namespace Dixen.Repo.Repositories
 
         public async Task<List<T>> GetAll(Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null)
         {
-            IQueryable<T> query = _context.Set<T>();
+            IQueryable<T> query = _context.Set<T>().AsNoTracking();
             if (include != null)
                 query = include(query);
 

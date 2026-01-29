@@ -28,6 +28,8 @@ namespace Dixen.Repo.Model.Entities
         public List<Booking> Bookings { get; set; }= new();
         public List<Ticket> Tickets { get; set; } = new();
         public List<EventReview> Reviews { get; set; } = new();
+        public bool IsDeleted { get; set; } = false;
+
 
     }
 }

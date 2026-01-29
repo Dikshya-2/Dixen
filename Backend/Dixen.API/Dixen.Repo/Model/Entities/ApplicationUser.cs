@@ -19,7 +19,7 @@ namespace Dixen.Repo.Model.Entities
         public List<EventReview> Reviews { get; set; } = new();
         public List<EventSubmission> EventSubmissions { get; set; } = new();
         public List<Booking> Bookings { get; set; } = new();
-
+        public bool IsDeleted { get; set; } = false;
 
     }
 }

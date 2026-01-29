@@ -3,6 +3,7 @@ using Dixen.Repo.Model.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,20 +32,42 @@ namespace Dixen.Repo.Model
         {
             base.OnModelCreating(modelBuilder);
 
+            #region Soft Delete Query Filters
+            modelBuilder.Entity<Evnt>().HasQueryFilter(e => !e.IsDeleted);
+            modelBuilder.Entity<Booking>().HasQueryFilter(b => !b.IsDeleted);
+            modelBuilder.Entity<Hall>().HasQueryFilter(h => !h.IsDeleted);
+            modelBuilder.Entity<EventReview>().HasQueryFilter(er => !er.Event.IsDeleted);
+            modelBuilder.Entity<EventSubmission>()
+                .HasQueryFilter(es => !es.Event.IsDeleted);
+
+            modelBuilder.Entity<Performer>()
+                .HasQueryFilter(p => !p.Event.IsDeleted);
+
+            modelBuilder.Entity<SocialShare>()
+                .HasQueryFilter(ss => !ss.Event.IsDeleted);
+
+            modelBuilder.Entity<Ticket>()
+                .HasQueryFilter(t => !t.Booking.IsDeleted);
+            modelBuilder.Entity<Organizer>().HasQueryFilter(o => !o.IsDeleted);
+
+
+            #endregion
+
+
             #region Relationships
             // Event → Organizer (one-to-many)
             modelBuilder.Entity<Evnt>()
                 .HasOne(e => e.Organizer)
                 .WithMany(o => o.Events)
                 .HasForeignKey(e => e.OrganizerId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Hall → Event (one-to-many)
             modelBuilder.Entity<Hall>()
                 .HasOne(h => h.Event)
                 .WithMany(e => e.Halls)
                 .HasForeignKey(h => h.EventId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Hall → Venue (one-to-many)
             modelBuilder.Entity<Hall>()
@@ -52,25 +75,6 @@ namespace Dixen.Repo.Model
                 .WithMany(v => v.Halls)
                 .HasForeignKey(h => h.VenueId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            //// EventAttendance → Event & Hall & User
-            //modelBuilder.Entity<EventAttendance>()
-            //    .HasOne(ea => ea.Event)
-            //    .WithMany(e => e.Attendances)
-            //    .HasForeignKey(ea => ea.EventId)
-            //    .OnDelete(DeleteBehavior.Cascade);
-
-            //modelBuilder.Entity<EventAttendance>()
-            //    .HasOne(ea => ea.Hall)
-            //    .WithMany(h => h.Attendances)
-            //    .HasForeignKey(ea => ea.HallId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-            //modelBuilder.Entity<EventAttendance>()
-            //    .HasOne(ea => ea.User)
-            //    .WithMany(u => u.Attendances)
-            //    .HasForeignKey(ea => ea.UserId)
-            //    .OnDelete(DeleteBehavior.Cascade);
 
             // SocialShare → User
             modelBuilder.Entity<SocialShare>()
@@ -85,7 +89,8 @@ namespace Dixen.Repo.Model
                 .HasOne(b => b.Event)
                 .WithMany(e => e.Bookings)
                 .HasForeignKey(b => b.EventId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Booking → Hall
             modelBuilder.Entity<Booking>()
@@ -339,5 +344,41 @@ namespace Dixen.Repo.Model
 
 
         }
+
     }
+    // 🔥 SOFT DELETE INTERCEPTOR - ADD AT BOTTOM
+    public class SoftDeleteInterceptor : SaveChangesInterceptor
+    {
+        public override InterceptionResult<int> SavingChanges(DbContextEventData eventData,
+            InterceptionResult<int> result)
+        {
+            ApplySoftDelete(eventData.Context);
+            return base.SavingChanges(eventData, result);
+        }
+
+        public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData,
+            InterceptionResult<int> result, CancellationToken cancellationToken = default)
+        {
+            ApplySoftDelete(eventData.Context);
+            return base.SavingChangesAsync(eventData, result, cancellationToken);
+        }
+
+        private void ApplySoftDelete(DbContext? context)
+        {
+            if (context == null) return;
+
+
+            foreach (var entry in context.ChangeTracker.Entries()
+            .Where(e => e.State == EntityState.Deleted))
+            {
+                var prop = entry.Properties.FirstOrDefault(p => p.Metadata.Name == "IsDeleted");
+                if (prop != null)
+                {
+                    entry.State = EntityState.Modified;
+                    prop.CurrentValue = true;
+                }
+            }
+        }
+    }
+
 }
