@@ -17,5 +17,8 @@ namespace Dixen.Repo.DTOs.Event
         public string OrganizerName { get; set; } = string.Empty;
         public List<string> CategoryNames { get; set; } = new();
         public List<string> HallNames { get; set; } = new();
+        public string? Name { get; set; }
+        public string? Address { get; set; }
+        public string? City { get; set; }
     }
 }

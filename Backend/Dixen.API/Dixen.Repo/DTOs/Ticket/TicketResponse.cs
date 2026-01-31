@@ -3,16 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Dixen.Repo.Model.Entities
+namespace Dixen.Repo.DTOs.Ticket
 {
-    public class Ticket
+    public class TicketResponse
     {
         public int Id { get; set; }
-        public int BookingId { get; set; }
-        public Booking? Booking { get; set; }
         public TicketType Type { get; set; }
         public decimal Price { get; set; }
         public int Quantity { get; set; }

@@ -13,7 +13,7 @@ namespace Dixen.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize(Roles ="User,Admin")]
     public class BookingController : ControllerBase
     {
         private readonly IBookingService _bookingService;

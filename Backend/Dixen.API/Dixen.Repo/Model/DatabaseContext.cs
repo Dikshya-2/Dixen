@@ -37,46 +37,37 @@ namespace Dixen.Repo.Model
             modelBuilder.Entity<Booking>().HasQueryFilter(b => !b.IsDeleted);
             modelBuilder.Entity<Hall>().HasQueryFilter(h => !h.IsDeleted);
             modelBuilder.Entity<EventReview>().HasQueryFilter(er => !er.Event.IsDeleted);
-            modelBuilder.Entity<EventSubmission>()
-                .HasQueryFilter(es => !es.Event.IsDeleted);
-
-            modelBuilder.Entity<Performer>()
-                .HasQueryFilter(p => !p.Event.IsDeleted);
-
-            modelBuilder.Entity<SocialShare>()
-                .HasQueryFilter(ss => !ss.Event.IsDeleted);
-
-            modelBuilder.Entity<Ticket>()
-                .HasQueryFilter(t => !t.Booking.IsDeleted);
+            modelBuilder.Entity<EventSubmission>().HasQueryFilter(es => !es.Event.IsDeleted);
+            modelBuilder.Entity<Performer>().HasQueryFilter(p => !p.Event.IsDeleted);
+            modelBuilder.Entity<SocialShare>().HasQueryFilter(ss => !ss.Event.IsDeleted);
+            modelBuilder.Entity<Ticket>().HasQueryFilter(t => !t.Booking.IsDeleted);
             modelBuilder.Entity<Organizer>().HasQueryFilter(o => !o.IsDeleted);
-
-
             #endregion
 
 
             #region Relationships
-            // Event → Organizer (one-to-many)
+            // Event - Organizer (one-to-many)
             modelBuilder.Entity<Evnt>()
                 .HasOne(e => e.Organizer)
                 .WithMany(o => o.Events)
                 .HasForeignKey(e => e.OrganizerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Hall → Event (one-to-many)
+            // Hall - Event (one-to-many)
             modelBuilder.Entity<Hall>()
                 .HasOne(h => h.Event)
                 .WithMany(e => e.Halls)
                 .HasForeignKey(h => h.EventId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Hall → Venue (one-to-many)
+            // Hall - Venue (one-to-many)
             modelBuilder.Entity<Hall>()
                 .HasOne(h => h.Venue)
                 .WithMany(v => v.Halls)
                 .HasForeignKey(h => h.VenueId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // SocialShare → User
+            // SocialShare - User
             modelBuilder.Entity<SocialShare>()
                 .HasOne(ss => ss.User)
                 .WithMany(u => u.SocialShares)
@@ -84,7 +75,6 @@ namespace Dixen.Repo.Model
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Booking → Event
             modelBuilder.Entity<Booking>()
                 .HasOne(b => b.Event)
                 .WithMany(e => e.Bookings)
@@ -92,28 +82,24 @@ namespace Dixen.Repo.Model
                 .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Booking → Hall
             modelBuilder.Entity<Booking>()
                 .HasOne(b => b.Hall)
                 .WithMany()
                 .HasForeignKey(b => b.HallId)
-                .OnDelete(DeleteBehavior.Restrict); // prevents multiple cascade paths
+                .OnDelete(DeleteBehavior.Restrict); 
 
-            // Booking → User
             modelBuilder.Entity<Booking>()
                 .HasOne(b => b.User)
                 .WithMany(u => u.Bookings)
                 .HasForeignKey(b => b.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Ticket → Booking
             modelBuilder.Entity<Ticket>()
                 .HasOne(t => t.Booking)
                 .WithMany(b => b.Tickets)
                 .HasForeignKey(t => t.BookingId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // EventSubmission → Event & User
             modelBuilder.Entity<EventSubmission>()
                 .HasOne(es => es.Event)
                 .WithMany(e => e.Submissions)
@@ -126,7 +112,6 @@ namespace Dixen.Repo.Model
                 .HasForeignKey(es => es.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // EventReview → Event & User
             modelBuilder.Entity<EventReview>()
                 .HasOne(er => er.Event)
                 .WithMany(e => e.Reviews)
@@ -139,14 +124,12 @@ namespace Dixen.Repo.Model
                 .HasForeignKey(er => er.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Performer → Event
             modelBuilder.Entity<Performer>()
                 .HasOne(p => p.Event)
                 .WithMany(e => e.Performers)
                 .HasForeignKey(p => p.EventId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // Event ↔ Category (Many-to-Many)
             modelBuilder.Entity<Evnt>()
                 .HasMany(e => e.Categories)
                 .WithMany(c => c.Events)
@@ -166,10 +149,30 @@ namespace Dixen.Repo.Model
                     });
 
             #endregion
+            // ToDO: Review and optimize indexes
+            //#region PERFECT Indexes - CORRECT SYNTAX (NO CHAINING)
+            //var evntBuilder = modelBuilder.Entity<Evnt>();
+            //evntBuilder.HasIndex(nameof(Evnt.OrganizerId));
+            //evntBuilder.HasIndex(nameof(Evnt.StartTime));
+            //evntBuilder.HasIndex(nameof(Evnt.Title));
+            //evntBuilder.HasIndex(e => new { e.StartTime, e.IsDeleted });
+
+            //var bookingBuilder = modelBuilder.Entity<Booking>();
+            //bookingBuilder.HasIndex(nameof(Booking.UserId));
+            //bookingBuilder.HasIndex(nameof(Booking.EventId));
+
+            //modelBuilder.Entity<EventReview>().HasIndex(nameof(EventReview.EventId));
+            //modelBuilder.Entity<EventSubmission>().HasIndex(nameof(EventSubmission.EventId));
+
+            //var eventCategories = modelBuilder.Entity("EventCategories");
+            //eventCategories.HasIndex("EventId");
+            //eventCategories.HasIndex("CategoryId");
+            //#endregion
+
 
             #region Property Configurations
 
-            
+
             modelBuilder.Entity<Ticket>()
                 .Property(t => t.Price)
                 .HasPrecision(18, 2);
@@ -224,7 +227,6 @@ namespace Dixen.Repo.Model
                     Title = "Tech Future 2025",
                     ImageUrl = "tech_icon.jpg",
                     Description = "Annual tech event",
-                    //StartTime = DateTime.UtcNow.AddDays(30),
                     StartTime = new DateTime(2026, 3, 1, 18, 0, 0, DateTimeKind.Utc),
                     OrganizerId = 1
                 },
@@ -286,7 +288,6 @@ namespace Dixen.Repo.Model
                   }
             );
 
-            // EventCategories (Many-to-Many)
             modelBuilder.Entity("EventCategories").HasData(
                 new { CategoryId = 1, EventId = 1 },
                 new { CategoryId = 3, EventId = 3 },
@@ -329,7 +330,7 @@ namespace Dixen.Repo.Model
             {
                 Id = 1,
                 BookedTime = DateTime.UtcNow,
-                UserId = "9f0bd209-3b56-410c-b4fc-5654161c3925", // seeded user
+                UserId = "9f0bd209-3b56-410c-b4fc-5654161c3925",
                 EventId = 1,
                 HallId = 1
             });
@@ -346,7 +347,7 @@ namespace Dixen.Repo.Model
         }
 
     }
-    // 🔥 SOFT DELETE INTERCEPTOR - ADD AT BOTTOM
+    // SOFT DELETE INTERCEPTOR 
     public class SoftDeleteInterceptor : SaveChangesInterceptor
     {
         public override InterceptionResult<int> SavingChanges(DbContextEventData eventData,

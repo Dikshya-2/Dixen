@@ -82,7 +82,10 @@ namespace Dixen.Repo.Services
                 HallNames = evt.Halls?
                     .Select(h => h.Name ?? string.Empty)
                     .ToList()
-                    ?? new List<string>()
+                    ?? new List<string>(),
+                Name = evt.Halls?.FirstOrDefault()?.Venue?.Name,
+                Address = evt.Halls?.FirstOrDefault()?.Venue?.Address,
+                City = evt.Halls?.FirstOrDefault()?.Venue?.City
             };
         }
 
@@ -126,6 +129,9 @@ namespace Dixen.Repo.Services
             evt.ImageUrl = dto.ImageUrl;
             evt.OrganizerId = dto.OrganizerId;
 
+            //evt.Categories ??= new List<Category>();
+            //evt.Halls ??= new List<Hall>();
+
             evt.Categories.Clear();
             if (dto.CategoryIds.Any())
             {
@@ -144,6 +150,8 @@ namespace Dixen.Repo.Services
 
             return await GetEventByIdAsync(eventId);
         }
+
+
         public async Task<bool> DeleteEventAsync(int eventId)
         {
             var evt = await _eventRepo.GetById(eventId, null);

@@ -41,7 +41,6 @@ namespace Dixen.API.Controllers
         }
 
         [HttpPut("{id}")]
-        //[Authorize(Roles = "Admin,Organization")]
         public async Task<IActionResult> Update(int id, [FromBody] CreateUpdateEventDto dto)
         {
             var updated = await _eventService.UpdateEventAsync(id, dto);
@@ -50,7 +49,7 @@ namespace Dixen.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        //[Authorize(Roles = "Admin,Organization")]
+        [Authorize(Roles = "Admin,Organization")]
         public async Task<IActionResult> Delete(int id)
         {
             var success = await _eventService.DeleteEventAsync(id);
