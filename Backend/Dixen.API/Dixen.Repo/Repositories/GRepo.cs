@@ -91,5 +91,10 @@ namespace Dixen.Repo.Repositories
             await _context.SaveChangesAsync();
             return existingItem;
         }
+        public async Task<List<T>> GetAllForAnalytics(Func<IQueryable<T>, IQueryable<T>> configure)
+        {
+            IQueryable<T> query = _context.Set<T>().AsNoTracking();
+            return await configure(query).ToListAsync();
+        }
     }
 }
