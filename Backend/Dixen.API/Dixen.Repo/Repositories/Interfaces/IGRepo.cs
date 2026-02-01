@@ -10,6 +10,7 @@ namespace Dixen.Repo.Repositories.Interfaces
 {
     public interface IGRepo<T> where T : class
     {
+
         Task<T> Create(T item);
         //Task Delete(object id);
         Task<bool> Delete(object id);
@@ -23,6 +24,7 @@ namespace Dixen.Repo.Repositories.Interfaces
         Task Save();
         Task<T?> Update(object id,T item);
         Task<List<T>> GetAllForAnalytics(Func<IQueryable<T>, IQueryable<T>> configure);
+        IQueryable<T> GetAllQuery();
 
     }
 }

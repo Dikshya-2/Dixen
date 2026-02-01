@@ -1,4 +1,5 @@
 ﻿using Dixen.Repo.DTOs.Event;
+using Dixen.Repo.DTOs.Filter;
 using Dixen.Repo.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -55,6 +56,15 @@ namespace Dixen.API.Controllers
             var success = await _eventService.DeleteEventAsync(id);
             if (!success) return NotFound();
             return NoContent();
+        }
+
+        [HttpPost("search")]
+        public async Task<IActionResult> Search([FromBody] EventSearchFilterDto filter,
+                                                [FromQuery] int page = 1,
+                                                [FromQuery] int pageSize = 20)
+        {
+            var events = await _eventService.SearchEventsAsync(filter, page, pageSize);
+            return Ok(events);
         }
     }
 }

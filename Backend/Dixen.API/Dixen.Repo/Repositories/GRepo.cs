@@ -96,5 +96,10 @@ namespace Dixen.Repo.Repositories
             IQueryable<T> query = _context.Set<T>().AsNoTracking();
             return await configure(query).ToListAsync();
         }
+        public IQueryable<T> GetAllQuery()
+        {
+            return _dbSet.AsNoTracking();
+        }
+
     }
 }
