@@ -22,6 +22,10 @@ builder.Services.AddScoped<IEventService, EventService>();
 //builder.Services.AddScoped<IEventAttendanceService, EventAttendanceService>();
 builder.Services.AddScoped<ITicketService, TicketService>();
 builder.Services.AddScoped<IHallService, HallService>();
+builder.Services.AddScoped<EventAnalysisService>();
+builder.Services.AddScoped<IGRepo<SocialShare>, GRepo<SocialShare>>();// one instance per request
+
+
 
 
 
@@ -31,16 +35,29 @@ builder.Services.AddCors(options =>
     options.AddPolicy("Test",
                           policy =>
                           {
-                              //policy.WithOrigins("http://localhost:4200")  // I can replace with my frontend URL
+                              //policy.WithOrigins("http://localhost:4200","https://localhost:4200,  ")  // I can replace with my frontend URL
                               policy.AllowAnyOrigin()
                                      .AllowAnyHeader()
                                      .AllowAnyMethod();
                           });
 });
 //connecting string
-builder.Services.AddDbContext<DatabaseContext>(obj => obj.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<DatabaseContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.AddInterceptors(new SoftDeleteInterceptor());
+});
+
+//builder.Services.AddDbContext<DatabaseContext>(obj => obj.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); 
 
 builder.Services.AddControllers();
+//builder.Services.AddControllers()
+//    .AddJsonOptions(options =>
+//    {
+//        options.JsonSerializerOptions.ReferenceHandler =
+//            System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+//    });
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -119,10 +136,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("Test");
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.UseCors("Test");
 app.MapControllers();
 
 app.Run();
