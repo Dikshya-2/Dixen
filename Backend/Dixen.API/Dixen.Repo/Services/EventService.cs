@@ -163,61 +163,67 @@ namespace Dixen.Repo.Services
 
             return true;
         }
-        public async Task<List<EventResponseDto>> SearchEventsAsync(EventSearchFilterDto filter, int page = 1, int pageSize = 20)
+        public async Task<List<EventResponseDto>> SearchEventsAsync(EventSearchFilterDto filter)
         {
             IQueryable<Evnt> query = _eventRepo
-                .GetAllQuery() 
-                .Include(e => e.Organizer)
+                .GetAllQuery()
                 .Include(e => e.Categories)
                 .Include(e => e.Halls)
                     .ThenInclude(h => h.Venue);
 
+            
             if (!string.IsNullOrWhiteSpace(filter.Title))
-                query = query.Where(e => e.Title.Contains(filter.Title));
+            {
+                var titleLower = filter.Title.ToLower();
+                query = query.Where(e => e.Title.ToLower().StartsWith(titleLower)); //Contains for all letter
+            }
+
+            if (!string.IsNullOrWhiteSpace(filter.Keyword))
+            {
+                var keywordLower = filter.Keyword.ToLower();
+                query = query.Where(e => e.Title.ToLower().Contains(keywordLower)
+                                      || e.Description.ToLower().Contains(keywordLower));
+            }
 
             if (filter.OrganizerId.HasValue)
                 query = query.Where(e => e.OrganizerId == filter.OrganizerId.Value);
 
-            if (filter.CategoryIds != null && filter.CategoryIds.Any())
+            if (filter.CategoryIds != null && filter.CategoryIds.Count > 0)
                 query = query.Where(e => e.Categories.Any(c => filter.CategoryIds.Contains(c.Id)));
 
-            if (filter.StartDate.HasValue)
-                query = query.Where(e => e.StartTime >= filter.StartDate.Value);
-
-            if (filter.EndDate.HasValue)
-                query = query.Where(e => e.StartTime <= filter.EndDate.Value);
-
             if (!string.IsNullOrWhiteSpace(filter.VenueCity))
-                query = query.Where(e => e.Halls.Any(h => h.Venue.City == filter.VenueCity));
+            {
+                var cityLower = filter.VenueCity.ToLower();
+                query = query.Where(e => e.Halls.Any(h => h.Venue.City.ToLower() == cityLower));
+            }
 
-            if (!string.IsNullOrWhiteSpace(filter.Keyword))
-                query = query.Where(e => e.Title.Contains(filter.Keyword) || e.Description.Contains(filter.Keyword));
+            if (filter.EventDate.HasValue)
+            {
+                var dateUtc = filter.EventDate.Value.Date.ToUniversalTime();
+                var nextDayUtc = dateUtc.AddDays(1);
+                query = query.Where(e => e.StartTime >= dateUtc && e.StartTime < nextDayUtc);
+            }
 
-            query = query.OrderBy(e => e.StartTime)
-                         .Skip((page - 1) * pageSize)
-                         .Take(pageSize);
+            query = query.OrderBy(e => e.Title);
 
             var events = await query.ToListAsync();
+
             return events.Select(MapToDto).ToList();
         }
         private EventResponseDto MapToDto(Evnt e)
         {
+            var venue = e.Halls?.FirstOrDefault()?.Venue;
+
             return new EventResponseDto
             {
                 Id = e.Id,
                 Title = e.Title ?? string.Empty,
-                Description = e.Description ?? string.Empty,
                 StartTime = e.StartTime,
                 ImageUrl = e.ImageUrl,
-                OrganizerId = e.OrganizerId,
-                OrganizerName = e.Organizer?.OrganizationName ?? string.Empty,
-                CategoryNames = e.Categories?.Select(c => c.Name ?? string.Empty).ToList() ?? new List<string>(),
-                HallNames = e.Halls?.Select(h => h.Name ?? string.Empty).ToList() ?? new List<string>(),
-                Name = e.Halls?.FirstOrDefault()?.Venue?.Name,
-                Address = e.Halls?.FirstOrDefault()?.Venue?.Address,
-                City = e.Halls?.FirstOrDefault()?.Venue?.City
+                Address = venue?.Address,
+                City = venue?.City,
+                CategoryNames = e.Categories?.Select(c => c.Name).ToList() ?? new List<string>()
             };
-
         }
     }
 }

@@ -59,12 +59,11 @@ namespace Dixen.API.Controllers
         }
 
         [HttpPost("search")]
-        public async Task<IActionResult> Search([FromBody] EventSearchFilterDto filter,
-                                                [FromQuery] int page = 1,
-                                                [FromQuery] int pageSize = 20)
+        public async Task<IActionResult> Search([FromBody] EventSearchFilterDto filter)
         {
-            var events = await _eventService.SearchEventsAsync(filter, page, pageSize);
+            var events = await _eventService.SearchEventsAsync(filter);
             return Ok(events);
         }
+
     }
 }
