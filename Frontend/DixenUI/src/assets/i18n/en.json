@@ -1,0 +1,57 @@
+{
+ 
+  
+
+  "navbar": {
+    "brand": "Dixen",
+    "searchPlaceholder": "Search...",
+    "searchButton": "Search",
+    "submitEvent": "Create Event",
+    "customerService": "Support",
+    "login": "Sign In",
+    "register": "Register",
+    "logout": "Logout"
+  },
+
+  "confirmEmail": {
+    "scanQRCode": "Scan with Google Authenticator",
+    "manualKey": "Manual Key:",
+    "tokenMissing": "Token is missing.",
+    "failedConfirm": "Failed to confirm email."
+    
+  },
+  
+  "footer": {
+  "aboutUs": {
+    "title": "About Us",
+    "description": "EventFinder helps you discover and attend the best events happening around you."
+  },
+
+  "exploreTitle": "Explore",
+  "explore": {
+    "0": "Popular Events",
+    "1": "Nearby Events",
+    "2": "Music Concerts",
+    "3": "Workshops",
+    "4": "Tech Conferences"
+  },
+
+  "servicesTitle": "Services",
+  "services": {
+    "0": "Create an Event",
+    "1": "Promote Your Event",
+    "2": "Event Analytics",
+    "3": "Consulting",
+    "4": "Customer Service"
+  },
+
+  "contactInfoTitle": "Contact Info",
+  "contactInfo": {
+    "address": "Guldblommevej 5, Ballerup",
+    "phone": "+45 22222222"
+  },
+
+  "copyright": "© 2024 Your Company. All rights reserved."
+}
+
+}

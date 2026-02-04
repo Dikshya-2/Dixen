@@ -1,0 +1,53 @@
+{
+  "navbar": {
+    "brand": "Dixen ", 
+    "searchPlaceholder": "Søg...",
+    "searchButton": "Søg",
+    "submitEvent": "Opret Event",
+    "customerService": "Kundeservice",
+    "login": "Log ind",
+    "register": "Opret Konto",
+    "logout": "Log ud"
+
+  },
+
+  "confirmEmail": {
+    "scanQRCode": "Scan med Google Authenticator",
+    "manualKey": "Manuel nøgle:",
+    "tokenMissing": "Token mangler.",
+    "failedConfirm": "Bekræftelse af e-mail mislykkedes."
+  },
+
+"footer": {
+  "aboutUs": {
+    "title": "Om os",
+    "description": "EventFinder hjælper dig med at opdage og deltage i de bedste begivenheder omkring dig."
+  },
+
+  "exploreTitle": "Udforsk",
+  "explore": {
+    "0": "Populære begivenheder",
+    "1": "Nærliggende begivenheder",
+    "2": "Musikkoncerter",
+    "3": "Workshops",
+    "4": "Teknologikonferencer"
+  },
+
+  "servicesTitle": "Tjenester",
+  "services": {
+    "0": "Opret en begivenhed",
+    "1": "Promover din begivenhed",
+    "2": "Begivenhedsanalyse",
+    "3": "Rådgivning",
+    "4": "Kundeservice"
+  },
+
+  "contactInfoTitle": "Kontaktinformation",
+  "contactInfo": {
+    "address": "Guldblommevej 5, Ballerup",
+    "phone": "+45 22222222"
+  },
+
+  "copyright": "© 2024 Dit Firma. Alle rettigheder forbeholdes."
+}   
+}

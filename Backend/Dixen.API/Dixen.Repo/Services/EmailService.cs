@@ -12,9 +12,7 @@ namespace Dixen.Repo.Services
 {
     public class EmailService: IEmailSender
     {
-
         private readonly IConfiguration _configuration;
-
         public EmailService(IConfiguration configuration)
         {
             _configuration = configuration;
@@ -34,18 +32,15 @@ namespace Dixen.Repo.Services
             {
                 throw new InvalidOperationException("SMTP configuration is missing or incomplete.");
             }
-
             if (!int.TryParse(smtpPortString, out int smtpPort)) //TODO: may be i dont need to convert 
             {
                 throw new InvalidOperationException("SMTP port is not a valid integer.");
             }
-
             using var client = new SmtpClient(smtpHost, smtpPort)
             {
                 Credentials = new NetworkCredential(smtpUser, smtpPass),
                 EnableSsl = true
             };
-
             var mailMessage = new MailMessage
             {
                 From = new MailAddress(fromEmail),
@@ -53,9 +48,7 @@ namespace Dixen.Repo.Services
                 Body = htmlMessage,
                 IsBodyHtml = true
             };
-
             mailMessage.To.Add(email);
-
             await client.SendMailAsync(mailMessage);
         }
     }
