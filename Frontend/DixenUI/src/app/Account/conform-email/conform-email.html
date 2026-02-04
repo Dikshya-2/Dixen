@@ -1,0 +1,35 @@
+<div class="min-h-screen flex flex-col items-center justify-center p-4 bg-gray-100">
+
+  @if (message) {
+    <div class="w-full max-w-sm bg-white shadow-lg rounded-xl p-6 text-center">
+      <h2 class="text-2xl font-bold mb-4 text-gray-900">{{ message }}</h2>
+      
+      @if (qrCodeImage) {
+        <img 
+          [src]="qrCodeImage" 
+          alt="Scan with Google Authenticator" 
+          class="mx-auto mb-4 max-w-xs w-full"
+        />
+      }
+      
+      <p class="text-gray-700 mt-2">
+        <strong class="font-semibold">{{ 'confirmEmail.manualKey' | translate }}</strong> {{ manualKey }}
+      </p>
+
+      @if (qrCodeImage) {
+        <button 
+          (click)="goToLogin()"
+          class="mt-6 w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition-all duration-200 font-semibold"
+        >
+          Emailconformation is success! Please login
+        </button>
+      }
+    </div>
+  }
+
+  @if (error) {
+    <div class="w-full max-w-sm bg-red-100 text-red-800 rounded-xl p-4 mt-4 text-center shadow">
+      {{ error | translate }}
+    </div>
+  }
+</div>
