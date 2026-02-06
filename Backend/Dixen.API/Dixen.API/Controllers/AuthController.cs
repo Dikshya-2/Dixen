@@ -56,11 +56,13 @@ namespace Dixen.API.Controllers
                 Age = request.Age,
                 Gender = request.Gender
             };
+
             var result = await _userManager.CreateAsync(user, request.Password);
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
 
-            // TODO:  I should think of role assign
+            // Assign default or requested role
+            // TODO: Maybe i should think of role assign
             var roleName = string.IsNullOrWhiteSpace(request.Role) ? "User" : request.Role;
 
             if (!await _roleManager.RoleExistsAsync(roleName))
@@ -78,7 +80,10 @@ namespace Dixen.API.Controllers
             //var confirmationUrl = $"{Request.Scheme}://{Request.Host}/api/auth/confirm-email?email={user.Email}&token={encodedToken}";
 
             await _emailSender.SendEmailAsync(
-                 user.Email!,"Confirm your email",$@"Click here to confirm: <a href='{confirmationUrl}'>Click Here</a>");
+                 user.Email!,
+                "Confirm your email",
+                 $@"Click here to confirm: <a href='{confirmationUrl}'>Click Here</a>");
+
             return Ok(new
             {
                 Message = "User registered. Confirm email using the link.",
