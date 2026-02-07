@@ -1,0 +1,107 @@
+<section class="min-h-screen bg-indigo-900 text-white py-14">
+  <!-- Header -->
+  <div class="max-w-6xl mx-auto px-4 text-center mb-12">
+    <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold drop-shadow">
+      {{ category.name || "Loading..." }} Events
+    </h1>
+  </div>
+
+  <!-- Events Grid -->
+  <div
+    class="max-w-7xl mx-auto px-4 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+  >
+    <article
+      *ngFor="let event of events; trackBy: trackByEventId"
+      class="bg-white/10 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl hover:scale-[1.02] transition cursor-pointer"
+      (click)="goToEvent(event.id)"
+    >
+      <!-- Image -->
+      <img
+        [src]="event.imageUrl || fallbackImage"
+        [alt]="event.title"
+        class="w-full h-48 object-cover"
+      />
+
+      <!-- Content -->
+      <div class="p-4">
+        <h3 class="text-lg font-bold mb-1 line-clamp-2">
+          {{ event.title }}
+        </h3>
+
+        <p class="text-sm text-gray-300 mb-2 line-clamp-3">
+          {{ event.description }}
+        </p>
+
+        <p class="text-xs text-gray-400">
+          📅 {{ event.startTime | date: "fullDate" }}
+        </p>
+
+        <!-- Rating stars -->
+<span *ngFor="let star of [1,2,3,4,5]" 
+      (click)="$event.stopPropagation(); rateEvent(event.id, star)"
+      class="cursor-pointer"
+      [class.text-yellow-400]="ratings[event.id] >= star"
+      [class.text-gray-300]="ratings[event.id] < star">
+  ★
+</span>
+
+<!-- Average rating -->
+<span class="ml-2 text-sm text-gray-200">
+  ({{ averageRatings[event.id] || 0 }})
+</span>
+
+
+        <!-- Share section -->
+        <div class="mt-4">
+          <!-- Top row -->
+          <div class="flex items-center justify-between">
+            <span class="text-xs text-gray-400">
+              🔁 {{ shareCounts[event.id] || 0 }} shares
+            </span>
+
+            <button
+              class="text-sm text-indigo-300 hover:text-white"
+              (click)="$event.stopPropagation(); toggleShare(event.id)"
+            >
+              Share
+            </button>
+          </div>
+
+          <!-- Share buttons -->
+          <div
+            *ngIf="shareVisible[event.id]"
+            class="mt-2 flex flex-wrap gap-2"
+            (click)="$event.stopPropagation()"
+          >
+            <button
+              class="px-3 py-1 text-xs rounded bg-blue-600 hover:bg-blue-700"
+              (click)="share('facebook', event)"
+            >
+              Facebook
+            </button>
+
+            <button
+              class="px-3 py-1 text-xs rounded bg-sky-500 hover:bg-sky-600"
+              (click)="share('twitter', event)"
+            >
+              Twitter
+            </button>
+
+            <button
+              class="px-3 py-1 text-xs rounded bg-green-500 hover:bg-green-600"
+              (click)="share('whatsapp', event)"
+            >
+              WhatsApp
+            </button>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="events.length === 0" class="text-center text-gray-300 mt-20">
+    <p class="text-2xl font-semibold mb-2">No events available</p>
+    <p>Check back later or explore other categories.</p>
+  </div>
+</section>

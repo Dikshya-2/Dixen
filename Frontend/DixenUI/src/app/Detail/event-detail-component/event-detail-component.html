@@ -1,0 +1,95 @@
+<section *ngIf="event" class="pt-24 pb-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+  <!-- Event Card -->
+  <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+    <div class="flex flex-col md:flex-row">
+      
+      <!-- Event Image -->
+      <div class="md:w-1/2 bg-slate-200">
+        <img
+          *ngIf="event.imageUrl"
+          [src]="event.imageUrl.startsWith('/') ? event.imageUrl.substring(1) : event.imageUrl"
+          [alt]="event.title"
+          class="w-full h-64 md:h-full object-cover"
+        />
+      </div>
+
+      <!-- Event Content -->
+      <div class="md:w-1/2 p-6 sm:p-8 flex flex-col justify-between">
+
+        <div>
+          <!-- Title & Description -->
+          <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 mb-4">{{ event.title }}</h1>
+          <p class="text-slate-600 text-sm sm:text-base mb-6 leading-relaxed">{{ event.description }}</p>
+
+          <!-- Meta Info -->
+          <div class="space-y-3 text-sm text-slate-600">
+            <div><span class="font-medium text-slate-800">Date:</span> {{ event.startTime | date: 'fullDate' }}</div>
+            <div><span class="font-medium text-slate-800">Time:</span> {{ event.startTime | date: 'shortTime' }}</div>
+
+            <div *ngIf="event.categoryNames?.length">
+              <span class="font-medium text-slate-800">Category:</span>
+              <span *ngFor="let name of event.categoryNames; let last = last">{{ name }}<span *ngIf="!last">, </span></span>
+            </div>
+
+            <div *ngIf="event.hallNames?.length">
+              <span class="font-medium text-slate-800">Halls:</span>
+              <span *ngFor="let name of event.hallNames; let last = last">{{ name }}<span *ngIf="!last">, </span></span>
+            </div>
+
+            <div><span class="font-medium text-slate-800">Organizer:</span> {{ event.organizerName }}</div>
+          </div>
+
+          <!-- Venue -->
+          <div *ngIf="event.name" class="mt-4 text-slate-900 text-sm sm:text-base">
+            <a [href]="getGoogleMapsLink()" target="_blank" class="hover:text-blue-600 hover:underline">
+              <span class="font-semibold">{{ event.name }}</span><br>
+              {{ event.address }}, {{ event.city }}
+            </a>
+          </div>
+
+          <!-- Booking Button -->
+          <div class="mt-8">
+            <button
+              class="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-medium rounded-full px-6 py-3 text-sm transition"
+              (click)="bookEvent()">
+              Book Now
+            </button>
+          </div>
+
+          <!-- Ticket Form -->
+          <div *ngIf="showTicketForm" class="mt-6 bg-gray-50 p-6 rounded-xl shadow-inner">
+            <h3 class="font-semibold text-lg mb-4">Select Ticket</h3>
+
+            <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+              <label class="flex items-center gap-2">
+                Type:
+                <select [(ngModel)]="ticket.type" class="border rounded px-2 py-1">
+                  <option [value]="1">Regular</option>
+                  <option [value]="2">VIP</option>
+                </select>
+              </label>
+
+              <label class="flex items-center gap-2">
+                Quantity:
+                <input type="number" [(ngModel)]="ticket.quantity" min="1" class="border rounded px-2 py-1 w-20"/>
+              </label>
+            </div>
+
+            <button
+              (click)="confirmTicket()"
+              class="mt-4 w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-full px-6 py-2 transition">
+              Confirm Ticket
+            </button>
+          </div>
+
+          <!-- Payment Success -->
+          <div *ngIf="paymentSuccess" class="mt-4 p-4 bg-green-100 text-green-800 rounded-lg">
+            ✅ Payment confirmed! Your ticket has been booked.
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
