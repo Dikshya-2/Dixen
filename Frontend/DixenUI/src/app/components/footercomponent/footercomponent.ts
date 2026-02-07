@@ -16,7 +16,6 @@ email: string = 'dikshyasingh12@gmail.com';
     const encodedAddress = encodeURIComponent(address);
     window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}`, '_blank');
   }
-  // In your component
 serviceRoutes = [
   { key: 'footer.services.0', path: '/create-event' },
   { key: 'footer.services.1', path: '/promote-event' },
