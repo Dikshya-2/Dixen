@@ -12,7 +12,6 @@ namespace Dixen.API.Controllers
     public class EventController : ControllerBase
     {
         private readonly IEventService _eventService;
-
         public EventController(IEventService eventService)
         {
             _eventService = eventService;
@@ -24,7 +23,6 @@ namespace Dixen.API.Controllers
             var events = await _eventService.GetAllEventsAsync();
             return Ok(events);
         }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -40,7 +38,6 @@ namespace Dixen.API.Controllers
             var created = await _eventService.CreateEventAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
-
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] CreateUpdateEventDto dto)
         {

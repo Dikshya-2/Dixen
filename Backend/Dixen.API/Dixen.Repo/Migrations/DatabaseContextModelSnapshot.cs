@@ -106,7 +106,7 @@ namespace Dixen.Repo.Migrations
                             Id = "9f0bd209-3b56-410c-b4fc-5654161c3925",
                             AccessFailedCount = 0,
                             Age = 10,
-                            ConcurrencyStamp = "27d82f6e-a809-426f-9b01-b44b3c9b4939",
+                            ConcurrencyStamp = "70ccb0ee-1bbb-40d7-8137-0f522938ba58",
                             Email = "It@gmail.com",
                             EmailConfirmed = false,
                             FullName = "Dikshya Singh",
@@ -114,7 +114,7 @@ namespace Dixen.Repo.Migrations
                             IsDeleted = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5f361360-f6ca-406a-84fe-5f3fa3c81b0b",
+                            SecurityStamp = "10139f3b-59cd-4e45-a242-56229ab2f38e",
                             TwoFactorEnabled = false,
                             UserName = "It@gmail.com"
                         });
@@ -158,7 +158,7 @@ namespace Dixen.Repo.Migrations
                         new
                         {
                             Id = 1,
-                            BookedTime = new DateTime(2026, 1, 29, 20, 23, 48, 29, DateTimeKind.Utc).AddTicks(5140),
+                            BookedTime = new DateTime(2026, 2, 8, 18, 4, 50, 110, DateTimeKind.Utc).AddTicks(1452),
                             EventId = 1,
                             HallId = 1,
                             IsDeleted = false,
@@ -275,6 +275,10 @@ namespace Dixen.Repo.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Details")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -282,13 +286,26 @@ namespace Dixen.Repo.Migrations
                     b.Property<int>("EventId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("SubmittedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("SubmittedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SubmittedById")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -308,11 +325,15 @@ namespace Dixen.Repo.Migrations
                         new
                         {
                             Id = 1,
+                            Description = "",
                             Details = "Wants to present on AI",
                             EventId = 1,
                             IsApproved = false,
-                            SubmittedAt = new DateTime(2026, 1, 29, 20, 23, 48, 29, DateTimeKind.Utc).AddTicks(5096),
+                            StartTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SubmittedAt = new DateTime(2026, 2, 8, 18, 4, 50, 110, DateTimeKind.Utc).AddTicks(1372),
                             SubmittedBy = "Alice",
+                            SubmittedById = 0,
+                            Title = "",
                             UserId = "9f0bd209-3b56-410c-b4fc-5654161c3925"
                         });
                 });
@@ -370,7 +391,7 @@ namespace Dixen.Repo.Migrations
                             ImageUrl = "art_icon.png",
                             IsDeleted = false,
                             OrganizerId = 2,
-                            StartTime = new DateTime(2026, 2, 28, 20, 23, 48, 29, DateTimeKind.Utc).AddTicks(4905),
+                            StartTime = new DateTime(2026, 3, 10, 18, 4, 50, 110, DateTimeKind.Utc).AddTicks(1103),
                             Title = "Painting Exibation"
                         },
                         new
@@ -380,7 +401,7 @@ namespace Dixen.Repo.Migrations
                             ImageUrl = "rock_concert.jpg",
                             IsDeleted = false,
                             OrganizerId = 2,
-                            StartTime = new DateTime(2026, 2, 28, 20, 23, 48, 29, DateTimeKind.Utc).AddTicks(4915),
+                            StartTime = new DateTime(2026, 3, 10, 18, 4, 50, 110, DateTimeKind.Utc).AddTicks(1173),
                             Title = "Rock Concert"
                         },
                         new
@@ -390,7 +411,7 @@ namespace Dixen.Repo.Migrations
                             ImageUrl = "images.jpeg",
                             IsDeleted = false,
                             OrganizerId = 2,
-                            StartTime = new DateTime(2026, 2, 28, 20, 23, 48, 29, DateTimeKind.Utc).AddTicks(4917),
+                            StartTime = new DateTime(2026, 3, 10, 18, 4, 50, 110, DateTimeKind.Utc).AddTicks(1176),
                             Title = " Jazz Night"
                         });
                 });
@@ -559,7 +580,7 @@ namespace Dixen.Repo.Migrations
                             Id = 1,
                             EventId = 1,
                             Platform = "Twitter",
-                            SharedAt = new DateTime(2026, 1, 29, 20, 23, 48, 29, DateTimeKind.Utc).AddTicks(5027),
+                            SharedAt = new DateTime(2026, 2, 8, 18, 4, 50, 110, DateTimeKind.Utc).AddTicks(1293),
                             UserId = "9f0bd209-3b56-410c-b4fc-5654161c3925"
                         },
                         new
@@ -567,7 +588,7 @@ namespace Dixen.Repo.Migrations
                             Id = 2,
                             EventId = 2,
                             Platform = "Facebook",
-                            SharedAt = new DateTime(2026, 1, 29, 20, 23, 48, 29, DateTimeKind.Utc).AddTicks(5030),
+                            SharedAt = new DateTime(2026, 2, 8, 18, 4, 50, 110, DateTimeKind.Utc).AddTicks(1298),
                             UserId = "9f0bd209-3b56-410c-b4fc-5654161c3925"
                         });
                 });
