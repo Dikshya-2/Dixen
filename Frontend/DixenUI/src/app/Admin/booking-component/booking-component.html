@@ -1,0 +1,97 @@
+<div class="container mx-auto p-4 m-33">
+
+  <!-- Title -->
+  <h2 class="text-2xl font-bold mb-6 text-center md:text-left">My Bookings</h2>
+
+  <!-- Toggle Form -->
+  <div class="mb-4">
+    <button *ngIf="!showBookingForm"
+            (click)="toggleForm()"
+            class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-200">
+      Add Booking
+    </button>
+  </div>
+
+  <!-- Form -->
+  <div *ngIf="showBookingForm" class="mb-6 p-6 bg-white rounded-lg shadow-md max-w-lg mx-auto">
+    <h3 class="text-xl font-semibold mb-4">
+      {{ selectedBooking ? 'Edit Booking' : 'New Booking' }}
+    </h3>
+
+    <form (ngSubmit)="createBooking()" class="space-y-4">
+
+      <!-- Event ID -->
+      <div>
+        <label class="block font-medium mb-1">Event ID</label>
+        <input type="number" [(ngModel)]="bookingToEditOrCreate!.eventId"
+               name="eventId"
+               required
+               class="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400">
+      </div>
+
+      <!-- Select Hall -->
+      <div>
+        <label class="block font-medium mb-1">Select Hall</label>
+        <select [(ngModel)]="bookingToEditOrCreate!.hallId"
+                name="hallId"
+                required
+                class="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400">
+          <option value="" disabled>Select hall</option>
+          <option *ngFor="let hall of halls" [value]="hall.id">{{ hall.name }} (Capacity: {{ hall.capacity }})</option>
+        </select>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex gap-2 flex-wrap">
+        <button type="submit"
+                [disabled]="loading"
+                class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 disabled:opacity-50 transition-colors duration-200">
+          {{ selectedBooking ? 'Save Changes' : 'Create Booking' }}
+        </button>
+        <button type="button"
+                (click)="toggleForm()"
+                class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 transition-colors duration-200">
+          Cancel
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+  <!-- Booking List -->
+  <div class="overflow-x-auto bg-white rounded-lg shadow-md p-4">
+    <h3 class="text-xl font-semibold mb-4">Existing Bookings</h3>
+    <table class="w-full table-auto border border-gray-300 rounded-lg">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="border px-3 py-2 text-left">ID</th>
+          <th class="border px-3 py-2 text-left">Event</th>
+          <th class="border px-3 py-2 text-left">Hall</th>
+          <th class="border px-3 py-2 text-left">Booked By</th>
+          <th class="border px-3 py-2 text-left">Time</th>
+          <th class="border px-3 py-2 text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let b of bookings" class="hover:bg-gray-50">
+          <td class="border px-3 py-2">{{ b.id }}</td>
+          <td class="border px-3 py-2">{{ b.eventTitle }}</td>
+          <td class="border px-3 py-2">{{ b.hallName }}</td>
+          <td class="border px-3 py-2">{{ b.userName }}</td>
+          <td class="border px-3 py-2">{{ b.bookedTime | date:'short' }}</td>
+          <td class="border px-3 py-2 text-center space-x-2 flex justify-center">
+            <button (click)="selectBooking(b)"
+                    class="bg-yellow-400 px-3 py-1 rounded hover:bg-yellow-500 transition-colors duration-200">
+              Edit
+            </button>
+            <button (click)="cancelBooking(b.id)"
+                    class="bg-red-500 px-3 py-1 rounded text-white hover:bg-red-600 transition-colors duration-200">
+              Cancel
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

@@ -1,0 +1,123 @@
+<div class="p-4 max-w-5xl mx-auto bg-slate-50 min-h-screen space-y-6 m-33">
+
+  <!-- Booking selector -->
+  <div class="bg-white p-6 rounded-xl shadow space-y-4">
+    <label class="font-semibold text-slate-700">Booking ID</label>
+    <div class="flex flex-col sm:flex-row gap-3">
+      <input
+        [(ngModel)]="bookingId"
+        type="number"
+        placeholder="Enter booking ID"
+        class="flex-1 p-3 border rounded-lg"
+      />
+      <button
+        (click)="loadTickets()"
+        class="px-6 py-3 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700"
+      >
+        Load Tickets
+      </button>
+    </div>
+  </div>
+
+  <!-- Toggle button -->
+  <button
+    (click)="toggleForm()"
+    class="w-full text-xl font-bold text-white p-4 rounded-xl
+           bg-blue-600 hover:bg-blue-700 transition"
+  >
+    {{ showForm ? 'Cancel' : selectedTicket ? 'Edit Ticket' : '+ New Ticket' }}
+  </button>
+
+  <!-- Form -->
+  <form
+    *ngIf="showForm"
+    (ngSubmit)="save()"
+    class="bg-white p-6 rounded-xl shadow space-y-4"
+  >
+    <!-- Ticket type -->
+    <select
+      [(ngModel)]="newTicket.type"
+      name="type"
+      class="w-full p-3 border rounded-lg"
+      required
+    >
+      <option ngValue="">Select Ticket Type</option>
+      <option [ngValue]="1">Standard</option>
+      <option [ngValue]="2">VIP</option>
+      <option [ngValue]="3">Premium</option>
+    </select>
+
+    <!-- Price -->
+    <input
+      [(ngModel)]="newTicket.price"
+      name="price"
+      type="number"
+      placeholder="Price"
+      class="w-full p-3 border rounded-lg"
+      required
+    />
+
+    <!-- Quantity -->
+    <input
+      [(ngModel)]="newTicket.quantity"
+      name="quantity"
+      type="number"
+      placeholder="Quantity"
+      class="w-full p-3 border rounded-lg"
+      required
+    />
+
+    <!-- Save / Update -->
+    <button
+      type="submit"
+      class="w-full text-xl font-bold p-4 rounded-lg text-white transition"
+      [ngClass]="selectedTicket
+        ? 'bg-yellow-500 hover:bg-yellow-600'
+        : 'bg-green-600 hover:bg-green-700'"
+    >
+      {{ selectedTicket ? 'Update Ticket' : 'Save Ticket' }}
+    </button>
+  </form>
+
+  <!-- Ticket list -->
+  <div class="bg-white rounded-xl shadow overflow-hidden">
+    <div class="p-4 bg-slate-800 text-white font-bold">
+      Tickets ({{ tickets.length }})
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-left">
+        <thead class="bg-slate-100">
+          <tr>
+            <th class="p-3">Type</th>
+            <th class="p-3">Price</th>
+            <th class="p-3">Quantity</th>
+            <th class="p-3 text-right">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let t of tickets" class="border-t hover:bg-slate-50">
+            <td class="p-3">{{ t.type }}</td>
+            <td class="p-3 font-semibold">{{ t.price }}</td>
+            <td class="p-3">{{ t.quantity }}</td>
+            <td class="p-3 text-right">
+              <button
+                (click)="edit(t)"
+                class="px-3 py-1 bg-yellow-500 text-white rounded mr-2"
+              >
+                Edit
+              </button>
+              <button
+                (click)="delete(t.id!)"
+                class="px-3 py-1 bg-red-500 text-white rounded"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
