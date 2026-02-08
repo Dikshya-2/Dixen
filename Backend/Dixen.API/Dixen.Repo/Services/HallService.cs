@@ -11,7 +11,6 @@ namespace Dixen.Repo.Services
         private readonly IGRepo<Hall> _hallRepo;
         private readonly IGRepo<Evnt> _eventRepo;
         private readonly IGRepo<Venue> _venueRepo;
-
         public HallService(IGRepo<Hall> hallRepo, IGRepo<Evnt> eventRepo, IGRepo<Venue> venueRepo) 
         {
             _hallRepo = hallRepo;

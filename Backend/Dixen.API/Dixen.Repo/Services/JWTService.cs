@@ -17,7 +17,6 @@ namespace Dixen.Repo.Services
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _config;
-
         public JWTService(UserManager<ApplicationUser> userManager, IConfiguration config)
         {
             _userManager = userManager;

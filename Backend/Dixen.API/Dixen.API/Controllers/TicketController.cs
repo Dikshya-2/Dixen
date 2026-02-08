@@ -1,5 +1,6 @@
 ﻿using Dixen.Repo.DTOs.Ticket;
 using Dixen.Repo.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace Dixen.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "User,Admin")]
     public class TicketController : ControllerBase
     {
         private readonly ITicketService _service;
@@ -16,7 +18,6 @@ namespace Dixen.API.Controllers
             _service = service;
         }
 
-        // GET api/Ticket/booking/1
         [HttpGet("booking/{bookingId}")]
         public async Task<ActionResult<List<TicketResponse>>> GetByBooking(int bookingId)
         {

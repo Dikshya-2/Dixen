@@ -20,7 +20,9 @@ namespace Dixen.Repo.Model.Entities
         public List<Ticket> Tickets { get; set; } = new();
         public bool IsDeleted { get; set; } = false;
 
-
-
+        ////just to test
+        //public BookingStatus Status { get; set; } = BookingStatus.Pending;
+        //public decimal TotalAmount { get; set; }
+        //public DateTime? PaymentCompletedAt { get; set; }
     }
 }

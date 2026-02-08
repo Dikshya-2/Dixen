@@ -6,12 +6,10 @@ import { EventComponent } from './Admin/event-component/event-component';
 import { VenueComponent } from './Admin/venue-component/venue-component';
 import { HallComponent } from './Admin/hall-component/hall-component';
 import { BookingComponent } from './Admin/booking-component/booking-component';
-import { CategoryList } from './Detail/category-list/category-list';
 import { CategoryDetail } from './Detail/category-detail/category-detail';
 import { EventDetailComponent } from './Detail/event-detail-component/event-detail-component';
 import { PerformerComponent } from './Admin/performer-component/performer-component';
 import { TicketComponent } from './Admin/ticket-component/ticket-component';
-// import { Analysis } from './DataAnalysis/analysis/analysis';
 import { Analysis2 } from './DataAnalysis/analysis2/analysis2';
 import { RecommendedEvent } from './components/recommended-event/recommended-event';
 import { authGuard } from './auth/auth-guard';
@@ -86,6 +84,18 @@ export const routes: Routes = [
   { path: 'dataanalysis/analysis2', component: Analysis2 },
   { path: 'dataanalysis/analysis', component: Analysis },
 
+
+//   { path: 'detail/book-event/:eventId', 
+//   component: BookingDetailComponent  
+// },
+// {
+//   path: 'detail/my-bookings', 
+//   component: MyBookings
+// },
+// {
+//   path: 'detail/booking/:bookingId/tickets', 
+//   component: TicketDetailsComponent
+// },
   // ERROR PAGES
   { path: 'unauthorized', component: Unauthorized },
   { path: '', redirectTo: 'login', pathMatch: 'full' },

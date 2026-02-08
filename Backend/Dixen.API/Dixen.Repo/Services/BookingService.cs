@@ -40,7 +40,9 @@ namespace Dixen.Repo.Services
             Hall hall = null!;
             foreach (var h in evt.Halls)
             {
-                var currentBookings = (await _bookingRepo.Find(b => b.EventId == evt.Id && b.HallId == h.Id)).Count();
+                var bookings = await _bookingRepo.Find(b => b.EventId == evt.Id && b.HallId == h.Id,q => q.Include(b => b.Tickets));
+                var currentBookings = bookings.Sum(b => b.Tickets?.Sum(t => t.Quantity) ?? 0);
+
                 if (currentBookings < h.Capacity)
                 {
                     hall = h;
@@ -113,7 +115,12 @@ namespace Dixen.Repo.Services
 
             foreach (var hall in evt.Halls)
             {
-                var count = (await _bookingRepo.Find(b => b.EventId == eventId && b.HallId == hall.Id)).Count();
+                var bookings = await _bookingRepo.Find(
+            b => b.EventId == eventId && b.HallId == hall.Id,
+            q => q.Include(b => b.Tickets)
+            );
+                var count = bookings.Sum(b => b.Tickets?.Sum(t => t.Quantity) ?? 0);
+
                 hallAvailability.Add(new HallCapacityDto
                 {
                     HallId = hall.Id,
@@ -142,7 +149,7 @@ namespace Dixen.Repo.Services
             }
             catch
             {
-                // Silent fail
+                
             }
         }
     }

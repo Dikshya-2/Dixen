@@ -15,7 +15,7 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root',
 })
-export class GenericService<T> {
+export class GenericService<T, TCreate = T> {
   
   private baseUrl: string =  environment.Apiurl.replace(/\/$/, ''); // Remove trailing slash
 
@@ -33,7 +33,10 @@ export class GenericService<T> {
     return this.httpClient.get<T>(`${this.buildUrl(endpoint)}/${id}`, httpOptions);
   }
 
-  post(endpoint: string, body: T): Observable<T> {
+  // post(endpoint: string, body: T): Observable<T> {
+  //   return this.httpClient.post<T>(this.buildUrl(endpoint), body, httpOptions);
+  // }
+  post(endpoint: string, body: TCreate): Observable<T> {
     return this.httpClient.post<T>(this.buildUrl(endpoint), body, httpOptions);
   }
 
@@ -70,8 +73,4 @@ searchEvents(filter: EventSearchFilterDto): Observable<EventResponseDto[]> {
   const url = `${this.baseUrl}/Event/search`;
   return this.httpClient.post<EventResponseDto[]>(url, filter, httpOptions);
 }
-
-
-
-
 }

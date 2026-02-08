@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dixen.Repo.Model.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,5 +20,17 @@ namespace Dixen.Repo.DTOs.Booking
         public string UserName { get; set; } = string.Empty;
         public DateTime BookedTime { get; set; }
     }
+
+    //public class CreateBookingDto
+    //{
+    //    public int HallId { get; set; }
+    //    public TicketType TicketType { get; set; }
+    //    public int Quantity { get; set; }
+    //}
+
+    //public class PaymentDto
+    //{
+    //    public decimal Amount { get; set; }
+    //}
 
 }

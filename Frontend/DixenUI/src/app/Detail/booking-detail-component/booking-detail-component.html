@@ -1,0 +1,35 @@
+<div class="booking-container">
+  <h2>Book Event Tickets</h2>
+  
+  <div class="form-group">
+    <label>Event ID:</label>
+    <input type="number" [(ngModel)]="eventId" (blur)="checkAvailability()" />
+  </div>
+
+  <div *ngIf="isLoading" class="loading">Checking availability...</div>
+
+  <div *ngIf="availability.length > 0" class="availability">
+    <h3>Available Seats:</h3>
+    <div class="seats-grid">
+      <div *ngFor="let seat of availability" class="seat-item">
+        {{seat.hallName}} - {{seat.availableSeats}} seats available
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="error">{{errorMessage}}</div>
+
+  <button 
+    *ngIf="!bookingSuccess" 
+    [disabled]="isLoading || !eventId || availability.length === 0"
+    (click)="createBooking()"
+    class="book-btn">
+    Create Booking
+  </button>
+
+  <div *ngIf="bookingSuccess" class="success">
+    <h3>Booking Created Successfully!</h3>
+    <p>Booking ID: {{eventId}}</p>
+    <a routerLink="/my-bookings">View My Bookings</a>
+  </div>
+</div>

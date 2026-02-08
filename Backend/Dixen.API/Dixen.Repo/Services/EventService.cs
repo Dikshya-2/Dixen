@@ -28,7 +28,6 @@ namespace Dixen.Repo.Services
             _hallRepo = hallRepo;
             _bookingRepo = bookingRepo;
         }
-
         public async Task<List<EventResponseDto>> GetAllEventsAsync()
         {
             var events = await _eventRepo.GetAll(q => q
@@ -56,7 +55,6 @@ namespace Dixen.Repo.Services
                     ?? new List<string>()
             }).ToList();
         }
-
         public async Task<EventResponseDto?> GetEventByIdAsync(int eventId)
         {
             var evt = await _eventRepo.GetById(eventId, q => q
@@ -89,7 +87,6 @@ namespace Dixen.Repo.Services
                 City = evt.Halls?.FirstOrDefault()?.Venue?.City
             };
         }
-
         public async Task<EventResponseDto> CreateEventAsync(CreateUpdateEventDto dto)
         {
             var categories = dto.CategoryIds.Any()
@@ -129,10 +126,6 @@ namespace Dixen.Repo.Services
             evt.StartTime = dto.StartTime;
             evt.ImageUrl = dto.ImageUrl;
             evt.OrganizerId = dto.OrganizerId;
-
-            //evt.Categories ??= new List<Category>();
-            //evt.Halls ??= new List<Hall>();
-
             evt.Categories.Clear();
             if (dto.CategoryIds.Any())
             {
@@ -146,13 +139,9 @@ namespace Dixen.Repo.Services
                 var halls = await _hallRepo.Find(h => dto.HallIds.Contains(h.Id));
                 evt.Halls.AddRange(halls);
             }
-
             await _eventRepo.Update(eventId, evt);
-
             return await GetEventByIdAsync(eventId);
         }
-
-
         public async Task<bool> DeleteEventAsync(int eventId)
         {
             var evt = await _eventRepo.GetById(eventId, null);
