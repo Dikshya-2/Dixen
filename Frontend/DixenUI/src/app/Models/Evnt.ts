@@ -8,7 +8,8 @@ export class Evnt {
   startTime: Date = new Date();
   imageUrl: string = '';
   organizerId: number = 0;
-  categories!: Category[];
+  // categories!: Category[];
+  categories?: Category[];
   categoryIds: number[] = [];
   halls?: Hall[];
   categoryNames?: string[];
