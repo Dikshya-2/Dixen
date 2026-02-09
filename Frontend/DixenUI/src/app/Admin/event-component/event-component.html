@@ -1,0 +1,152 @@
+<div class="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto space-y-6 bg-slate-50 min-h-screen m-33">
+  
+  <div class="bg-white rounded-2xl shadow-lg border border-slate-200 p-6 sm:p-8">
+    
+    <!-- TOGGLE -->
+    <button
+      (click)="toggleCreateForm()"
+      class="w-full sm:w-auto px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold text-lg rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
+    >
+      {{ showCreateForm ? 'Cancel' : (selectedEvent ? 'Edit Event' : '+ New Event') }}
+    </button>
+
+    <!-- FORM -->
+    <form *ngIf="showCreateForm" (ngSubmit)="saveEvent()" class="mt-6 space-y-4">
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Title *</label>
+          <input [(ngModel)]="newEvent.title" name="title" placeholder="Event title" 
+                 class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Start Time *</label>
+          <input [(ngModel)]="newEvent.startTime" name="startTime" type="datetime-local" 
+                 class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-slate-700 mb-2">Description</label>
+        <textarea [(ngModel)]="newEvent.description" name="description" rows="3" 
+                  class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                  placeholder="Event description"></textarea>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Image URL</label>
+          <input [(ngModel)]="newEvent.imageUrl" name="imageUrl" placeholder="https://..." 
+                 class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Organizer *</label>
+          <select [(ngModel)]="newEvent.organizerId" name="organizerId" 
+                  class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+            <option value="">Select Organizer</option>
+            <option *ngFor="let org of organizers" [value]="org.id">{{ org.organizationName }}</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Categories -->
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-3">Categories</label>
+        <div class="flex flex-wrap gap-2 p-4 bg-slate-50 rounded-lg border-2 border-dashed border-slate-200">
+          <span *ngFor="let cat of categories" 
+                (click)="selectCategory(cat.id)"
+                [class.bg-blue-500]="newEvent.categoryIds.includes(cat.id)"
+                [class.text-white]="newEvent.categoryIds.includes(cat.id)"
+                [class.bg-blue-100]="!newEvent.categoryIds.includes(cat.id)"
+                [class.text-blue-800]="!newEvent.categoryIds.includes(cat.id)"
+                class="cursor-pointer px-3 py-2 rounded-lg font-medium border border-slate-300 hover:border-blue-400 transition-all">
+            {{ cat.name }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Halls -->
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-3">Halls</label>
+        <div class="flex flex-wrap gap-2 p-4 bg-slate-50 rounded-lg border-2 border-dashed border-slate-200">
+          <span *ngFor="let hall of halls" 
+                (click)="selectHall(hall.id)"
+                [class.bg-green-500]="newEvent.hallIds.includes(hall.id)"
+                [class.text-white]="newEvent.hallIds.includes(hall.id)"
+                [class.bg-green-100]="!newEvent.hallIds.includes(hall.id)"
+                [class.text-green-800]="!newEvent.hallIds.includes(hall.id)"
+                class="cursor-pointer px-3 py-2 rounded-lg font-medium border border-slate-300 hover:border-green-400 transition-all">
+            {{ hall.name }}
+          </span>
+        </div>
+      </div>
+
+      <!-- SAVE/UPDATE BUTTON -->
+      <button type="submit" 
+              class="w-full px-6 py-4 bg-green-500 hover:bg-green-600 text-white font-bold text-xl rounded-xl shadow-lg hover:shadow-xl transition-all duration-200">
+        {{ selectedEvent ? 'Update Event' : 'Create Event' }}
+      </button>
+    </form>
+  </div>
+
+  <!-- EVENTS TABLE -->
+  <div class="bg-white rounded-2xl shadow-lg border border-slate-200 overflow-hidden">
+    <div class="p-6 bg-slate-800 text-white">
+      <h2 class="text-2xl font-bold">Events ({{ events.length }})</h2>
+    </div>
+    
+    <div class="overflow-x-auto">
+      <table class="w-full">
+        <thead class="bg-slate-50">
+          <tr>
+            <th class="p-4 text-left font-semibold text-slate-700">Title</th>
+            <th class="p-4 text-left font-semibold text-slate-700 hidden md:table-cell">Image</th>
+            <th class="p-4 text-left font-semibold text-slate-700 hidden lg:table-cell">Categories</th>
+            <th class="p-4 text-left font-semibold text-slate-700 hidden xl:table-cell">Halls</th>
+            <th class="p-4 text-left font-semibold text-slate-700 hidden xl:table-cell">Organizer</th>
+            <th class="p-4 text-left font-semibold text-slate-700 hidden sm:table-cell">Date</th>
+            <th class="p-4 text-right font-semibold text-slate-700">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr *ngFor="let ev of events" class="hover:bg-slate-50">
+            <td class="p-4 font-medium text-slate-800">{{ ev.title }}</td>
+            <td class="p-4 hidden md:table-cell">
+              <img *ngIf="ev.imageUrl" [src]="ev.imageUrl" class="w-16 h-16 object-cover rounded-lg" [alt]="ev.title">
+            </td>
+            <td class="p-4 hidden lg:table-cell">
+              <span *ngFor="let cat of ev.categoryNames; let last = last" 
+                    class="inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm mr-1 mb-1">
+                {{ cat }}{{ !last ? ',' : '' }}
+              </span>
+            </td>
+            <td class="p-4 hidden xl:table-cell">
+              <span *ngFor="let hall of ev.hallNames; let last = last" 
+                    class="inline-block bg-green-100 text-green-800 px-2 py-1 rounded text-sm mr-1 mb-1">
+                {{ hall }}{{ !last ? ',' : '' }}
+              </span>
+            </td>
+            <td class="p-4 hidden xl:table-cell">{{ ev.organizerName }}</td>
+            <td class="p-4 hidden sm:table-cell">{{ ev.startTime | date: 'short' }}</td>
+            <td class="p-4 text-right space-x-2">
+              
+              <!--  EDIT  -->
+              <button (click)="editEvent(ev)"
+                      class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-lg shadow-sm hover:shadow-md transition-all text-sm">
+                Edit
+              </button>
+              
+              <!--  DELETE  -->
+              <button (click)="deleteEvent(ev.id)"
+                      class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-lg shadow-sm hover:shadow-md transition-all text-sm">
+                Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,104 @@
+<div class="container mx-auto p-4 m-33">
+
+  <h2 class="text-2xl font-bold mb-6 text-center md:text-left">Categories</h2>
+
+  <div class="mb-4">
+    <button
+      *ngIf="!showCategoryForm"
+      (click)="toggleCreateForm()"
+      class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-200"
+    >
+      Add New Category
+    </button>
+  </div>
+
+  <div *ngIf="showCategoryForm" class="mb-8 border rounded-lg p-6 bg-white shadow-sm">
+    <h3 class="text-xl font-semibold mb-4">
+      {{ selectedCategory ? 'Edit Category' : 'Add New Category' }}
+    </h3>
+
+    <form #categoryForm="ngForm"
+          (ngSubmit)="categoryForm.valid && (selectedCategory ? editCategory() : createCategory())"
+          class="space-y-4">
+
+      <div>
+        <label class="block font-medium mb-1">Name:</label>
+        <input
+          type="text"
+          [(ngModel)]="categoryToEditOrCreate.name"
+          name="categoryName"
+          required
+          placeholder="Enter category name"
+          class="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+      </div>
+
+      <div>
+        <label class="block font-medium mb-1">Image URL:</label>
+        <input
+          type="text"
+          [(ngModel)]="categoryToEditOrCreate.imageUrl"
+          name="categoryImage"
+          placeholder="Enter image URL (optional)"
+          class="border rounded px-3 py-2 w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+      </div>
+
+      <div class="flex flex-wrap gap-2">
+        <button
+          type="submit"
+          [disabled]="categoryForm.invalid"
+          class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 disabled:opacity-50 transition-colors duration-200"
+        >
+          {{ selectedCategory ? 'Save Changes' : 'Create Category' }}
+        </button>
+
+        <button
+          type="button"
+          (click)="resetForm()"
+          class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500 transition-colors duration-200"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="overflow-x-auto">
+    <h3 class="text-xl font-semibold mb-4">Category List</h3>
+    <table class="w-full border border-gray-300 rounded-lg table-auto">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="border px-3 py-2 text-left">ID</th>
+          <th class="border px-3 py-2 text-left">Name</th>
+          <th class="border px-3 py-2 text-left">Image</th>
+          <th class="border px-3 py-2 text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cat of categories" class="hover:bg-gray-50">
+          <td class="border px-3 py-2">{{ cat.id }}</td>
+          <td class="border px-3 py-2">{{ cat.name }}</td>
+          <td class="border px-3 py-2">
+            <img *ngIf="cat.imageUrl" [src]="cat.imageUrl" alt="{{ cat.name }}" class="w-20 h-20 object-cover rounded" />
+          </td>
+          <td class="border px-3 py-2 text-center space-x-2">
+            <button
+              (click)="selectForEdit(cat)"
+              class="bg-yellow-400 px-3 py-1 rounded hover:bg-yellow-500 transition-colors duration-200"
+            >
+              Edit
+            </button>
+            <button
+              (click)="deleteCategory(cat.id)"
+              class="bg-red-500 px-3 py-1 rounded text-white hover:bg-red-600 transition-colors duration-200"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>

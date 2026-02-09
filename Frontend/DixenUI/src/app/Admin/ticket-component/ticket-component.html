@@ -19,7 +19,7 @@
     </div>
   </div>
 
-  <!-- Toggle button -->
+  <!-- Toggle  -->
   <button
     (click)="toggleForm()"
     class="w-full text-xl font-bold text-white p-4 rounded-xl
@@ -34,7 +34,7 @@
     (ngSubmit)="save()"
     class="bg-white p-6 rounded-xl shadow space-y-4"
   >
-    <!-- Ticket type -->
+    <!-- Ticket  -->
     <select
       [(ngModel)]="newTicket.type"
       name="type"
@@ -42,9 +42,9 @@
       required
     >
       <option ngValue="">Select Ticket Type</option>
-      <option [ngValue]="1">Standard</option>
+      <option [ngValue]="1">General</option>
       <option [ngValue]="2">VIP</option>
-      <option [ngValue]="3">Premium</option>
+      <option [ngValue]="3">Student</option>
     </select>
 
     <!-- Price -->
@@ -57,7 +57,6 @@
       required
     />
 
-    <!-- Quantity -->
     <input
       [(ngModel)]="newTicket.quantity"
       name="quantity"
@@ -67,7 +66,6 @@
       required
     />
 
-    <!-- Save / Update -->
     <button
       type="submit"
       class="w-full text-xl font-bold p-4 rounded-lg text-white transition"

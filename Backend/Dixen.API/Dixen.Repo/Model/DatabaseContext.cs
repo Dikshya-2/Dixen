@@ -106,12 +106,6 @@ namespace Dixen.Repo.Model
                 .HasForeignKey(es => es.EventId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<EventSubmission>()
-                .HasOne(es => es.User)
-                .WithMany(u => u.EventSubmissions)
-                .HasForeignKey(es => es.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
             modelBuilder.Entity<EventReview>()
                 .HasOne(er => er.Event)
                 .WithMany(e => e.Reviews)
@@ -150,23 +144,22 @@ namespace Dixen.Repo.Model
 
             #endregion
             // ToDO: Review and optimize indexes
-            //#region PERFECT Indexes - CORRECT SYNTAX (NO CHAINING)
+            //#region  Indexes
             //var evntBuilder = modelBuilder.Entity<Evnt>();
-            //evntBuilder.HasIndex(nameof(Evnt.OrganizerId));
             //evntBuilder.HasIndex(nameof(Evnt.StartTime));
             //evntBuilder.HasIndex(nameof(Evnt.Title));
             //evntBuilder.HasIndex(e => new { e.StartTime, e.IsDeleted });
-
             //var bookingBuilder = modelBuilder.Entity<Booking>();
-            //bookingBuilder.HasIndex(nameof(Booking.UserId));
-            //bookingBuilder.HasIndex(nameof(Booking.EventId));
-
-            //modelBuilder.Entity<EventReview>().HasIndex(nameof(EventReview.EventId));
-            //modelBuilder.Entity<EventSubmission>().HasIndex(nameof(EventSubmission.EventId));
-
             //var eventCategories = modelBuilder.Entity("EventCategories");
-            //eventCategories.HasIndex("EventId");
-            //eventCategories.HasIndex("CategoryId");
+
+            //            modelBuilder.Entity<Evnt>()
+            //.HasIndex(nameof(Evnt.StartTime))     // Date filtering
+            //.HasIndex(nameof(Evnt.Title))         // Title search 
+            //.HasIndex(e => e.Description)         // Keyword search
+            //.HasIndex(e => new { e.StartTime, e.IsDeleted }); // Upcoming events
+
+            //#endregion
+
             //#endregion
 
 
@@ -303,7 +296,6 @@ namespace Dixen.Repo.Model
                     Details = "Wants to present on AI",
                     SubmittedAt = DateTime.UtcNow,
                     EventId = 1,
-                    UserId = "9f0bd209-3b56-410c-b4fc-5654161c3925",
                     IsApproved = false
                 }
             );

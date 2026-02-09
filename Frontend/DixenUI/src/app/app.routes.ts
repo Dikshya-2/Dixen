@@ -16,87 +16,116 @@ import { authGuard } from './auth/auth-guard';
 import { Userprofile } from './components/userprofile/userprofile';
 import { Search } from './Filter/search/search';
 import { Analysis } from './DataAnalysis/analysis/analysis';
+import { AdminSubmissionsComponent } from './Admin/admin-submissions-component/admin-submissions-component';
 
 export const routes: Routes = [
   { path: '', component: Home },
 
-  {path: 'login',loadComponent: () => import('./Account/login/login').then((m) => m.Login), },
-  {path: 'register',loadComponent: () =>import('./Account/registration/registration').then((m) => m.Registration),},
-  {path: 'verify',loadComponent: () =>import('./Account/verify2fa/verify2fa').then((m) => m.Verify2fa),},
-  { path: 'conform-email',loadComponent: () =>import('./Account/conform-email/conform-email').then( (m) => m.ConformEmail,),},
+  {
+    path: 'login',
+    loadComponent: () => import('./Account/login/login').then((m) => m.Login),
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./Account/registration/registration').then((m) => m.Registration),
+  },
+  {
+    path: 'verify',
+    loadComponent: () =>
+      import('./Account/verify2fa/verify2fa').then((m) => m.Verify2fa),
+  },
+  {
+    path: 'conform-email',
+    loadComponent: () =>
+      import('./Account/conform-email/conform-email').then(
+        (m) => m.ConformEmail,
+      ),
+  },
 
   // DASHBOARD ROUTES - Role-based
-  {path: 'user-dashboard',loadComponent: () =>import('./Dashboards/user-dashboard/user-dashboard').then((m) => m.UserDashboard,),},
-  {path: 'admin-dashboard',loadComponent: () =>import('./Dashboards/admin-dashboard/admin-dashboard').then((m) => m.AdminDashboard,),},
-  {path: 'host-dashboard',loadComponent: () =>import('./Dashboards/host-dashboard/host-dashboard').then( (m) => m.HostDashboard,),},
- 
-  {path: 'user-profile/:email',component: Userprofile },
+  {
+    path: 'user-dashboard',
+    loadComponent: () =>
+      import('./Dashboards/user-dashboard/user-dashboard').then(
+        (m) => m.UserDashboard,
+      ),
+  },
+  {
+    path: 'admin-dashboard',
+    loadComponent: () =>
+      import('./Dashboards/admin-dashboard/admin-dashboard').then(
+        (m) => m.AdminDashboard,
+      ),
+  },
+  {
+    path: 'host-dashboard',
+    loadComponent: () =>
+      import('./Dashboards/host-dashboard/host-dashboard').then(
+        (m) => m.HostDashboard,
+      ),
+  },
+
+  { path: 'user-profile/:email', component: Userprofile },
   // Admin routes
- {
+  {
     path: 'admin/category',
     component: CategoryComponent,
     canActivate: [authGuard],
-    data: { roles: ['admin'] }
+    data: { roles: ['admin'] },
   },
+  {
+    path: 'admin/event-submissions',
+    component: AdminSubmissionsComponent,
+    canActivate: [authGuard],
+    data: { roles: ['admin'] },
+  },
+
   {
     path: 'admin/event',
     component: EventComponent,
     canActivate: [authGuard],
-    data: { roles: ['admin'] }
+    data: { roles: ['admin'] },
   },
   {
     path: 'admin/venue',
     component: VenueComponent,
     canActivate: [authGuard],
-    data: { roles: ['admin'] }
+    data: { roles: ['admin'] },
   },
   {
     path: 'admin/hall',
     component: HallComponent,
     canActivate: [authGuard],
-    data: { roles: ['admin'] }
+    data: { roles: ['admin'] },
   },
   {
     path: 'admin/booking',
     component: BookingComponent,
     canActivate: [authGuard],
-    data: { roles: ['admin, User'] }
+    data: { roles: ['admin, User'] },
   },
   {
     path: 'admin/performer',
     component: PerformerComponent,
     canActivate: [authGuard],
-    data: { roles: ['admin'] }
+    data: { roles: ['admin'] },
   },
 
   {
     path: 'admin/ticket',
     component: TicketComponent,
     canActivate: [authGuard],
-    data: { roles: ['admin'] }
+    data: { roles: ['admin'] },
   },
-  
+
   // PUBLIC DETAIL PAGES
-    { path: 'filter/search', component: Search },
+  { path: 'filter/search', component: Search },
   { path: 'recommended', component: RecommendedEvent },
   { path: 'category/:categoryId', component: CategoryDetail },
   { path: 'event/:id', component: EventDetailComponent },
   { path: 'dataanalysis/analysis2', component: Analysis2 },
   { path: 'dataanalysis/analysis', component: Analysis },
-
-
-//   { path: 'detail/book-event/:eventId', 
-//   component: BookingDetailComponent  
-// },
-// {
-//   path: 'detail/my-bookings', 
-//   component: MyBookings
-// },
-// {
-//   path: 'detail/booking/:bookingId/tickets', 
-//   component: TicketDetailsComponent
-// },
-  // ERROR PAGES
   { path: 'unauthorized', component: Unauthorized },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 ];
