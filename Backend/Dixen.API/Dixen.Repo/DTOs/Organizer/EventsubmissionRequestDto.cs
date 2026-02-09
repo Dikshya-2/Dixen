@@ -8,10 +8,6 @@ namespace Dixen.Repo.DTOs.Organizer
 {
     public class EventsubmissionRequestDto 
     {
-        //public string EventTitle { get; set; } = string.Empty;
-        //public string Description { get; set; } = string.Empty;
-        //public DateTime StartTime { get; set; }
-        //public List<int> CategoryIds { get; set; } = new(); 
         public List<EventSubmissionDto> Events { get; set; } = new();
 
     }

@@ -1,3 +1,5 @@
+import { Booking } from "./booking";
+
 export interface UserProfile {
   id: string;
   fullName: string;
@@ -6,7 +8,8 @@ export interface UserProfile {
   age: number;
   roles: string[];         
   is2FAEnabled: boolean;
-  attendedEvents: string[];
+   bookings?: Booking[];
+  // bookings: string[] | Booking[]; 
   hostedEvents: string[];
   proposedEvents: string[];
   preferredCategories: string[];

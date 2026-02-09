@@ -94,8 +94,6 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-
-
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
     options.SignIn.RequireConfirmedEmail = true;

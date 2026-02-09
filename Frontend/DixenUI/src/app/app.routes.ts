@@ -17,6 +17,7 @@ import { Userprofile } from './components/userprofile/userprofile';
 import { Search } from './Filter/search/search';
 import { Analysis } from './DataAnalysis/analysis/analysis';
 import { AdminSubmissionsComponent } from './Admin/admin-submissions-component/admin-submissions-component';
+import { SubmitEventComponent } from './components/submit-event-component/submit-event-component';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -120,6 +121,7 @@ export const routes: Routes = [
   },
 
   // PUBLIC DETAIL PAGES
+  {path: 'submit', component:SubmitEventComponent},
   { path: 'filter/search', component: Search },
   { path: 'recommended', component: RecommendedEvent },
   { path: 'category/:categoryId', component: CategoryDetail },

@@ -21,8 +21,4 @@ export interface BookingDto {
   userEmail: string;
 }
 
-export interface HallCapacityDto {
-  hallName: string;
-  availableSeats: number;
-  totalSeats: number;
-}
+

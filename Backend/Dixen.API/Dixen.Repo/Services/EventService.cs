@@ -156,11 +156,11 @@ namespace Dixen.Repo.Services
         {
             IQueryable<Evnt> query = _eventRepo
                 .GetAllQuery()
+                .AsNoTracking()
                 .Include(e => e.Categories)
                 .Include(e => e.Halls)
                     .ThenInclude(h => h.Venue);
 
-            
             if (!string.IsNullOrWhiteSpace(filter.Title))
             {
                 var titleLower = filter.Title.ToLower();
@@ -199,6 +199,43 @@ namespace Dixen.Repo.Services
 
             return events.Select(MapToDto).ToList();
         }
+
+        //public async Task<List<EventResponseDto>> SearchEventsAsync(EventSearchFilterDto filter)
+        //{
+        //    var query = _eventRepo.GetAllQuery()
+        //        .AsNoTracking()                    // 🔥 LINE 1: +50% faster
+        //        .Include(e => e.Categories)
+        //        .Include(e => e.Halls)
+        //        .ThenInclude(h => h.Venue);
+
+        //    // YOUR EXISTING FILTERS (unchanged)...
+        //    if (!string.IsNullOrWhiteSpace(filter.Title))
+        //        query = query.Where(e => e.Title.ToLower().StartsWith(filter.Title.ToLower()));
+
+        //    if (!string.IsNullOrWhiteSpace(filter.Keyword))
+        //        query = query.Where(e => e.Title.ToLower().Contains(filter.Keyword.ToLower())
+        //                              || e.Description.ToLower().Contains(filter.Keyword.ToLower()));
+
+
+        //    query = query.OrderBy(e => e.Title);
+
+        //    var events = await query
+        //        .Take(20)                             
+        //        .Select(e => new EventResponseDto     
+        //        {
+        //            Id = e.Id,
+        //            Title = e.Title,
+        //            StartTime = e.StartTime,
+        //            ImageUrl = e.ImageUrl,
+        //            Address = e.Halls.FirstOrDefault().Venue.Address,
+        //            City = e.Halls.FirstOrDefault().Venue.City,
+        //            CategoryNames = e.Categories.Select(c => c.Name).ToList()
+        //        })
+        //        .ToListAsync();
+
+        //    return events;
+        //}
+
         private EventResponseDto MapToDto(Evnt e)
         {
             var venue = e.Halls?.FirstOrDefault()?.Venue;

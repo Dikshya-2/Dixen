@@ -51,8 +51,8 @@ verify() {
           if (role === 'Admin') {
             this.router.navigate(['/admin-dashboard']);
 
-          } else if (role === 'Organizer') {
-            this.router.navigate(['/organizer-dashboard']);
+          } else if (role === 'Host') {
+            this.router.navigate(['/host-dashboard']);
           } else if (role === 'User') {
             this.router.navigate(['/user-dashboard']);
           } else {

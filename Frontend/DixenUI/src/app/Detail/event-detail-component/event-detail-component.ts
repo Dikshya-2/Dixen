@@ -4,10 +4,11 @@ import { Evnt } from '../../Models/Evnt';
 import { GenericService } from '../../Services/generic-service';
 import { CommonModule } from '@angular/common';
 import { Venue } from '../../Models/venue';
-import { Booking, HallCapacityDto } from '../../Models/booking';
+import { Booking,  } from '../../Models/booking';
 import { Ticket, TicketCreateDto } from '../../Models/ticket';
 import { FormsModule } from '@angular/forms';
 import { Hall } from '../../Models/hall';
+import { HallCapacityDto } from '../../Models/HallCapacityDto';
 
 @Component({
   selector: 'app-event-detail-component',

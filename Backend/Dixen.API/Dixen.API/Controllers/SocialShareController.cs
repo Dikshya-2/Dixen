@@ -167,7 +167,6 @@ namespace Dixen.Controllers
             return Ok(resultDto);
         }
 
-        //
         [HttpGet("stats/event-platforms")]
         public async Task<ActionResult<IEnumerable<object>>> GetShareStatsByEventAndPlatform()
         {
