@@ -1,0 +1,65 @@
+<div class="max-w-6xl mx-auto p-6">
+  <!-- Search Card -->
+  <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <h2 class="text-2xl font-bold mb-4 text-gray-800">Search Events</h2>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <!-- Title / Alphabet -->
+      <input
+        type="text"
+        placeholder="Search"
+        [(ngModel)]="filter.title"
+        (keyup.enter)="searchEvents()"
+        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+      <!-- Event Date -->
+      <input
+        type="date"
+        [(ngModel)]="filter.eventDate"
+          (keyup.enter)="searchEvents()"
+        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+      <!-- Venue City -->
+      <input
+        type="text"
+        placeholder="Venue city"
+        [(ngModel)]="filter.venueCity"
+          (keyup.enter)="searchEvents()"
+        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+      <!-- Search Button -->
+      <button
+        (click)="searchEvents()"
+        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-lg transition transform hover:scale-105"
+      >
+        Search
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" class="text-center py-6 text-gray-500 font-medium">
+    Loading events...
+  </div>
+
+  <!-- No results -->
+  <div *ngIf="events && events.length === 0 && !loading" class="text-center py-6 text-gray-500 font-medium">
+    No events found.
+  </div>
+
+ <!-- Only show results grid if search has been done -->
+<div *ngIf="events && events.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  <div *ngFor="let event of events" class="bg-white rounded-lg shadow-md p-5 hover:shadow-xl transition transform hover:-translate-y-1">
+    <img *ngIf="event.imageUrl" [src]="event.imageUrl" alt="{{ event.title }}" class="w-full h-40 object-cover rounded-md mb-4">
+    <h3 class="font-bold text-xl text-gray-800 mb-2">{{ event.title }}</h3>
+    <p class="text-gray-600 mb-1">{{ event.startTime | date:'medium' }}</p>
+    <p class="text-gray-600 mb-1">{{ event.city }}, {{ event.address }}</p>
+    <p class="text-gray-500 text-sm">Categories: {{ event.categoryNames?.join(', ') }}</p>
+  </div>
+</div>
+
+<!-- Only show "No events" message if search done and empty -->
+<div *ngIf="events && events.length === 0 && !loading" class="text-center py-6 text-gray-500 font-medium">
+  No events found.
+</div>
+
+</div>
