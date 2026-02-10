@@ -67,8 +67,7 @@
       </div>
 
       <!-- User Bookings -->
-      <!-- User Bookings -->
-<div *ngIf="user.bookings?.length"
+  <div *ngIf="userBookings.length"
      class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
 
   <h2 class="text-lg font-semibold text-slate-900 mb-4">
@@ -76,7 +75,7 @@
   </h2>
 
   <ul class="space-y-3">
-    <li *ngFor="let booking of user.bookings"
+    <li *ngFor="let booking of userBookings"
         class="p-4 bg-slate-50 rounded-lg border">
 
       <div class="font-semibold text-slate-900">
@@ -93,6 +92,7 @@
     </li>
   </ul>
 </div>
+
 
 
       <!-- Role Permissions -->

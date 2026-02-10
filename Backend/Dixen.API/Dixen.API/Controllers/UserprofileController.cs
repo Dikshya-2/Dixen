@@ -1,4 +1,5 @@
-﻿using Dixen.Repo.DTOs.UserProfile;
+﻿using Dixen.Repo.DTOs.Booking;
+using Dixen.Repo.DTOs.UserProfile;
 using Dixen.Repo.Model;
 using Dixen.Repo.Model.Entities;
 using Microsoft.AspNetCore.Http;
@@ -65,7 +66,16 @@ namespace Dixen.Controllers
                 Is2FAEnabled = await _userManager.GetTwoFactorEnabledAsync(user),
                 HostedEvents = hostedEvents,
                 ProposedEvents = proposedEvents,
-                PreferredCategories = preferredCategories
+                PreferredCategories = preferredCategories,
+                Bookings = user.Bookings.Select(b => new BookingDto
+                {
+                    Id = b.Id,
+                    EventId = b.EventId,
+                    EventTitle = b.Event.Title,
+                    HallName = string.Join(", ", b.Event.Halls.Select(h => h.Name)),
+                    BookedTime = b.BookedTime
+                }).ToList()
+
             };
 
             return Ok(profile);

@@ -44,14 +44,15 @@ export const routes: Routes = [
       ),
   },
 
-  {
-    path: 'user-dashboard',
-    loadComponent: () =>
-      import('./Dashboards/user-dashboard/user-dashboard').then(
-        (m) => m.UserDashboard,
-        
-      ),
-  },
+
+{
+  path: 'user-dashboard',
+  loadComponent: () =>
+    import('./Dashboards/user-dashboard/user-dashboard').then(m => m.UserDashboard),
+  canActivate: [authGuard],
+  data: { roles: ['User'] },
+},
+
  {
   path: 'admin-dashboard',
   loadComponent: () => import('./Dashboards/admin-dashboard/admin-dashboard').then(m => m.AdminDashboard),
@@ -67,7 +68,12 @@ export const routes: Routes = [
       ),
   },
 
-  { path: 'user-profile/:email', component: Userprofile },
+ {
+  path: 'user-profile/:email',
+  component: Userprofile,
+  canActivate: [authGuard],
+  data: { roles: ['User', 'Admin'] }  // allow both
+},
 
   {
     path: 'admin/category',
