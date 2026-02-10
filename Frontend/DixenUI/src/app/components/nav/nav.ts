@@ -3,7 +3,9 @@ import { Authservice } from '../../Services/authservice';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { GenericService } from '../../Services/generic-service';
+import { Category } from '../../Models/category';
 
 @Component({
   selector: 'app-nav',
@@ -13,9 +15,7 @@ import { RouterModule } from '@angular/router';
 })
 export class Nav implements OnInit{
   searchQuery: string = '';
-
-
- // Dropdown state
+searchResults: Category[] = []; 
   showDropdown = false;
   navOpen = false;
   currentLang = 'en';
@@ -24,18 +24,23 @@ export class Nav implements OnInit{
 
   private translate = inject(TranslateService);
 
-  constructor(public authService: Authservice) {
+  constructor(public authService: Authservice, private genericService: GenericService<any>, private router: Router) {
      console.log('NavComponent loaded');
   console.log('Current lang:', this.translate.currentLang);
   console.log('Available langs:', this.translate.langs);
   }
+  navigateToCategory(id: number) {
+  this.router.navigate(['/category', id]);
+  this.searchResults = [];  // Close the dropdown
+  this.searchQuery = '';    // Clear the input
+}
      ngOnInit() {
     console.log('NavComponent ngOnInit');
     this.initializeLanguage();
   }
   
   private initializeLanguage() {
-  console.log('🔧 initializeLanguage START');
+  console.log('initializeLanguage START');
   this.translate.addLangs(['en', 'da']);
   this.translate.setDefaultLang('da');
   const browserLang = this.translate.getBrowserLang();
@@ -45,36 +50,37 @@ export class Nav implements OnInit{
   console.log('Selected lang:', selectedLang);
   
   this.translate.use(selectedLang).subscribe(() => {
-    console.log('✅ Language LOADED:', this.translate.currentLang);
+    console.log('Language LOADED:', this.translate.currentLang);
     this.updateFlag(this.translate.currentLang || 'en');
   });
 }
 
- 
-  
-  // private initializeLanguage() {
-  //   this.translate.addLangs(['en', 'da']);
-  //   this.translate.setDefaultLang('da');
-  //   const browserLang = this.translate.getBrowserLang();
-  //   const selectedLang = browserLang?.match(/en|da/) ? browserLang : 'da';
-  //   this.translate.use(selectedLang).subscribe(() => {
-  //   this.updateFlag(this.translate.currentLang || 'en');
-  // });
-  // }
+//  onSearch(event: Event) {
+//   event.preventDefault();
 
-  onSearch(event: Event) {
-    event.preventDefault();
-    if (this.searchQuery.trim()) {
-      console.log('Search query:', this.searchQuery);
-      // Implement your search logic here
-      // Example: this.router.navigate(['/search'], { queryParams: { q: this.searchQuery } });
-    }
-  }
+//   if (!this.searchQuery.trim()) return;
+
+//   this.genericService.searchCategories(this.searchQuery).subscribe({
+//     next: (data) => console.log('Search results:', data),
+//     error: (err) => console.error('Search API error:', err)
+//   });
+// }
+onSearch(event?: Event) {
+  if (event) event.preventDefault();
+
+  if (!this.searchQuery.trim()) return;
+
+  this.genericService.searchCategories(this.searchQuery).subscribe({
+    next: (data) => this.searchResults = data,
+    error: (err) => console.error('Search API error:', err)
+  });
+}
+
 
   setLanguage(lang: string) {
     this.updateFlag(lang);
     this.translate.use(lang);
-    this.showDropdown = false; // close menu after selection
+    this.showDropdown = false; 
   }
 
    toggleDropdown(event: Event) {
@@ -90,7 +96,6 @@ export class Nav implements OnInit{
         ? 'assets/icons/denmark-flag-icon.svg'
         : 'assets/icons/united-states-flag-icon.svg';
   }
-   // Close dropdown when clicking outside
   @HostListener('document:click', ['$event'])
   closeDropdownOnClickOutside(event: Event) {
     const target = event.target as HTMLElement;
@@ -101,7 +106,6 @@ export class Nav implements OnInit{
     }
   }
 
-  // Handle window scroll for navbar effects
   @HostListener('window:scroll', ['$event'])
   onWindowScroll(event: Event) {
     const navbar = document.querySelector('.modern-navbar') as HTMLElement;
@@ -115,9 +119,7 @@ export class Nav implements OnInit{
       }
     }
   }
+  
+}
 
-}
-function ngOnInit() {
-  throw new Error('Function not implemented.');
-}
 

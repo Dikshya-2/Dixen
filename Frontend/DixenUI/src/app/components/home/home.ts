@@ -7,10 +7,11 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { CategoryList } from '../../Detail/category-list/category-list';
 import { Search } from '../../Filter/search/search';
 import { EventResponseDto } from '../../Models/EventResponseDto';
+import { RecommendedEvent } from '../recommended-event/recommended-event';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule,RouterModule, CategoryList,Search],
+  imports: [CommonModule,RouterModule, CategoryList,Search, RecommendedEvent],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })

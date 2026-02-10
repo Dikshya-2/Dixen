@@ -96,11 +96,11 @@ namespace Dixen.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] CategoryDto dto)
         {
-            var updated = new Category { Id = id, Name = dto.Name };
+            var updated = new Category { Id = id, Name = dto.Name, ImageUrl=dto.ImageUrl };
             var result = await _categoryRepo.Update(id, updated);
             if (result == null) return NotFound();
 
-            return Ok(new CategoryResponse { Id = result.Id, Name = result.Name });
+            return Ok(new CategoryResponse { Id = result.Id, Name = result.Name, ImageUrl = dto.ImageUrl });
         }
 
         [HttpGet("sorted")]

@@ -16,12 +16,10 @@ import { EventReview } from '../../Models/EventReview';
 })
 export class CategoryDetail {
   events: Evnt[] = [];
-  // categoryName: string = '';
   category!: Category;
   fallbackImage: string = '/assets/default.jpg';
   shareCounts:{[eventId:number]:number}={}
 shareVisible:{[eventId:number]:boolean}={}
-// store the user rating per event
 ratings: { [eventId: number]: number } = {};
 
 
@@ -56,7 +54,7 @@ ratings: { [eventId: number]: number } = {};
   }
 
   share(platform: string, event: Evnt): void {
-  const userEmail = getUserEmailFromToken(); // may be null
+  const userEmail = getUserEmailFromToken(); 
   const pageUrl = encodeURIComponent(
     `${window.location.origin}/event/${event.id}`
   );
@@ -68,10 +66,8 @@ ratings: { [eventId: number]: number } = {};
     whatsapp: `https://wa.me/?text=${text}%20${pageUrl}`,
   };
 
-  // Open share window FIRST (UX-friendly)
   window.open(shareUrlMap[platform], '_blank');
 
-  // Save share (userEmail optional)
   const payload: SocialShare = {
     eventId: event.id,
     platform,
@@ -80,7 +76,6 @@ ratings: { [eventId: number]: number } = {};
 
   this.socialShareService.shareEvent(payload).subscribe({
     next: () => {
-      // Optimistic UI update
       this.shareCounts[event.id] = (this.shareCounts[event.id] || 0) + 1;
     },
     error: (err) => console.error('Failed to save share', err),

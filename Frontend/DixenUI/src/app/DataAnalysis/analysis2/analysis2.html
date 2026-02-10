@@ -1,16 +1,17 @@
-<div class="w-full min-h-screen flex items-center justify-center bg-gray-50 p-4">
-  <div class="w-full max-w-3xl bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/60 p-6 sm:p-8 md:p-10">
-    <div class="text-center mb-6">
-      <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 mb-2">
+<div class="w-full min-h-100 flex items-center justify-center bg-gray-50 p-2 sm:p-4">
+  <div class="w-full max-w-2xl lg:max-w-3xl bg-white/90 backdrop-blur-xl rounded-2xl lg:rounded-3xl shadow-xl lg:shadow-2xl border border-white/60 p-4 sm:p-6 md:p-8">
+    
+    <div class="text-center mb-4 sm:mb-6">
+      <h2 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-slate-900 mb-1 sm:mb-2">
         Social Shares by Platform
       </h2>
-      <p class="text-sm sm:text-base text-slate-600">
+      <p class="text-xs sm:text-sm md:text-base text-slate-600">
         Distribution of social shares across platforms
       </p>
     </div>
-    <div class="relative w-full h-64 sm:h-80 md:h-96 lg:h-112 xl:h-128">
-  <ag-charts *ngIf="chartOptions" [options]="chartOptions" class="w-full h-full"></ag-charts>
-</div>
+    
+    <div class="relative w-full h-64 sm:h-72 md:h-80 lg:h-96 xl:h-112">
+      <ag-charts *ngIf="chartOptions" [options]="chartOptions" class="w-full h-full"></ag-charts>
+    </div>
   </div>
 </div>
-

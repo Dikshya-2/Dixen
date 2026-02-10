@@ -51,8 +51,8 @@ events: EventSummary[] = [];
 
           this.chartOptions = {
             title: { 
-              text: 'Social Engagement by Event',
-              fontSize: 18,
+              text: 'Social Engagement',
+              fontSize: 16,
               color: '#1e293b'
             },
             subtitle: {

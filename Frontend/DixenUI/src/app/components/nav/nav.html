@@ -1,12 +1,9 @@
-<nav class="fixed top-2 left-0 z-50 w-full px-2 sm:px-4">
+<nav class="fixed top-2 left-0 w-full z-50 px-2 sm:px-4">
   <div
-    class="mx-auto max-w-7xl bg-white/90 backdrop-blur shadow-md border border-yellow-400 rounded-2xl px-3 sm:px-5 py-2 sm:py-3 flex items-center justify-between gap-2"
+    class="mx-auto max-w-7xl bg-white/90 backdrop-blur-md border border-yellow-400 rounded-2xl px-3 sm:px-5 py-2 sm:py-3 flex flex-wrap items-center justify-between gap-2"
   >
     <!-- Logo -->
-    <a
-      routerLink="/"
-      class="flex items-center gap-2 group p-2 rounded-lg hover:bg-blue-50"
-    >
+    <a routerLink="/" class="flex items-center gap-2 group p-2 rounded-lg hover:bg-blue-50">
       <div
         class="w-10 h-10 bg-linear-to-r from-blue-600 to-purple-600 text-white font-black text-2xl flex items-center justify-center rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all"
       >
@@ -16,191 +13,184 @@
         {{ 'navbar.brand' | translate }}
       </span>
     </a>
-    <!-- Desktop search -->
-    <form
-      class="hidden md:flex flex-1 mx-4 items-center max-w-xl"
-      (submit)="onSearch($event)"
+
+    <!-- Search & Links Wrapper -->
+    <div class="flex-1 flex flex-wrap md:flex-nowrap items-center justify-end gap-2 sm:gap-4 relative">
+
+      <!-- Search -->
+      <form class="flex-1 min-w-37.5 md:max-w-xs flex items-center relative" (submit)="onSearch($event)">
+        <div class="relative flex-1">
+          <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-red-400"></i>
+          <input
+            type="search"
+            name="searchQuery"
+            [(ngModel)]="searchQuery"
+             (click)="onSearch()"
+           (keydown.enter)="onSearch()"
+            [placeholder]="'navbar.searchPlaceholder' | translate"
+            class="w-full pl-10 pr-3 py-2 rounded-full border border-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 text-sm"
+          />
+        </div>
+        <!-- Search Results Dropdown -->
+        <ul
+          *ngIf="searchResults.length > 0"
+          class="absolute top-full left-0 w-full mt-1 max-h-60 overflow-auto bg-white border border-gray-200 rounded-lg shadow-lg z-50"
+        >
+          <li
+            *ngFor="let category of searchResults"
+            class="px-3 py-2 hover:bg-yellow-50 cursor-pointer flex justify-between items-center"
+            (click)="navigateToCategory(category.id)"
+          >
+            <div class="font-semibold text-gray-800">{{ category.name }}</div>
+            <div class="text-xs text-gray-500">{{ category.events?.length }} events</div>
+          </li>
+        </ul>
+      </form>
+
+      <!-- Auth & Links -->
+      <div class="flex flex-wrap md:flex-nowrap items-center gap-2">
+
+        <!-- Logged In -->
+        <ng-container *ngIf="authService.isLoggedIn()">
+          <a routerLink="/submit-event" class="flex items-center text-sm text-blue-600 hover:text-yellow-500 transition-colors">
+            <i class="fas fa-plus mr-1 text-yellow-500"></i>{{ 'navbar.submitEvent' | translate }}
+          </a>
+          <a routerLink="/help" class="flex items-center text-sm text-blue-600 hover:text-yellow-500 transition-colors">
+            <i class="fas fa-headset mr-1 text-yellow-500"></i>{{ 'navbar.customerService' | translate }}
+          </a>
+          <button
+            (click)="authService.logout()"
+            class="flex items-center text-sm text-red-600 hover:text-red-500 transition-colors"
+          >
+            <i class="fas fa-sign-out-alt mr-1"></i>{{ 'navbar.logout' | translate }}
+          </button>
+        </ng-container>
+
+        <!-- Not Logged In -->
+        <ng-container *ngIf="!authService.isLoggedIn()">
+          <a routerLink="/login" class="flex items-center text-sm text-blue-600 hover:text-yellow-500 transition-colors">
+            <i class="fas fa-sign-in-alt mr-1 text-yellow-500"></i>{{ 'navbar.login' | translate }}
+          </a>
+          <a
+            routerLink="/register"
+            class="flex items-center bg-yellow-500 text-white text-sm px-3 py-1.5 rounded-full hover:bg-yellow-600 transition-colors"
+          >
+            <i class="fas fa-user-plus mr-1"></i>{{ 'navbar.register' | translate }}
+          </a>
+        </ng-container>
+
+        <!-- Language Dropdown -->
+        <div class="relative language-dropdown">
+          <button
+            (click)="toggleDropdown($event)"
+            class="flex items-center text-sm font-semibold px-2 py-1 rounded-full hover:bg-gray-100 transition-colors"
+          >
+            <img [src]="currentFlag" class="w-5 h-3 mr-2" />
+            {{ currentLang.toUpperCase() }}
+            <i class="fas fa-chevron-down ml-1 text-xs"></i>
+          </button>
+          <ul
+            *ngIf="showDropdown"
+            class="absolute right-0 mt-2 w-32 bg-white border rounded-lg shadow-lg overflow-hidden text-sm z-50"
+          >
+            <li>
+              <a
+                (click)="setLanguage('en')"
+                class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer"
+              >
+                <img src="https://flagcdn.com/w20/us.png" class="w-5 h-3 mr-2" alt="English" />English
+              </a>
+            </li>
+            <li>
+              <a
+                (click)="setLanguage('da')"
+                class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer"
+              >
+                <img src="https://flagcdn.com/w20/dk.png" class="w-5 h-3 mr-2" alt="Danish" />Danish
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mobile Hamburger -->
+    <button
+      (click)="navOpen = !navOpen"
+      class="md:hidden text-yellow-500 text-2xl p-1 rounded-md hover:bg-yellow-50 transition-colors"
     >
-      <div class="relative flex-1">
-        <i
-          class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-red-400"
-        ></i>
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Mobile Menu -->
+    <div
+      *ngIf="navOpen"
+      class="md:hidden w-full mt-2 bg-white/95 backdrop-blur border border-yellow-200 rounded-2xl px-3 py-3 space-y-3 flex flex-col"
+    >
+      <!-- Mobile Search -->
+      <form class="flex items-center gap-2 relative" (submit)="onSearch($event)">
         <input
           type="search"
           name="searchQuery"
           [(ngModel)]="searchQuery"
+           (click)="onSearch()"
+           (keydown.enter)="onSearch()"
           [placeholder]="'navbar.searchPlaceholder' | translate"
-          class="w-full pl-10 pr-3 py-2 rounded-full border border-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 text-sm"
+          class="flex-1 pl-3 pr-2 py-2 rounded-full border border-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 text-sm"
         />
-      </div>
-      <button
-        type="submit"
-        class="ml-3 px-4 py-2 rounded-full bg-yellow-500 text-white text-sm font-semibold hover:bg-yellow-600 transition-colors"
-      >
-        <i class="fas fa-search mr-1"></i>
-        <!-- {{ 'navbar.searchButton' | translate }} -->
-      </button>
-    </form>
+        <!-- <button
+          type="submit"
+          class="px-3 py-2 rounded-full bg-yellow-500 text-white text-sm font-semibold hover:bg-yellow-600 transition-colors"
+        >
+          <i class="fas fa-search"></i>
+        </button> -->
 
-    <!-- Desktop links -->
-    <div class="hidden sm:flex items-center gap-4">
-      <!-- Submit Event & Help - LOGGED IN -->
+        <!-- Mobile Search Results -->
+        <ul
+          *ngIf="searchResults.length > 0"
+          class="absolute top-full left-0 w-full mt-1 max-h-60 overflow-auto bg-white border border-gray-200 rounded-lg shadow-lg z-50"
+        >
+          <li
+            *ngFor="let category of searchResults"
+            class="px-3 py-2 hover:bg-yellow-50 cursor-pointer flex justify-between items-center"
+            (click)="navigateToCategory(category.id)"
+          >
+            <div class="font-semibold text-gray-800">{{ category.name }}</div>
+            <div class="text-xs text-gray-500">{{ category.events?.length }} events</div>
+          </li>
+        </ul>
+      </form>
+
+      <!-- Auth links mobile -->
       <ng-container *ngIf="authService.isLoggedIn()">
         <a
-          routerLink="/submit-event"
-          routerLinkActive="underline"
-          class="flex items-center text-sm text-blue-600 hover:text-yellow-500 transition-colors"
+          routerLink="/submit"
+          class="flex items-center px-3 py-2 text-sm text-blue-600 hover:bg-yellow-50 rounded-lg transition-colors"
         >
-          <i class="fas fa-plus mr-1 text-yellow-500"></i>
-          {{ 'navbar.submitEvent' | translate }}
+          <i class="fas fa-plus mr-1 text-yellow-500"></i>{{ 'navbar.submitEvent' | translate }}
         </a>
-        <a
-          routerLink="/help"
-          routerLinkActive="underline"
-          class="flex items-center text-sm text-blue-600 hover:text-yellow-500 transition-colors"
+        <button
+          (click)="authService.logout()"
+          class="flex items-center px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
         >
-          <i class="fas fa-headset mr-1 text-yellow-500"></i>
-          {{ 'navbar.customerService' | translate }}
-        </a>
+          <i class="fas fa-sign-out-alt mr-1"></i>{{ 'navbar.logout' | translate }}
+        </button>
       </ng-container>
-
-      <!-- Login/Register - NOT LOGGED IN -->
       <ng-container *ngIf="!authService.isLoggedIn()">
         <a
           routerLink="/login"
-          class="flex items-center text-sm text-blue-600 hover:text-yellow-500 transition-colors"
+          class="flex items-center px-3 py-2 text-sm text-blue-600 hover:bg-yellow-50 rounded-lg transition-colors"
         >
-          <i class="fas fa-sign-in-alt mr-1 text-yellow-500"></i>
-          {{ 'navbar.login' | translate }}
+          <i class="fas fa-sign-in-alt mr-1 text-yellow-500"></i>{{ 'navbar.login' | translate }}
         </a>
         <a
           routerLink="/register"
-          class="flex items-center bg-yellow-500 text-white text-sm px-3 py-1.5 rounded-full hover:bg-yellow-600 transition-colors"
+          class="flex items-center px-3 py-2 bg-yellow-500 text-white text-sm rounded-full hover:bg-yellow-600 transition-colors"
         >
-          <i class="fas fa-user-plus mr-1"></i>
-          {{ 'navbar.register' | translate }}
+          <i class="fas fa-user-plus mr-1"></i>{{ 'navbar.register' | translate }}
         </a>
       </ng-container>
-
-      <!-- Logout - LOGGED IN -->
-      <ng-container *ngIf="authService.isLoggedIn()">
-        <button
-          (click)="authService.logout()"
-          class="flex items-center text-sm text-red-600 hover:text-red-500 transition-colors"
-        >
-          <i class="fas fa-sign-out-alt mr-1"></i>
-          {{ 'navbar.logout' | translate }}
-        </button>
-      </ng-container>
-
-      <!-- Language dropdown -->
-      <div class="relative language-dropdown">
-        <button
-          (click)="toggleDropdown($event)"
-          class="flex items-center text-sm font-semibold px-2 py-1 rounded-full hover:bg-gray-100 transition-colors"
-        >
-          <img [src]="currentFlag" class="w-5 h-3 mr-2" />
-          {{ currentLang.toUpperCase() }}
-          <i class="fas fa-chevron-down ml-1 text-xs"></i>
-        </button>
-        <ul
-          *ngIf="showDropdown"
-          class="absolute right-0 mt-2 w-32 bg-white border rounded-lg shadow-lg overflow-hidden text-sm z-50"
-        >
-          <li>
-            <a
-              (click)="setLanguage('en')"
-              class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer"
-            >
-              <img
-                src="https://flagcdn.com/w20/us.png"
-                class="w-5 h-3 mr-2"
-                alt="English"
-              />
-              English
-            </a>
-          </li>
-          <li>
-            <a
-              (click)="setLanguage('da')"
-              class="flex items-center px-3 py-2 hover:bg-gray-100 cursor-pointer"
-            >
-              <img
-                src="https://flagcdn.com/w20/dk.png"
-                class="w-5 h-3 mr-2"
-                alt="Danish"
-              />
-              Danish
-            </a>
-          </li>
-        </ul>
-      </div>
     </div>
-
-    <!-- Mobile hamburger -->
-    <button
-      (click)="navOpen = !navOpen"
-      class="sm:hidden text-yellow-500 text-2xl p-1 rounded-md hover:bg-yellow-50 transition-colors"
-    >
-      <i class="fas fa-bars"></i>
-    </button>
-  </div>
-
-  <!-- Mobile menu -->
-  <div
-    *ngIf="navOpen"
-    class="sm:hidden mt-2 mx-auto max-w-6xl bg-white/95 backdrop-blur shadow-md border border-yellow-200 rounded-2xl px-3 py-3 space-y-3"
-  >
-    <!-- Mobile search -->
-    <form class="flex items-center gap-2" (submit)="onSearch($event)">
-      <input
-        type="search"
-        name="searchQuery"
-        [(ngModel)]="searchQuery"
-        [placeholder]="'navbar.searchPlaceholder' | translate"
-        class="flex-1 pl-3 pr-2 py-2 rounded-full border border-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-500 text-sm"
-      />
-      <button
-        type="submit"
-        class="px-3 py-2 rounded-full bg-yellow-500 text-white text-sm font-semibold hover:bg-yellow-600 transition-colors"
-      >
-        <i class="fas fa-search"></i>
-      </button>
-    </form>
-
-    <!-- Mobile links -->
-    <ng-container *ngIf="authService.isLoggedIn()">
-      <a
-        routerLink="/submit-event"
-        class="flex items-center px-3 py-2 text-sm text-blue-600 hover:bg-yellow-50 rounded-lg transition-colors"
-      >
-        <i class="fas fa-plus mr-1 text-yellow-500"></i>
-        {{ 'navbar.submitEvent' | translate }}
-      </a>
-      <button
-        (click)="authService.logout()"
-        class="flex items-center px-3 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-      >
-        <i class="fas fa-sign-out-alt mr-1"></i>
-        {{ 'navbar.logout' | translate }}
-      </button>
-    </ng-container>
-
-    <ng-container *ngIf="!authService.isLoggedIn()">
-      <a
-        routerLink="/login"
-        class="flex items-center px-3 py-2 text-sm text-blue-600 hover:bg-yellow-50 rounded-lg transition-colors"
-      >
-        <i class="fas fa-sign-in-alt mr-1 text-yellow-500"></i>
-        {{ 'navbar.login' | translate }}
-      </a>
-      <a
-        routerLink="/register"
-        class="flex items-center px-3 py-2 bg-yellow-500 text-white text-sm rounded-full hover:bg-yellow-600 transition-colors"
-      >
-        <i class="fas fa-user-plus mr-1"></i>
-        {{ 'navbar.register' | translate }}
-      </a>
-    </ng-container>
   </div>
 </nav>
