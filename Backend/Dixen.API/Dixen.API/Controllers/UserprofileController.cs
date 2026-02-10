@@ -63,7 +63,6 @@ namespace Dixen.Controllers
                 Age = user.Age,
                 Roles = roles.ToList(),
                 Is2FAEnabled = await _userManager.GetTwoFactorEnabledAsync(user),
-                //AttendedEvents = user.Bookings.Select(a => a.Event.Title).ToList(),
                 HostedEvents = hostedEvents,
                 ProposedEvents = proposedEvents,
                 PreferredCategories = preferredCategories

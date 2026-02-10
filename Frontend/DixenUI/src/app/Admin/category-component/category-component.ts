@@ -53,7 +53,8 @@ export class CategoryComponent {
     if (this.selectedCategory) {
       const categoryDto = {
         id: this.selectedCategory.id,
-        name: this.selectedCategory.name
+        name: this.selectedCategory.name,
+        imageUrl: this.selectedCategory.imageUrl
       };
 
       this.service.put("Category", this.selectedCategory.id, categoryDto).subscribe({

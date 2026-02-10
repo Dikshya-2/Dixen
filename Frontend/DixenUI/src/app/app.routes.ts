@@ -68,7 +68,7 @@ export const routes: Routes = [
   },
 
   { path: 'user-profile/:email', component: Userprofile },
-  // Admin routes
+
   {
     path: 'admin/category',
     component: CategoryComponent,
@@ -104,13 +104,13 @@ export const routes: Routes = [
     path: 'admin/booking',
     component: BookingComponent,
     canActivate: [authGuard],
-    data: { roles: ['Admin, User'] },
+    data: { roles: ['Admin'] },
   },
   {
     path: 'admin/performer',
     component: PerformerComponent,
     canActivate: [authGuard],
-    data: { roles: ['Admin'] },
+    data: { roles: ['Admin'] },// need to add host as well
   },
 
   {
