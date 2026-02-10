@@ -6,12 +6,8 @@
       <div
         class="h-96 bg-linear-to-r from-gray-800 to-gray-900 relative overflow-hidden"
       >
-        <img
-          *ngIf="event.imageUrl"
-          [src]="event.imageUrl"
-          [alt]="event.title || 'Event'"
-          class="w-full h-full object-cover"
-        />
+       <img *ngIf="event.imageUrl" [src]="event.imageUrl" [alt]="event.title || 'Event'" />
+
         <div class="absolute inset-0 bg-black/40"></div>
       </div>
       <div class="p-12 text-white">

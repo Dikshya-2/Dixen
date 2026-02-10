@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment';
 import { SocialShare } from '../Models/SocialShare';
 import { EventResponseDto } from '../Models/EventResponseDto';
 import { EventSearchFilterDto } from '../Models/EventSearchFilterDto';
+import { Category } from '../Models/category';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -73,4 +74,11 @@ searchEvents(filter: EventSearchFilterDto): Observable<EventResponseDto[]> {
   const url = `${this.baseUrl}/Event/search`;
   return this.httpClient.post<EventResponseDto[]>(url, filter, httpOptions);
 }
+searchCategories(name: string): Observable<Category[]> {
+  return this.httpClient.get<Category[]>(
+    `${this.baseUrl}/category/search`,
+    { params: { name } } 
+  );
+}
+
 }
