@@ -1,64 +1,97 @@
-<div class="min-h-screen bg-linear-to-br from-slate-50 via-blue-50/50 to-indigo-50/30 p-4 sm:p-6 lg:p-12">
-  
-  <!-- Welcome Header -->
+<div
+  class="min-h-screen bg-linear-to-br from-slate-50 via-blue-50/50 to-indigo-50/30 p-4 sm:p-6 lg:p-12"
+>
+  <!--  Header -->
   <div class="text-center mb-12 sm:mb-16 lg:mb-20 max-w-4xl mx-auto pt-20">
-    <h2 class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black bg-linear-to-r from-slate-900 via-blue-900 to-indigo-900 bg-clip-text text-transparent mb-4 sm:mb-6 drop-shadow-lg lg:drop-shadow-xl">
+    <h2
+      class="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black bg-linear-to-r from-slate-900 via-blue-900 to-indigo-900 bg-clip-text text-transparent mb-4 sm:mb-6 drop-shadow-lg lg:drop-shadow-xl"
+    >
       Welcome
     </h2>
-    <div class="w-20 sm:w-24 h-1 mx-auto bg-linear-to-r from-emerald-500 to-blue-600 rounded-full shadow-md lg:shadow-lg"></div>
+    <div
+      class="w-20 sm:w-24 h-1 mx-auto bg-linear-to-r from-emerald-500 to-blue-600 rounded-full shadow-md lg:shadow-lg"
+    ></div>
   </div>
 
-  <!-- Responsive Dashboard Grid -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
-    
+  <!--  Dashboard Grid -->
+  <div
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto"
+  >
     <!-- Profile Section -->
-    <section class="group bg-white/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-xl lg:shadow-2xl border border-slate-200/50 hover:shadow-blue-500/20 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative overflow-hidden">
-      
-      <div class="absolute inset-0 bg-linear-to-br from-blue-500/5 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-all rounded-3xl"></div>
-      
+    <section
+      class="group bg-white/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-xl lg:shadow-2xl border border-slate-200/50 hover:shadow-blue-500/20 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative overflow-hidden"
+    >
+      <div
+        class="absolute inset-0 bg-linear-to-br from-blue-500/5 to-indigo-500/5 opacity-0 group-hover:opacity-100 transition-all rounded-3xl"
+      ></div>
+
       <div class="relative z-10">
         <!-- Icon -->
-        <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 bg-linear-to-r from-blue-100 to-indigo-100 rounded-3xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-all border border-blue-200/50">
+        <div
+          class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 bg-linear-to-r from-blue-100 to-indigo-100 rounded-3xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-all border border-blue-200/50"
+        >
           <i class="fas fa-user-circle text-2xl sm:text-3xl text-blue-600"></i>
         </div>
-        
-        <h3 class="text-xl sm:text-2xl lg:text-3xl font-black text-linear-900 text-center mb-6 bg-linear-to-r from-slate-900 to-blue-900 bg-clip-text text-transparent">
+
+        <h3
+          class="text-xl sm:text-2xl lg:text-3xl font-black text-linear-900 text-center mb-6 bg-linear-to-r from-slate-900 to-blue-900 bg-clip-text text-transparent"
+        >
           Your Profile
         </h3>
-        
+
         <!-- Loading State -->
         <ng-container *ngIf="loading; else loadedProfile">
           <div class="flex flex-col items-center gap-4 py-12">
-            <div class="w-12 h-12 sm:w-16 sm:h-16 border-4 border-emerald-200 border-t-emerald-500 rounded-full animate-spin shadow-lg"></div>
-            <p class="text-lg sm:text-xl text-slate-600 font-medium text-center">Loading profile...</p>
+            <div
+              class="w-12 h-12 sm:w-16 sm:h-16 border-4 border-emerald-200 border-t-emerald-500 rounded-full animate-spin shadow-lg"
+            ></div>
+            <p
+              class="text-lg sm:text-xl text-slate-600 font-medium text-center"
+            >
+              Loading profile...
+            </p>
           </div>
         </ng-container>
-        
+
         <!-- Loaded Profile -->
         <ng-template #loadedProfile>
           <ng-container *ngIf="user; else errorTemplate">
             <div class="text-center mb-8">
-              <div class="inline-flex items-center gap-2 px-4 py-3 sm:px-6 sm:py-4 bg-linear-to-r from-emerald-100 to-blue-100 text-emerald-800 font-bold rounded-2xl shadow-lg mb-6 backdrop-blur-sm">
+              <div
+                class="inline-flex items-center gap-2 px-4 py-3 sm:px-6 sm:py-4 bg-linear-to-r from-emerald-100 to-blue-100 text-emerald-800 font-bold rounded-2xl shadow-lg mb-6 backdrop-blur-sm"
+              >
                 <i class="fas fa-check-circle"></i>
                 <span class="text-sm sm:text-base">Profile Ready</span>
               </div>
             </div>
-            <a [routerLink]="['/user-profile', user.email]" 
-               class="w-full bg-linear-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-3 sm:py-4 px-6 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all text-base sm:text-lg flex items-center justify-center gap-2 mx-auto max-w-sm group">
+            <a
+              [routerLink]="['/user-profile', user.email]"
+              class="w-full bg-linear-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-bold py-3 sm:py-4 px-6 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all text-base sm:text-lg flex items-center justify-center gap-2 mx-auto max-w-sm group"
+            >
               <i class="fas fa-user text-sm sm:text-lg"></i>
               <span>View Profile</span>
             </a>
           </ng-container>
         </ng-template>
-        
+
         <!-- Error Template -->
         <ng-template #errorTemplate>
           <div class="text-center py-12">
-            <div class="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-6 bg-linear-to-r from-red-100 to-rose-100 rounded-3xl flex items-center justify-center shadow-xl border border-red-200/50">
-              <i class="fas fa-exclamation-triangle text-2xl sm:text-3xl text-red-500"></i>
+            <div
+              class="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-6 bg-linear-to-r from-red-100 to-rose-100 rounded-3xl flex items-center justify-center shadow-xl border border-red-200/50"
+            >
+              <i
+                class="fas fa-exclamation-triangle text-2xl sm:text-3xl text-red-500"
+              ></i>
             </div>
-            <p class="text-lg sm:text-xl text-slate-600 font-medium mb-6 sm:mb-8 px-4">{{ errorMessage || 'Profile not available' }}</p>
-            <button class="bg-linear-to-r from-slate-500 to-slate-600 hover:from-slate-600 hover:to-slate-700 text-white font-bold py-3 px-6 sm:px-8 rounded-2xl shadow-lg hover:shadow-xl transition-all text-sm sm:text-base">
+            <p
+              class="text-lg sm:text-xl text-slate-600 font-medium mb-6 sm:mb-8 px-4"
+            >
+              {{ errorMessage || "Profile not available" }}
+            </p>
+            <button
+              class="bg-linear-to-r from-slate-500 to-slate-600 hover:from-slate-600 hover:to-slate-700 text-white font-bold py-3 px-6 sm:px-8 rounded-2xl shadow-lg hover:shadow-xl transition-all text-sm sm:text-base"
+            >
               Retry
             </button>
           </div>
@@ -67,56 +100,79 @@
     </section>
 
     <!-- Bookings Section -->
-    <section class="group bg-white/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-xl lg:shadow-2xl border border-slate-200/50 hover:shadow-emerald-500/20 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative overflow-hidden">
-      
-      <div class="absolute inset-0 bg-linear-to-br from-emerald-500/5 to-green-500/5 opacity-0 group-hover:opacity-100 transition-all rounded-3xl"></div>
-      
+    <section
+      class="group bg-white/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-xl lg:shadow-2xl border border-slate-200/50 hover:shadow-emerald-500/20 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative overflow-hidden"
+    >
+      <div
+        class="absolute inset-0 bg-linear-to-br from-emerald-500/5 to-green-500/5 opacity-0 group-hover:opacity-100 transition-all rounded-3xl"
+      ></div>
+
       <div class="relative z-10">
-        <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 bg-linear-to-r from-emerald-100 to-green-100 rounded-3xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-all border border-emerald-200/50">
-          <i class="fas fa-ticket-alt text-2xl sm:text-3xl text-emerald-600"></i>
+        <div
+          class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 bg-linear-to-r from-emerald-100 to-green-100 rounded-3xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-all border border-emerald-200/50"
+        >
+          <i
+            class="fas fa-ticket-alt text-2xl sm:text-3xl text-emerald-600"
+          ></i>
         </div>
-        
-        <h3 class="text-xl sm:text-2xl lg:text-3xl font-black text-center mb-6 bg-linear-to-r from-slate-900 to-emerald-900 bg-clip-text text-transparent">
-          Your Bookings
+
+        <h3
+          class="text-xl sm:text-2xl lg:text-3xl font-black text-center mb-6 bg-linear-to-r from-slate-900 to-emerald-900 bg-clip-text text-transparent"
+        >
+          Propose an Event
         </h3>
-        
-        <p class="text-center text-base sm:text-lg text-slate-600 mb-8 font-medium leading-relaxed max-w-md mx-auto px-2">
-          Manage all your booked events and tickets in one place
+
+        <p
+          class="text-center text-base sm:text-lg text-slate-600 mb-8 font-medium leading-relaxed max-w-md mx-auto px-2"
+        >
+          Submit your event to be featured and reach more attendees.
         </p>
-        
-        <a routerLink="/admin/booking" 
-           class="w-full bg-linear-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-bold py-3 sm:py-4 px-6 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all text-base sm:text-lg flex items-center justify-center gap-2 mx-auto max-w-sm group">
+
+        <a
+          [routerLink]="['/submit']"
+          class="w-full bg-linear-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-bold py-3 sm:py-4 px-6 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all text-base sm:text-lg flex items-center justify-center gap-2 mx-auto max-w-sm group"
+        >
           <i class="fas fa-list text-sm sm:text-lg"></i>
-          <span>View Booked Events</span>
+          <span>Propose your own event</span>
         </a>
       </div>
     </section>
 
     <!-- Recommended Events Section -->
-    <section class="group bg-white/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-xl lg:shadow-2xl border border-slate-200/50 hover:shadow-orange-500/20 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative overflow-hidden">
-      
-      <div class="absolute inset-0 bg-linear-to-br from-orange-500/5 to-red-500/5 opacity-0 group-hover:opacity-100 transition-all rounded-3xl"></div>
-      
+    <section
+      class="group bg-white/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 shadow-xl lg:shadow-2xl border border-slate-200/50 hover:shadow-orange-500/20 hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative overflow-hidden"
+    >
+      <div
+        class="absolute inset-0 bg-linear-to-br from-orange-500/5 to-red-500/5 opacity-0 group-hover:opacity-100 transition-all rounded-3xl"
+      ></div>
+
       <div class="relative z-10">
-        <div class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 bg-linear-to-r from-orange-100 to-red-100 rounded-3xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-all border border-orange-200/50">
+        <div
+          class="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 bg-linear-to-r from-orange-100 to-red-100 rounded-3xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-all border border-orange-200/50"
+        >
           <i class="fas fa-star text-2xl sm:text-3xl text-orange-500"></i>
         </div>
-        
-        <h3 class="text-xl sm:text-2xl lg:text-3xl font-black text-center mb-6 bg-linear-to-r from-slate-900 to-orange-900 bg-clip-text text-transparent">
+
+        <h3
+          class="text-xl sm:text-2xl lg:text-3xl font-black text-center mb-6 bg-linear-to-r from-slate-900 to-orange-900 bg-clip-text text-transparent"
+        >
           Recommended Events
         </h3>
-        
-        <p class="text-center text-base sm:text-lg text-slate-600 mb-8 font-medium leading-relaxed max-w-md mx-auto px-2">
+
+        <p
+          class="text-center text-base sm:text-lg text-slate-600 mb-8 font-medium leading-relaxed max-w-md mx-auto px-2"
+        >
           Check out upcoming events tailored just for you!
         </p>
-        
-        <a routerLink="/recommended" 
-           class="w-full bg-linear-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold py-3 sm:py-4 px-6 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all text-base sm:text-lg flex items-center justify-center gap-2 mx-auto max-w-sm group">
+
+        <a
+          routerLink="/recommended"
+          class="w-full bg-linear-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-bold py-3 sm:py-4 px-6 rounded-2xl shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all text-base sm:text-lg flex items-center justify-center gap-2 mx-auto max-w-sm group"
+        >
           <i class="fas fa-fire text-sm sm:text-lg"></i>
           <span>View Recommended Events</span>
         </a>
       </div>
     </section>
-    
   </div>
 </div>

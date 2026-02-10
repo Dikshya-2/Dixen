@@ -44,7 +44,12 @@ export const routes: Routes = [
       ),
   },
 
-
+{
+  path: 'user-profile/:email',
+  component: Userprofile,
+  canActivate: [authGuard],
+  data: { roles: ['User', 'Admin', 'Host'] }  
+},
 {
   path: 'user-dashboard',
   loadComponent: () =>
@@ -67,13 +72,6 @@ export const routes: Routes = [
         (m) => m.HostDashboard,
       ),
   },
-
- {
-  path: 'user-profile/:email',
-  component: Userprofile,
-  canActivate: [authGuard],
-  data: { roles: ['User', 'Admin'] }  // allow both
-},
 
   {
     path: 'admin/category',

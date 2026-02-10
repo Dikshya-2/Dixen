@@ -1,48 +1,50 @@
 import { inject } from '@angular/core';
-import { CanActivateFn, Router, UrlTree, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 import { Authservice } from '../Services/authservice';
 import { jwtDecode } from 'jwt-decode';
 
-export const authGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree => {
+export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(Authservice);
   const router = inject(Router);
 
+
   const token = localStorage.getItem('jwt');
+  console.log('[AuthGuard] JWT from localStorage:', token);
+
   if (!token) {
-    // No token → redirect to login
-    return router.createUrlTree(['/login']);
+    console.warn('[AuthGuard] No token found. Redirecting to /login');
+    router.navigate(['/login']);
+    return false;
   }
 
   try {
     const decoded: any = jwtDecode(token);
+    console.log('[AuthGuard] Decoded token:', decoded);
 
-    // Check token expiration
-    const exp = decoded.exp;
-    if (exp && exp * 1000 < Date.now()) {
-      return router.createUrlTree(['/login']);
+    if (!authService.isLoggedIn()) {
+      console.warn('[AuthGuard] Token is expired or invalid. Redirecting to /login');
+      router.navigate(['/login']);
+      return false;
     }
 
-    // Allowed roles for this route
     const allowedRoles: string[] = route.data?.['roles'] || [];
+    const userRolesRaw = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || decoded['role'];
+    const userRoles = Array.isArray(userRolesRaw) ? userRolesRaw : [userRolesRaw];
 
-    // Extract roles from token claim
-    const roleClaim = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || decoded['role'];
-    const userRoles = typeof roleClaim === 'string' 
-      ? roleClaim.split(',').map(r => r.trim())  // handle comma-separated string
-      : Array.isArray(roleClaim) 
-        ? roleClaim 
-        : [];
+    console.log('[AuthGuard] Allowed roles:', allowedRoles);
+    console.log('[AuthGuard] User roles from token:', userRoles);
 
-    // Role check
     if (allowedRoles.length && !userRoles.some(role => allowedRoles.includes(role))) {
-      return router.createUrlTree(['/unauthorized']);
+      console.warn('[AuthGuard] Role mismatch. Redirecting to /unauthorized');
+      router.navigate(['/unauthorized']);
+      return false;
     }
 
-    // All good → allow access
+    console.log('[AuthGuard] Access granted');
     return true;
-
   } catch (err) {
     console.error('[AuthGuard] Failed to decode token:', err);
-    return router.createUrlTree(['/login']);
+    router.navigate(['/login']);
+    return false;
   }
 };
