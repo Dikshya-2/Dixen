@@ -1,0 +1,99 @@
+<div class="p-4 max-w-4xl mx-auto bg-gray-50 min-h-screen space-y-4 m-33">
+  <!-- TOGGLE BUTTON -->
+  <button
+    (click)="toggleForm()"
+    class="w-full text-xl font-bold text-white p-4 rounded-lg bg-blue-600 hover:bg-blue-700 transition"
+  >
+    {{
+      showForm
+        ? "Cancel"
+        : selectedPerformer
+          ? "Edit Performer"
+          : "+ New Performer"
+    }}
+  </button>
+
+  <!-- FORM -->
+  <form
+    *ngIf="showForm"
+    (ngSubmit)="save()"
+    class="bg-white p-6 rounded-xl shadow space-y-4"
+  >
+    <input
+      [(ngModel)]="newPerformer.name"
+      name="name"
+      placeholder="Name"
+      class="w-full p-3 border rounded-lg"
+      required
+    />
+
+    <textarea
+      [(ngModel)]="newPerformer.bio"
+      name="bio"
+      placeholder="Bio"
+      class="w-full p-3 border rounded-lg"
+    ></textarea>
+
+    <input
+      [(ngModel)]="newPerformer.eventId"
+      name="eventId"
+      type="number"
+      placeholder="Event ID"
+      class="w-full p-3 border rounded-lg"
+    />
+
+    <!-- SAVE / UPDATE -->
+    <button
+      type="submit"
+      class="w-full text-xl font-bold p-4 rounded-lg text-white transition"
+      [ngClass]="
+        selectedPerformer
+          ? 'bg-yellow-500 hover:bg-yellow-600'
+          : 'bg-green-600 hover:bg-green-700'
+      "
+    >
+      {{ selectedPerformer ? "Update" : "Save" }}
+    </button>
+  </form>
+
+  <!-- LIST -->
+  <div class="bg-white rounded-xl shadow overflow-hidden">
+    <div class="p-4 bg-gray-800 text-white font-bold">
+      Performers ({{ performers.length }})
+    </div>
+
+    <table class="w-full text-left">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="p-3">Name</th>
+          <th class="p-3 hidden sm:table-cell">Event</th>
+          <th class="p-3 hidden sm:table-cell">Bio</th>
+
+          <th class="p-3 text-right">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let p of performers" class="border-t hover:bg-gray-50">
+          <td class="p-3">{{ p.name }}</td>
+          <td class="p-3 hidden sm:table-cell">{{ p.eventId }}</td>
+          <td class="p-3 hidden sm:table-cell">{{ p.bio }}</td>
+          <td class="p-3 text-right">
+            <button
+              (click)="edit(p)"
+              class="px-3 py-1 bg-yellow-500 text-white rounded mr-2"
+            >
+              Edit
+            </button>
+            <button
+              (click)="delete(p.id!)"
+              class="px-3 py-1 bg-red-500 text-white rounded"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

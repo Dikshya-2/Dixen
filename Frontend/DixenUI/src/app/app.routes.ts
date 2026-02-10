@@ -44,21 +44,21 @@ export const routes: Routes = [
       ),
   },
 
-  // DASHBOARD ROUTES - Role-based
   {
     path: 'user-dashboard',
     loadComponent: () =>
       import('./Dashboards/user-dashboard/user-dashboard').then(
         (m) => m.UserDashboard,
+        
       ),
   },
-  {
-    path: 'admin-dashboard',
-    loadComponent: () =>
-      import('./Dashboards/admin-dashboard/admin-dashboard').then(
-        (m) => m.AdminDashboard,
-      ),
-  },
+ {
+  path: 'admin-dashboard',
+  loadComponent: () => import('./Dashboards/admin-dashboard/admin-dashboard').then(m => m.AdminDashboard),
+  canActivate: [authGuard],
+  data: { roles: ['Admin'] }, 
+},
+
   {
     path: 'host-dashboard',
     loadComponent: () =>
@@ -73,51 +73,51 @@ export const routes: Routes = [
     path: 'admin/category',
     component: CategoryComponent,
     canActivate: [authGuard],
-    data: { roles: ['admin'] },
+    data: { roles: ['Admin'] },
   },
   {
     path: 'admin/event-submissions',
     component: AdminSubmissionsComponent,
     canActivate: [authGuard],
-    data: { roles: ['admin'] },
+    data: { roles: ['Admin'] },
   },
 
   {
     path: 'admin/event',
     component: EventComponent,
     canActivate: [authGuard],
-    data: { roles: ['admin'] },
+    data: { roles: ['Admin'] },
   },
   {
     path: 'admin/venue',
     component: VenueComponent,
     canActivate: [authGuard],
-    data: { roles: ['admin'] },
+    data: { roles: ['Admin'] },
   },
   {
     path: 'admin/hall',
     component: HallComponent,
     canActivate: [authGuard],
-    data: { roles: ['admin'] },
+    data: { roles: ['Admin'] },
   },
   {
     path: 'admin/booking',
     component: BookingComponent,
     canActivate: [authGuard],
-    data: { roles: ['admin, User'] },
+    data: { roles: ['Admin, User'] },
   },
   {
     path: 'admin/performer',
     component: PerformerComponent,
     canActivate: [authGuard],
-    data: { roles: ['admin'] },
+    data: { roles: ['Admin'] },
   },
 
   {
     path: 'admin/ticket',
     component: TicketComponent,
     canActivate: [authGuard],
-    data: { roles: ['admin'] },
+    data: { roles: ['Admin'] },
   },
 
   // PUBLIC DETAIL PAGES

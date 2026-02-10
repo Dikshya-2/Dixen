@@ -1,0 +1,51 @@
+<div class="p-4 max-w-4xl mx-auto m-33">
+  <h1 class="text-2xl font-bold mb-4">Venues</h1>
+
+  <button
+    class="bg-blue-500 text-white px-4 py-2 rounded mb-4 hover:bg-blue-600"
+    (click)="toggleForm()">
+    {{ showForm ? 'Cancel' : 'Add Venue' }}
+  </button>
+
+  <!-- Form -->
+  <div *ngIf="showForm" class="mb-6 bg-white p-4 rounded shadow-md">
+    <div class="grid gap-4 md:grid-cols-3">
+      <input type="text" placeholder="Name" [(ngModel)]="newVenue.name"
+             class="border p-2 rounded w-full" />
+      <input type="text" placeholder="Address" [(ngModel)]="newVenue.address"
+             class="border p-2 rounded w-full" />
+      <input type="text" placeholder="City" [(ngModel)]="newVenue.city"
+             class="border p-2 rounded w-full" />
+    </div>
+    <button
+      class="bg-green-500 text-white px-4 py-2 rounded mt-4 hover:bg-green-600"
+      (click)="saveVenue()">
+      {{ selectedVenue ? 'Update' : 'Save' }}
+    </button>
+  </div>
+
+  <!-- Venue Table -->
+  <table class="min-w-full bg-white border rounded shadow">
+    <thead class="bg-gray-100">
+      <tr>
+        <th class="py-2 px-4 border-b">Name</th>
+        <th class="py-2 px-4 border-b">Address</th>
+        <th class="py-2 px-4 border-b">City</th>
+        <th class="py-2 px-4 border-b">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let venue of venues" class="hover:bg-gray-50">
+        <td class="py-2 px-4 border-b">{{ venue.name }}</td>
+        <td class="py-2 px-4 border-b">{{ venue.address }}</td>
+        <td class="py-2 px-4 border-b">{{ venue.city }}</td>
+        <td class="py-2 px-4 border-b space-x-2">
+          <button class="bg-yellow-400 px-2 py-1 rounded hover:bg-yellow-500"
+                  (click)="editVenue(venue)">Edit</button>
+          <button class="bg-red-500 px-2 py-1 rounded text-white hover:bg-red-600"
+                  (click)="deleteVenue(venue.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
