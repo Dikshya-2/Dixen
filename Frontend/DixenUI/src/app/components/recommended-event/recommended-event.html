@@ -1,0 +1,24 @@
+<div class="max-w-6xl mx-auto p-4">
+  <h2 class="text-2xl font-bold mb-6">Recommended Events</h2>
+
+  <!-- Responsive grid -->
+  <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+    <div *ngFor="let event of recommended; trackBy: trackByEventId"
+         class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition transform hover:-translate-y-1">
+      
+      <!-- Event image -->
+      <img [src]="event.imageUrl" alt="{{event.title}}" class="w-full h-40 object-cover">
+
+      <!-- Event content -->
+      <div class="p-4">
+        <h3 class="text-lg font-semibold mb-1">{{ event.title }}</h3>
+        <p class="text-gray-500 text-sm">{{ event.date | date }}</p>
+        <p class="text-gray-700 text-sm mt-1">{{ shareCounts[event.id] }} shares</p>
+        <a [routerLink]="['/event', event.id]"
+           class="text-blue-500 text-sm mt-2 inline-block hover:underline">
+          View Details
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

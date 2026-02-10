@@ -43,7 +43,6 @@ namespace Dixen.Controllers
         }
 
 
-        // Get social share by ID
         [HttpGet("{id}")]
         public async Task<ActionResult<SocialShareDto>> GetById(int id)
         {
