@@ -1,5 +1,7 @@
-﻿using Dixen.Repo.DTOs.Organizer;
+﻿using Dixen.Repo.DTOs;
+using Dixen.Repo.DTOs.Organizer;
 using Dixen.Repo.Model.Entities;
+using Dixen.Repo.Repositories;
 using Dixen.Repo.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -19,15 +21,17 @@ namespace Dixen.API.Controllers
         private readonly IGRepo<Evnt> _eventRepo;
         private readonly IGRepo<Category> _categoryRepo;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IEventSubmissionRepository _eventSubmissionRepository;  
 
         public OrganizerController(IGRepo<Organizer> repo, IGRepo<EventSubmission> submissionRepo,
-        IGRepo<Evnt> eventRepo, IGRepo<Category> categoryRepo, UserManager<ApplicationUser> userManager)
+        IGRepo<Evnt> eventRepo, IGRepo<Category> categoryRepo, UserManager<ApplicationUser> userManager, IEventSubmissionRepository eventSubmissionRepository)
         {
             _organizerRepo = repo;
             _submissionRepo = submissionRepo;
             _eventRepo = eventRepo;
             _categoryRepo = categoryRepo;
             _userManager = userManager;
+            _eventSubmissionRepository = eventSubmissionRepository;
         }
 
         [HttpGet]
@@ -80,7 +84,6 @@ namespace Dixen.API.Controllers
                 });
         }
 
-
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, OrganizerCreateUpdateDto response)
         {
@@ -99,45 +102,6 @@ namespace Dixen.API.Controllers
             return success ? NoContent() : NotFound();
         }
 
-        //[Authorize(Roles = "Host")]
-        //[HttpPost("submit-event")]
-        //public async Task<IActionResult> SubmitEvent([FromBody] EventSubmissionDto dto)
-        //{
-        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    if (string.IsNullOrEmpty(userId))
-        //        return Unauthorized();
-
-        //    var organizer = await _organizerRepo.GetAllQuery()
-        //        .FirstOrDefaultAsync(o => o.UserId == userId);
-
-        //    if (organizer == null)
-        //        return Forbid();
-
-        //    if (await _submissionRepo.GetAllQuery()
-        //        .AnyAsync(x => x.EventId == dto.EventId && x.SubmittedById == organizer.Id))
-        //        return Conflict("You have already submitted a proposal for this event.");
-
-        //    var evt = await _eventRepo.GetById(dto.EventId);
-        //    if (evt == null)
-        //        return BadRequest("Event not found");
-
-        //    var submission = new EventSubmission
-        //    {
-        //        EventId = dto.EventId,
-        //        SubmittedById = organizer.Id,
-        //        SubmittedBy = organizer.OrganizationName,
-        //        Title = dto.Title,
-        //        Description = dto.Description,
-        //        StartTime = dto.StartTime,
-        //        ImageUrl = dto.ImageUrl,
-        //        SubmittedAt = DateTime.UtcNow,
-        //        IsApproved = false
-        //    };
-
-        //    await _submissionRepo.Create(submission);
-
-        //    return Ok(new { Message = "Event submission sent to admin for approval", SubmissionId = submission.Id });
-        //}
 
         [Authorize(Roles = "Host")]
         [HttpPost("{organizerId}/submit-event")]
@@ -193,20 +157,6 @@ namespace Dixen.API.Controllers
         }
 
 
-        [Authorize(Roles = "admin")]
-        [HttpPost("admin/event-submissions/{id}/reject")]
-        public async Task<IActionResult> RejectSubmission(int id)
-        {
-            var submission = await _submissionRepo.GetById(id);
-            if (submission == null)
-                return NotFound();
-
-            submission.IsApproved = false;
-
-            await _submissionRepo.Update(submission.Id, submission);
-
-            return Ok("Submission rejected");
-        }
 
     }
 

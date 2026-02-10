@@ -48,14 +48,11 @@ namespace Dixen.Repo.Repositories
 
             return await query.ToListAsync();
         }
-
         public async Task<T?> GetById(object id, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null)
         {
             IQueryable<T> query = _dbSet;
-
             if (include != null)
                 query = include(query);
-
             return await query.FirstOrDefaultAsync(e => EF.Property<int>(e, "Id") == (int)id);
         }
 
@@ -69,10 +66,8 @@ namespace Dixen.Repo.Repositories
             Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null)
         {
             IQueryable<T> query = _context.Set<T>().Where(predicate);
-
             if (include != null)
                 query = include(query);
-
             return await query.ToListAsync();
         }
 

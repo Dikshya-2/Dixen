@@ -24,6 +24,7 @@ builder.Services.AddScoped<ITicketService, TicketService>();
 builder.Services.AddScoped<IHallService, HallService>();
 builder.Services.AddScoped<EventAnalysisService>();
 builder.Services.AddScoped<IGRepo<SocialShare>, GRepo<SocialShare>>();// one instance per request
+builder.Services.AddScoped<IEventSubmissionRepository, EventSubmissionRepository>();
 
 
 
