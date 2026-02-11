@@ -1,4 +1,5 @@
 ﻿using Dixen.Repo.Services;
+using Dixen.Repo.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,9 +9,8 @@ namespace Dixen.API.Controllers
     [ApiController]
     public class AnalyticsController : ControllerBase
     {
-        private readonly EventAnalysisService _service;
-
-        public AnalyticsController(EventAnalysisService analysisService)
+        private readonly IEventAnalysisService _service;
+        public AnalyticsController(IEventAnalysisService analysisService)
         {
             _service = analysisService;
         }
