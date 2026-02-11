@@ -1,4 +1,5 @@
-﻿using QRCoder;
+﻿using Dixen.Repo.Services.Interfaces;
+using QRCoder;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Dixen.Repo.Services
 {
-    public class TwoFAService
+    public class TwoFAService: ITwoFAService
     {
         private readonly UrlEncoder _urlEncoder;
         private const string AuthenticatorUriFormat =

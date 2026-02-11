@@ -1,4 +1,5 @@
-﻿using Dixen.Repo.DTOs.Auth;
+﻿using Dixen.Repo.DTOs;
+using Dixen.Repo.DTOs.Auth;
 using Dixen.Repo.Model.Entities;
 using Dixen.Repo.Services;
 using Dixen.Repo.Services.Interfaces;
@@ -22,7 +23,7 @@ namespace Dixen.API.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly IConfiguration _config;
-        private readonly TwoFAService _twoFactorAuthService;
+        private readonly ITwoFAService _twoFactorAuthService;
         private readonly RoleManager<IdentityRole> _roleManager;
 
         public AuthController(
@@ -31,7 +32,7 @@ namespace Dixen.API.Controllers
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             IConfiguration configuration,
-            TwoFAService twoFactorAuthService,
+            ITwoFAService twoFactorAuthService,
             RoleManager<IdentityRole> roleManager)
         {
             _authService = authService;
@@ -61,7 +62,7 @@ namespace Dixen.API.Controllers
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
 
-            // Assign default or requested role
+           
             // TODO: Maybe i should think of role assign
             var roleName = string.IsNullOrWhiteSpace(request.Role) ? "User" : request.Role;
 
@@ -119,12 +120,13 @@ namespace Dixen.API.Controllers
 
             var qrCodeImage = _twoFactorAuthService.GenerateQrCodeImage(user.Email!, authenticatorKey!);
 
-            return Ok(new
+            var response = new ConfirmEmailResponseDto
             {
                 Message = "Scan QR with Google Authenticator.",
-                QrCodeImage = qrCodeImage, 
+                QrCodeImage = qrCodeImage,
                 ManualKey = authenticatorKey
-            });
+            };
+            return Ok(response);
         }
 
         [HttpPost("login")]
