@@ -14,6 +14,7 @@ namespace Dixen.Repo.Services
 {
     public class TicketService: ITicketService
     {
+     
         private readonly IGRepo<Ticket> _ticketRepo;
         private readonly IGRepo<Booking> _bookingRepo;
 
@@ -31,32 +32,29 @@ namespace Dixen.Repo.Services
             if (booking == null)
                 throw new Exception("Booking not found");
 
-            var createdTickets = new List<Ticket>();
-
-            for (int i = 0; i < dto.Quantity; i++)
+            var ticket = await _ticketRepo.Create(new Ticket
             {
-                var ticket = new Ticket
-                {
-                    BookingId = bookingId,
-                    Type = dto.Type,
-                    Price = dto.Price,
-                    Quantity = 1 
-                };
-                createdTickets.Add(await _ticketRepo.Create(ticket));
-            }
+                BookingId = bookingId,
+                Type = dto.Type,
+                Price = dto.Price,
+                Quantity = dto.Quantity
+            });
 
-            return Map(createdTickets.First());
+            return Map(ticket);
         }
+
         public async Task<List<TicketResponse>> GetByBookingAsync(int bookingId)
         {
             var tickets = await _ticketRepo.Find(t => t.BookingId == bookingId);
             return tickets.Select(Map).ToList();
         }
+
         public async Task<TicketResponse?> GetByIdAsync(int id)
         {
             var ticket = await _ticketRepo.GetById(id);
             return ticket == null ? null : Map(ticket);
         }
+
         public async Task<TicketResponse?> UpdateAsync(int id, TicketDto dto)
         {
             var ticket = await _ticketRepo.GetById(id);
@@ -68,10 +66,12 @@ namespace Dixen.Repo.Services
             await _ticketRepo.Update(id, ticket);
             return Map(ticket);
         }
+
         public async Task<bool> DeleteAsync(int id)
         {
             return await _ticketRepo.Delete(id);
         }
+
         private static TicketResponse Map(Ticket t) => new()
         {
             Id = t.Id,
@@ -79,5 +79,6 @@ namespace Dixen.Repo.Services
             Price = t.Price,
             Quantity = t.Quantity
         };
+
     }
 }
