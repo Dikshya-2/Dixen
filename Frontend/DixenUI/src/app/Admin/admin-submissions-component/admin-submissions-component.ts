@@ -3,6 +3,7 @@ import { GenericService } from '../../Services/generic-service';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { EventSubmission } from '../../Models/EventSubmissionDto';
 
 @Component({
   selector: 'app-admin-submissions-component',
@@ -11,44 +12,45 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './admin-submissions-component.css',
 })
 export class AdminSubmissionsComponent {
-submissions: any[] = [];
+submissions: EventSubmission[] = [];
   
-  constructor(
-    private service: GenericService<any>,
-    private http: HttpClient  
-  ) {}
+  constructor(private service: GenericService<EventSubmission>) {}
 
   ngOnInit(): void {
     this.loadSubmissions();
   }
 
-loadSubmissions(): void {
-  this.service.post('EventSubmission/event-submissions/list', {}).subscribe({
-    next: (data) => {
-      this.submissions = Array.isArray(data) ? data : [];
-      console.log('✅ Loaded:', this.submissions);
-    },
-    error: (err) => console.error('Error:', err)
-  });
-}
+  loadSubmissions(): void {
+    this.service.post('EventSubmission/event-submissions/list', {}).subscribe({
+      next: (data) => {
+        this.submissions = Array.isArray(data) ? data : [];
+        console.log('Loaded:', this.submissions);
+      },
+      error: (err) => console.error('Error:', err)
+    });
+  }
 
-approveSubmission(id: number): void {
+ approveSubmission(id?: number): void {
+  if (!id) return;
   if (!confirm('Approve?')) return;
+
   this.service.post(`EventSubmission/event-submissions/${id}/approve`, {}).subscribe({
     next: () => { 
-      alert('Approved!'); 
-      this.loadSubmissions();  
+      alert('Approved!');
+      this.loadSubmissions();
     },
     error: (err) => alert('Error: ' + (err.error || 'Unknown'))
   });
 }
 
-rejectSubmission(id: number): void {
+rejectSubmission(id?: number): void {
+  if (!id) return;
   if (!confirm('Reject?')) return;
+
   this.service.post(`EventSubmission/event-submissions/${id}/reject`, {}).subscribe({
     next: () => { 
-      alert('Rejected!'); 
-      this.loadSubmissions();  
+      alert('Rejected!');
+      this.loadSubmissions();
     },
     error: (err) => alert('Error: ' + (err.error || 'Unknown'))
   });

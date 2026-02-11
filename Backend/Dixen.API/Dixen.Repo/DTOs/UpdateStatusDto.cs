@@ -8,7 +8,8 @@ namespace Dixen.Repo.DTOs
 {
     public class UpdateStatusDto
     {
-        public bool IsApproved { get; set; }
+        public string Title { get; set; }
+        public string status { get; set; }= "Pending";
     }
 
 }

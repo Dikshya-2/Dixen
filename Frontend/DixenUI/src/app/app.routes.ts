@@ -114,7 +114,7 @@ export const routes: Routes = [
     path: 'admin/performer',
     component: PerformerComponent,
     canActivate: [authGuard],
-    data: { roles: ['Admin'] },// need to add host as well
+    data: { roles: ['Admin', 'Host'] },// need to add host as well
   },
 
   {
@@ -135,3 +135,4 @@ export const routes: Routes = [
   { path: 'unauthorized', component: Unauthorized },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 ];
+

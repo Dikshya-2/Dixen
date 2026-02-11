@@ -52,7 +52,7 @@
 
         <!-- Logged In -->
         <ng-container *ngIf="authService.isLoggedIn()">
-          <a routerLink="/submit-event" class="flex items-center text-sm text-blue-600 hover:text-yellow-500 transition-colors">
+          <a routerLink="/submit" class="flex items-center text-sm text-blue-600 hover:text-yellow-500 transition-colors">
             <i class="fas fa-plus mr-1 text-yellow-500"></i>{{ 'navbar.submitEvent' | translate }}
           </a>
           <a routerLink="/help" class="flex items-center text-sm text-blue-600 hover:text-yellow-500 transition-colors">
@@ -163,9 +163,9 @@
       </form>
 
       <!-- Auth links mobile -->
-      <ng-container *ngIf="authService.isLoggedIn()">
+      <ng-container *ngIf="!authService.isLoggedIn()">
         <a
-          routerLink="/submit"
+          [routerLink]="['/submit']"
           class="flex items-center px-3 py-2 text-sm text-blue-600 hover:bg-yellow-50 rounded-lg transition-colors"
         >
           <i class="fas fa-plus mr-1 text-yellow-500"></i>{{ 'navbar.submitEvent' | translate }}

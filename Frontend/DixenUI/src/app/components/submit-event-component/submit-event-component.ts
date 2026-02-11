@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { EventSubmissionDto } from '../../Models/EventSubmissionDto';
+import { EventSubmission } from '../../Models/EventSubmissionDto';
 import { GenericService } from '../../Services/generic-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -14,9 +14,9 @@ export class SubmitEventComponent {
 organizerId = 1; 
   loading = false;
   message = '';
-  submittedEvents: EventSubmissionDto[] = [];
+  submittedEvents: EventSubmission[] = [];
 
-  submission: EventSubmissionDto = {
+  submission: EventSubmission = {
     eventId: 0,
     title: '',
     description: '',
@@ -24,7 +24,7 @@ organizerId = 1;
   };
 
   constructor(
-    private service: GenericService<any, EventSubmissionDto>
+    private service: GenericService<any, EventSubmission>
   ) {}
 
   submit() {
@@ -34,6 +34,7 @@ organizerId = 1;
       .post(`Organizer/${this.organizerId}/submit-event`, this.submission)
       .subscribe({
         next: (res: any) => {
+          console.log(res)
           this.message = res.message;
           this.loading = false;
         },

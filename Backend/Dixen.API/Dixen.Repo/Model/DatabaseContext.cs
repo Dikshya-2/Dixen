@@ -296,7 +296,7 @@ namespace Dixen.Repo.Model
                     Details = "Wants to present on AI",
                     SubmittedAt = DateTime.UtcNow,
                     EventId = 1,
-                    IsApproved = false
+                    IsApproved = null
                 }
             );
 

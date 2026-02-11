@@ -8,7 +8,7 @@ namespace Dixen.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "User,Admin")]
+    [Authorize(Roles = "User,Admin,Host")]
     public class TicketController : ControllerBase
     {
         private readonly ITicketService _service;

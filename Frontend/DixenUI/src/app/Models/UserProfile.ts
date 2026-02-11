@@ -9,7 +9,6 @@ export interface UserProfile {
   roles: string[];         
   is2FAEnabled: boolean;
    bookings?: Booking[];
-  // bookings: string[] | Booking[]; 
   hostedEvents: string[];
   proposedEvents: string[];
   preferredCategories: string[];

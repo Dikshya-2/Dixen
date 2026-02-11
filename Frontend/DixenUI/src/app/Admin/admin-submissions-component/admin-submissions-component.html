@@ -1,59 +1,43 @@
-<div
-  *ngFor="let submission of submissions"
-  class="p-6 hover:bg-gray-50 border-b"
->
-  <div class="flex justify-between items-start mb-4">
-    <div class="flex-1">
-      <h3 class="text-xl font-bold text-gray-900 mb-1">
-        {{ submission.title || submission.details || "No Title" }}
-      </h3>
-      <p class="text-sm text-gray-600 mb-1">{{ submission.submittedBy }}</p>
+<div class="max-w-4xl mx-auto p-4 sm:p-6 bg-white rounded-xl shadow-md">
+  <h2 class="text-2xl sm:text-3xl font-semibold mb-6 text-gray-800 text-center sm:text-left">
+    Event Submissions
+  </h2>
 
-      <span
-        *ngIf="submission.isApproved === true"
-        class="inline-block px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800"
-      >
-        Approved 
-      </span>
-      <span
-        *ngIf="submission.isApproved === false"
-        class="inline-block px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
-      >
-        Rejected 
-      </span>
-      <span
-        *ngIf="
-          submission.isApproved !== false && submission.isApproved !== true
-        "
-        class="inline-block px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"
-      >
-        Pending ⏳
-      </span>
+  <div *ngIf="submissions.length === 0" class="text-center text-gray-500">
+    No submissions available.
+  </div>
 
-      <p class="text-xs text-gray-500 mt-1">
-        Event ID: {{ submission.eventId }} |
-        {{ submission.submittedAt | date: "short" }}
-      </p>
-    </div>
+  <div *ngFor="let submission of submissions" class="p-4 sm:p-6 mb-4 bg-gray-50 rounded-lg shadow-sm hover:bg-gray-100 transition">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      
+      <!-- Submission Info -->
+      <div class="flex-1">
+        <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-1">
+          {{ submission.title || submission.details || "No Title" }}
+        </h3>
+        <p class="text-sm text-gray-600 mb-1">Submitted by: {{ submission.submittedBy }}</p>
 
-    <div
-      *ngIf="
-        submission.isApproved === null || submission.isApproved === undefined
-      "
-      class="flex gap-2 ml-4"
-    >
-      <button
-        (click)="approveSubmission(submission.id)"
-        class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm"
-      >
-        Approve
-      </button>
-      <button
-        (click)="rejectSubmission(submission.id)"
-        class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm"
-      >
-        Reject
-      </button>
+        <!-- Status Badge -->
+        <div class="flex gap-2 mb-1 flex-wrap">
+          <span *ngIf="submission.isApproved === true" class="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">Approved</span>
+          <span *ngIf="submission.isApproved === false" class="px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">Rejected</span>
+          <span *ngIf="submission.isApproved !== false && submission.isApproved !== true" class="px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Pending ⏳</span>
+        </div>
+
+        <p class="text-xs text-gray-500 mt-1">
+          Event ID: {{ submission.eventId }} | {{ submission.submittedAt | date: 'short' }}
+        </p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div *ngIf="submission.isApproved === null || submission.isApproved === undefined" class="flex gap-2 sm:ml-4">
+        <button (click)="approveSubmission(submission.id)" class="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg text-sm sm:text-base transition">
+          Approve
+        </button>
+        <button (click)="rejectSubmission(submission.id)" class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg text-sm sm:text-base transition">
+          Reject
+        </button>
+      </div>
     </div>
   </div>
 </div>

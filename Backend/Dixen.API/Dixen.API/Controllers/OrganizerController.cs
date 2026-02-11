@@ -101,28 +101,29 @@ namespace Dixen.API.Controllers
             var success = await _organizerRepo.Delete(id);
             return success ? NoContent() : NotFound();
         }
-
-
-        [Authorize(Roles = "Host")]
+        [Authorize(Roles = "Host, User, Admin")]
         [HttpPost("{organizerId}/submit-event")]
         public async Task<IActionResult> SubmitEvent(int organizerId, [FromBody] EventSubmissionDto dto)
         {
+            // 1️⃣ Get the organizer
             var organizer = await _organizerRepo.GetById(organizerId);
             if (organizer == null)
                 return NotFound("Organizer not found");
 
+            // 2️⃣ Get the current logged-in user
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized("User not logged in");
 
+            // 3️⃣ Verify user exists in the system
             var userExists = await _userManager.Users.AnyAsync(u => u.Id == userId);
             if (!userExists)
             {
-                userId = "9f0bd209-3b56-410c-b4fc-5654161c3925";
+                userId = "9f0bd209-3b56-410c-b4fc-5654161c3925"; // fallback user
                 Console.WriteLine($"Using fallback UserId: '{userId}'");
             }
 
+            // 4️⃣ Check for duplicate submissions
             var duplicateExists = await _submissionRepo.GetAllQuery()
                 .Where(x => x.EventId == dto.EventId && x.SubmittedById == organizerId)
                 .AnyAsync();
@@ -130,6 +131,7 @@ namespace Dixen.API.Controllers
             if (duplicateExists)
                 return Conflict("You have already submitted a proposal for this event.");
 
+            // 5️⃣ Verify the event exists
             var evt = await _eventRepo.GetById(dto.EventId);
             if (evt == null)
                 return BadRequest("Event not found");
@@ -144,20 +146,75 @@ namespace Dixen.API.Controllers
                 StartTime = dto.StartTime,
                 ImageUrl = dto.ImageUrl,
                 SubmittedAt = DateTime.UtcNow,
-                IsApproved = false,
+                IsApproved = null,   
+                Details = dto.Details
             };
+
 
             await _submissionRepo.Create(submission);
 
+            // 7️⃣ Return response
             return Ok(new
             {
                 Message = "Event submission sent to admin for approval",
-                SubmissionId = submission.Id
+                SubmissionId = submission.Id,
+                Status = "Pending"
             });
         }
 
 
+        //[Authorize(Roles = "Host, User, Admin")]
+        //[HttpPost("{organizerId}/submit-event")]
+        //public async Task<IActionResult> SubmitEvent(int organizerId, [FromBody] EventSubmissionDto dto)
+        //{
+        //    var organizer = await _organizerRepo.GetById(organizerId);
+        //    if (organizer == null)
+        //        return NotFound("Organizer not found");
 
+        //    var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        //    if (string.IsNullOrEmpty(userId))
+        //        return Unauthorized("User not logged in");
+
+        //    var userExists = await _userManager.Users.AnyAsync(u => u.Id == userId);
+        //    if (!userExists)
+        //    {
+        //        userId = "9f0bd209-3b56-410c-b4fc-5654161c3925";
+        //        Console.WriteLine($"Using fallback UserId: '{userId}'");
+        //    }
+
+        //    var duplicateExists = await _submissionRepo.GetAllQuery()
+        //        .Where(x => x.EventId == dto.EventId && x.SubmittedById == organizerId)
+        //        .AnyAsync();
+
+        //    if (duplicateExists)
+        //        return Conflict("You have already submitted a proposal for this event.");
+
+        //    var evt = await _eventRepo.GetById(dto.EventId);
+        //    if (evt == null)
+        //        return BadRequest("Event not found");
+
+        //    var submission = new EventSubmission
+        //    {
+        //        EventId = dto.EventId,
+        //        SubmittedById = organizer.Id,
+        //        SubmittedBy = organizer.OrganizationName,
+        //        Title = dto.Title,
+        //        Description = dto.Description,
+        //        StartTime = dto.StartTime,
+        //        ImageUrl = dto.ImageUrl,
+        //        SubmittedAt = DateTime.UtcNow,
+        //        IsApproved = null,
+        //    };
+
+        //    await _submissionRepo.Create(submission);
+
+        //    return Ok(new
+        //    {
+        //        Message = "Event submission sent to admin for approval",
+        //        SubmissionId = submission.Id
+        //    });
+        //}
     }
 
 }

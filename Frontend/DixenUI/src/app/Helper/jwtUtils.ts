@@ -6,6 +6,7 @@ export function getUserEmailFromToken(): string | null {
 
   try {
     const decoded: any = jwtDecode(token);
+    console.log('FULL DECODED TOKEN:', decoded);
     return decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'] ?? null;
     
   } catch (error) {

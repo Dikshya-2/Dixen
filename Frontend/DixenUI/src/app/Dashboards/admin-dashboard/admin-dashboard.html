@@ -33,7 +33,7 @@
               'Booking',
               'Ticket',
               'Venue',
-              'Admin Submissions',
+              'Event Approval',
             ];
             let i = index
           "
@@ -64,11 +64,11 @@
             Welcome back, Admin
           </h1>
           <p class="text-lg text-slate-600 font-medium">
-            3 upcoming events this week
+            Here's what's coming up next
           </p>
         </div>
         <button
-        routerLink="admin/event"
+          [routerLink]="['/admin/event']"
           class="bg-linear-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold px-6 py-3 rounded-2xl shadow-lg hover:shadow-xl transition-all text-base w-full lg:w-auto"
         >
           + Add Event
@@ -76,51 +76,64 @@
       </div>
     </div>
 
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-    <div
-      class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-200/50 h-89 flex flex-col items-center justify-center"
-    >
-      <div class="w-full h-full flex items-center justify-center overflow-hidden">
-        <app-analysis></app-analysis>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <div
+        class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-200/50 h-89 flex flex-col items-center justify-center"
+      >
+        <div
+          class="w-full h-full flex items-center justify-center overflow-hidden"
+        >
+          <app-analysis></app-analysis>
+        </div>
       </div>
-    </div>
 
-    <div
-      class="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-slate-200/50 h-89 flex flex-col items-center justify-center"
-    >
-      <div class="w-full h-full flex items-center justify-center overflow-hidden">
-        <app-analysis2></app-analysis2>
-      </div>
-    </div>
-</div>
-    
-<div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-200/50 p-6">
-  <h3 class="text-2xl font-black bg-linear-to-r from-slate-900 to-blue-900 bg-clip-text text-transparent mb-6">
-    Upcoming Events
-  </h3>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div *ngFor="let event of upcomingEvents" 
-         class="group bg-linear-to-r from-slate-50 to-blue-50/30 rounded-xl p-6 border border-slate-200/50 
-                hover:shadow-lg hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 cursor-pointer">
-      
-      <div class="flex-1">
-        <h4 class="font-bold text-lg text-slate-900 group-hover:text-blue-600 mb-2 line-clamp-1">
-          {{ event.name || event.title || 'Unnamed Event' }}
-        </h4>
-        <div class="space-y-1 text-sm">
-          <p class="text-slate-600">
-            {{ event.startTime | date:'MMM d' }}
-          </p>
-          <p class="text-slate-500 text-xs">
-            {{ event.organizerName }}
-          </p>
+      <div
+        class="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-xl border border-slate-200/50 h-89 flex flex-col items-center justify-center"
+      >
+        <div
+          class="w-full h-full flex items-center justify-center overflow-hidden"
+        >
+          <app-analysis2></app-analysis2>
         </div>
       </div>
     </div>
 
+    <div
+      class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-slate-200/50 p-6"
+    >
+      <h3
+        class="text-2xl font-black bg-linear-to-r from-slate-900 to-blue-900 bg-clip-text text-transparent mb-6"
+      >
+        Upcoming Events
+      </h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div
+          *ngFor="let event of upcomingEvents"
+          class="group bg-linear-to-r from-slate-50 to-blue-50/30 rounded-xl p-6 border border-slate-200/50 hover:shadow-lg hover:-translate-y-1 hover:border-blue-300 transition-all duration-300 cursor-pointer"
+        >
+          <div class="flex-1">
+            <h4
+              class="font-bold text-lg text-slate-900 group-hover:text-blue-600 mb-2 line-clamp-1"
+            >
+              {{ event.name || event.title || "Unnamed Event" }}
+            </h4>
+            <div class="space-y-1 text-sm">
+              <p class="text-slate-600">
+                {{ event.startTime | date: "MMM d" }}
+              </p>
+              <p class="text-slate-500 text-xs">
+                {{ event.organizerName }}
+              </p>
+            </div>
+          </div>
+        </div>
+
         <!-- Loading state -->
-        <div *ngIf="upcomingEvents.length === 0" class="text-center py-8 text-slate-500">
+        <div
+          *ngIf="upcomingEvents.length === 0"
+          class="text-center py-8 text-slate-500"
+        >
           <p>No upcoming events</p>
         </div>
       </div>

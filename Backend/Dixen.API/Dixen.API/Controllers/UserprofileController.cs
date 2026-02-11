@@ -36,17 +36,16 @@ namespace Dixen.Controllers
             var roles = await _userManager.GetRolesAsync(user);
 
             var hostedEvents = new List<string>();
-            if (roles.Contains("organization"))
+            if (roles.Contains("Host"))
             {
                 hostedEvents = await _context.Events
                     .Where(e => e.Organizer.ContactEmail == user.Email)
                     .Select(e => e.Title)
                     .ToListAsync();
             }
-
             var proposedEvents = await _context.EventSubmissions
-                .Where(s => s.SubmittedBy == user.FullName)
-                .Select(s => s.Details)
+                .Where(s => s.SubmittedBy == user.Email)
+                .Select(s => s.Title)
                 .ToListAsync();
 
             var preferredCategories = user.Bookings
@@ -75,9 +74,7 @@ namespace Dixen.Controllers
                     HallName = string.Join(", ", b.Event.Halls.Select(h => h.Name)),
                     BookedTime = b.BookedTime
                 }).ToList()
-
             };
-
             return Ok(profile);
         }
 
