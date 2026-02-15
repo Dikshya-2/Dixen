@@ -19,15 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Dixen.API\Dixen.API.csproj" />
     <ProjectReference Include="..\Dixen.Repo\Dixen.Repo.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ControllerTests\" />
   </ItemGroup>
 
 </Project>
