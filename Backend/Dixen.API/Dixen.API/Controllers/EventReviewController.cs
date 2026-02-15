@@ -75,7 +75,7 @@ namespace Dixen.API.Controllers
         public async Task<ActionResult<double>> GetAverageRating(int eventId)
         {
             var reviews = (await _reviewRepo.GetAll()).Where(r => r.EventId == eventId).ToList();
-            if (!reviews.Any()) return Ok(0);
+            if (!reviews.Any()) return Ok(0.0);
             var avg = reviews.Average(r => r.Rating);
             return Ok(avg);
         }

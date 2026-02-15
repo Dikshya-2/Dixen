@@ -79,44 +79,9 @@ namespace Dixen.Repo.Services
             };
         }
 
-        public Task<HallCapacityDto> GetHallCapacityAsync(int eventId, int hallId)
-        {
-            throw new NotImplementedException();
-        }
+        
 
-        public Task<List<MyAttendanceDto>> GetMyAttendancesAsync(string userEmail)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<AttendanceResponse> RegisterAttendanceAsync(int eventId, int hallId, string userEmail)
-        {
-            throw new NotImplementedException();
-        }
-
-        //public object CalculateAnalytics(List<EventSummaryDto> data)
-        //{
-        //    if (data == null || data.Count == 0)
-        //    {
-        //        return new { IsEmpty = true };
-        //    }
-
-        //    double meanTickets = data.Average(x => x.TicketsSold);
-        //    double meanShares = data.Average(x => x.SharesCount);
-
-        //    double numerator = data.Sum(x =>
-        //        (x.TicketsSold - meanTickets) *
-        //        (x.SharesCount - meanShares));
-
-        //    double denominator = Math.Sqrt(
-        //        data.Sum(x => Math.Pow(x.TicketsSold - meanTickets, 2)) *
-        //        data.Sum(x => Math.Pow(x.SharesCount - meanShares, 2)));
-
-        //    return new
-        //    {
-        //        Correlation = denominator == 0 ? 0 : numerator / denominator
-        //    };
-        //}
+      
     }
 }
 

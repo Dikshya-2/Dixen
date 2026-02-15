@@ -152,33 +152,85 @@ namespace Dixen.Repo.Services
 
             return true;
         }
+        //public async Task<List<EventResponseDto>> SearchEventsAsync(EventSearchFilterDto filter)
+        //{
+        //    IQueryable<Evnt> query = _eventRepo
+        //        .GetAllQuery()
+        //        .AsNoTracking()
+        //        .Include(e => e.Categories)
+        //        .Include(e => e.Halls)
+        //            .ThenInclude(h => h.Venue);
+
+        //    if (!string.IsNullOrWhiteSpace(filter.Title))
+        //    {
+        //        var titleLower = filter.Title.ToLower();
+        //        query = query.Where(e => e.Title.ToLower().StartsWith(titleLower)); //Contains for all letter
+        //    }
+
+        //    if (!string.IsNullOrWhiteSpace(filter.Keyword))
+        //    {
+        //        var keywordLower = filter.Keyword.ToLower();
+        //        query = query.Where(e => e.Title.ToLower().Contains(keywordLower)
+        //                              || e.Description.ToLower().Contains(keywordLower));
+        //    }
+
+        //    if (filter.OrganizerId.HasValue)
+        //        query = query.Where(e => e.OrganizerId == filter.OrganizerId.Value);
+
+        //    if (filter.CategoryIds != null && filter.CategoryIds.Count > 0)
+        //        query = query.Where(e => e.Categories.Any(c => filter.CategoryIds.Contains(c.Id)));
+
+        //    if (!string.IsNullOrWhiteSpace(filter.VenueCity))
+        //    {
+        //        var cityLower = filter.VenueCity.ToLower();
+        //        query = query.Where(e => e.Halls.Any(h => h.Venue.City.ToLower() == cityLower));
+        //    }
+
+        //    if (filter.EventDate.HasValue)
+        //    {
+        //        var dateUtc = filter.EventDate.Value.Date.ToUniversalTime();
+        //        var nextDayUtc = dateUtc.AddDays(1);
+        //        query = query.Where(e => e.StartTime >= dateUtc && e.StartTime < nextDayUtc);
+        //    }
+
+        //    query = query.OrderBy(e => e.Title);
+
+        //    var events = await query.ToListAsync();
+
+        //    return events.Select(MapToDto).ToList();
+        //}
+
         public async Task<List<EventResponseDto>> SearchEventsAsync(EventSearchFilterDto filter)
         {
             IQueryable<Evnt> query = _eventRepo
-                .GetAllQuery()
+                .GetAllQuery()  
                 .AsNoTracking()
                 .Include(e => e.Categories)
                 .Include(e => e.Halls)
-                    .ThenInclude(h => h.Venue);
+                .ThenInclude(h => h.Venue);
 
             if (!string.IsNullOrWhiteSpace(filter.Title))
             {
                 var titleLower = filter.Title.ToLower();
-                query = query.Where(e => e.Title.ToLower().StartsWith(titleLower)); //Contains for all letter
+                query = query.Where(e => e.Title.ToLower().StartsWith(titleLower));
             }
-
             if (!string.IsNullOrWhiteSpace(filter.Keyword))
             {
                 var keywordLower = filter.Keyword.ToLower();
                 query = query.Where(e => e.Title.ToLower().Contains(keywordLower)
-                                      || e.Description.ToLower().Contains(keywordLower));
+                    || e.Description.ToLower().Contains(keywordLower));
             }
 
             if (filter.OrganizerId.HasValue)
+            {
                 query = query.Where(e => e.OrganizerId == filter.OrganizerId.Value);
+            }
 
-            if (filter.CategoryIds != null && filter.CategoryIds.Count > 0)
+
+            if (filter.CategoryIds != null && filter.CategoryIds.Any())
+            {
                 query = query.Where(e => e.Categories.Any(c => filter.CategoryIds.Contains(c.Id)));
+            }
 
             if (!string.IsNullOrWhiteSpace(filter.VenueCity))
             {
@@ -199,42 +251,6 @@ namespace Dixen.Repo.Services
 
             return events.Select(MapToDto).ToList();
         }
-
-        //public async Task<List<EventResponseDto>> SearchEventsAsync(EventSearchFilterDto filter)
-        //{
-        //    var query = _eventRepo.GetAllQuery()
-        //        .AsNoTracking()                    // 🔥 LINE 1: +50% faster
-        //        .Include(e => e.Categories)
-        //        .Include(e => e.Halls)
-        //        .ThenInclude(h => h.Venue);
-
-        //    // YOUR EXISTING FILTERS (unchanged)...
-        //    if (!string.IsNullOrWhiteSpace(filter.Title))
-        //        query = query.Where(e => e.Title.ToLower().StartsWith(filter.Title.ToLower()));
-
-        //    if (!string.IsNullOrWhiteSpace(filter.Keyword))
-        //        query = query.Where(e => e.Title.ToLower().Contains(filter.Keyword.ToLower())
-        //                              || e.Description.ToLower().Contains(filter.Keyword.ToLower()));
-
-
-        //    query = query.OrderBy(e => e.Title);
-
-        //    var events = await query
-        //        .Take(20)                             
-        //        .Select(e => new EventResponseDto     
-        //        {
-        //            Id = e.Id,
-        //            Title = e.Title,
-        //            StartTime = e.StartTime,
-        //            ImageUrl = e.ImageUrl,
-        //            Address = e.Halls.FirstOrDefault().Venue.Address,
-        //            City = e.Halls.FirstOrDefault().Venue.City,
-        //            CategoryNames = e.Categories.Select(c => c.Name).ToList()
-        //        })
-        //        .ToListAsync();
-
-        //    return events;
-        //}
 
         private EventResponseDto MapToDto(Evnt e)
         {

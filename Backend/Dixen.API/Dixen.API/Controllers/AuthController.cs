@@ -62,7 +62,6 @@ namespace Dixen.API.Controllers
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
 
-           
             // TODO: Maybe i should think of role assign
             var roleName = string.IsNullOrWhiteSpace(request.Role) ? "User" : request.Role;
 
@@ -78,7 +77,6 @@ namespace Dixen.API.Controllers
             var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
 
             var confirmationUrl = $"http://localhost:4200/conform-email?email={user.Email}&token={encodedToken}";
-            //var confirmationUrl = $"{Request.Scheme}://{Request.Host}/api/auth/confirm-email?email={user.Email}&token={encodedToken}";
 
             await _emailSender.SendEmailAsync(
                  user.Email!,

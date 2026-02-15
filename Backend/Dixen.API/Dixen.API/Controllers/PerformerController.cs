@@ -10,13 +10,11 @@ namespace Dixen.Controllers
     public class PerformerController : ControllerBase
     {
         private readonly IGRepo<Performer> _performerRepo;
-
         public PerformerController(IGRepo<Performer> performerRepo)
         {
             _performerRepo = performerRepo;
         }
 
-        // Get all performers
         [HttpGet]
         public async Task<ActionResult<List<PerformerDto>>> GetAll()
         {
@@ -33,7 +31,6 @@ namespace Dixen.Controllers
             return Ok(performerDtos);
         }
 
-        // Get performer by ID
         [HttpGet("{id}")]
         public async Task<ActionResult<PerformerDto>> GetById(int id)
         {
@@ -52,7 +49,6 @@ namespace Dixen.Controllers
             return Ok(performerDto);
         }
 
-        // Create performer
         [HttpPost]
         public async Task<ActionResult<PerformerDto>> Create(PerformerDto performerDto)
         {
@@ -62,13 +58,10 @@ namespace Dixen.Controllers
                 Bio = performerDto.Bio,
                 EventId = performerDto.EventId
             };
-
             await _performerRepo.Create(performer);
-
-            performerDto.Id = performer.Id;  // After creation, set the Id
+            performerDto.Id = performer.Id;
             return CreatedAtAction(nameof(GetById), new { id = performerDto.Id }, performerDto);
         }
-        // Update performer
         [HttpPut("{id}")]
         public async Task<ActionResult<PerformerDto>> Update(int id, PerformerDto performerDto)
         {
@@ -77,8 +70,6 @@ namespace Dixen.Controllers
             {
                 return NotFound();
             }
-
-            // Update fields
             existingPerformer.Name = performerDto.Name;
             existingPerformer.Bio = performerDto.Bio;
             existingPerformer.EventId = performerDto.EventId;
@@ -96,8 +87,6 @@ namespace Dixen.Controllers
             return Ok(updatedPerformerDto);
         }
 
-
-        // Delete performer
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {

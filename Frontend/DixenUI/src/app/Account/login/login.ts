@@ -15,7 +15,6 @@ export class Login {
   error: string = '';
   showPassword: boolean = false;
 
-
   constructor(private fb: FormBuilder, private authService: Authservice) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
