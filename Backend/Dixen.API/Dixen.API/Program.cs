@@ -12,54 +12,39 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddScoped(typeof(IGRepo<>), typeof(GRepo<>));
-builder.Services.AddTransient<IEmailSender, EmailService>();// New instance every time
+builder.Services.AddTransient<IEmailSender, EmailService>();
 builder.Services.AddScoped<IJWTService,JWTService>();
-builder.Services.AddScoped<TwoFAService>();
+builder.Services.AddScoped<ITwoFAService, TwoFAService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IEventService, EventService>();
-//builder.Services.AddScoped<IEventAttendanceService, EventAttendanceService>();
 builder.Services.AddScoped<ITicketService, TicketService>();
 builder.Services.AddScoped<IHallService, HallService>();
 builder.Services.AddScoped<EventAnalysisService>();
-builder.Services.AddScoped<IGRepo<SocialShare>, GRepo<SocialShare>>();// one instance per request
+builder.Services.AddScoped<IGRepo<SocialShare>, GRepo<SocialShare>>();
 builder.Services.AddScoped<IEventSubmissionRepository, EventSubmissionRepository>();
 
 
-
-
-
-//core to connect with frontent
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("Test",
                           policy =>
                           {
-                              //policy.WithOrigins("http://localhost:4200","https://localhost:4200,  ")  // I can replace with my frontend URL
+                              //policy.WithOrigins("http://localhost:4200","https://localhost:4200,  ")  
                               policy.AllowAnyOrigin()
                                      .AllowAnyHeader()
                                      .AllowAnyMethod();
                           });
 });
-//connecting string
 builder.Services.AddDbContext<DatabaseContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
     options.AddInterceptors(new SoftDeleteInterceptor());
 });
 
-//builder.Services.AddDbContext<DatabaseContext>(obj => obj.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); 
 
 builder.Services.AddControllers();
-//builder.Services.AddControllers()
-//    .AddJsonOptions(options =>
-//    {
-//        options.JsonSerializerOptions.ReferenceHandler =
-//            System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
-//    });
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -69,7 +54,6 @@ builder.Services.AddSwaggerGen(options =>
         Version = "v1"
     });
 
-    // JWT Authentication setup in Swagger
     options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -100,19 +84,17 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.SignIn.RequireConfirmedEmail = true;
     options.Tokens.ProviderMap.Add("Email", new TokenProviderDescriptor(typeof(EmailTokenProvider<ApplicationUser>)));
 })
-.AddEntityFrameworkStores<DatabaseContext>() // replace with your actual DbContext
+.AddEntityFrameworkStores<DatabaseContext>() 
 .AddDefaultTokenProviders();
 
-// Add authentication if using JWT
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
-// AddJwtBearer: rules that say how to validate tokens using that data.
 .AddJwtBearer(options =>
 {
-    //builder.Configuration.GetSection("Jwt") expects you to have an appsettings.json entry:
     var jwtSettings = builder.Configuration.GetSection("Jwt");
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -129,7 +111,6 @@ builder.Services.AddAuthentication(options =>
 });
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
