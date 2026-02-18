@@ -12,8 +12,6 @@ namespace Dixen.Repo.Services.Interfaces
         Task<AttendanceResponse> RegisterAttendanceAsync( int eventId, int hallId, string userEmail);
         Task<List<MyAttendanceDto>> GetMyAttendancesAsync(string userEmail);
         Task<HallCapacityDto> GetHallCapacityAsync(int eventId, int hallId);
-
-
     }
 }
  

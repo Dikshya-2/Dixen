@@ -16,8 +16,6 @@ namespace Dixen.Repo.Services.Interfaces
         Task<EventResponseDto?> UpdateEventAsync(int eventId, CreateUpdateEventDto dto);
         Task<bool> DeleteEventAsync(int eventId);
         Task<List<EventResponseDto>> SearchEventsAsync(EventSearchFilterDto filter);
-
-
     }
 
 

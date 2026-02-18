@@ -23,7 +23,6 @@ namespace Dixen.Repo.Services
             _eventRepo = eventRepo;
             _socialShareRepo = socialShareRepo;
         }
-
         public async Task<List<EventSummaryDto>> AnalyzeEventsAsync()
         {
             var events = await _eventRepo.GetAllForAnalytics(q =>
@@ -31,12 +30,8 @@ namespace Dixen.Repo.Services
                  .Include(e => e.Bookings)
                     .ThenInclude(b => b.Tickets)
             );
-
             var shares = await _socialShareRepo.GetAll() ?? new List<SocialShare>();
-
             var eventList = events.ToList();
-
-            //  in-memory LINQ)
             var summary = eventList.Select(e => new EventSummaryDto
             {
                 EventId = e.Id,
@@ -46,14 +41,11 @@ namespace Dixen.Repo.Services
                 TicketsSold = e.Bookings
                     .SelectMany(b => b.Tickets)
                     .Sum(t => t.Quantity),
-
                 SharesCount = shares.Count(s => s.EventId == e.Id)
             })
             .ToList();
-
             return summary;
         }
-
         public AnalyticsResultDto CalculateAnalytics(List<EventSummaryDto> data)
         {
             if (data == null || data.Count == 0)
@@ -78,10 +70,6 @@ namespace Dixen.Repo.Services
                 Correlation = denominator == 0 ? 0 : numerator / denominator
             };
         }
-
-        
-
-      
     }
 }
 

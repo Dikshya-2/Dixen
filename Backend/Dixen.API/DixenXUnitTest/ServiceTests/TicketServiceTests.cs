@@ -17,7 +17,6 @@ namespace DixenXUnitTest.ServiceTests
         private readonly Mock<IGRepo<Ticket>> _ticketRepoMock;
         private readonly Mock<IGRepo<Booking>> _bookingRepoMock;
         private readonly TicketService _ticketService;
-
         public TicketServiceTests()
         {
             _ticketRepoMock = new Mock<IGRepo<Ticket>>();
@@ -37,7 +36,7 @@ namespace DixenXUnitTest.ServiceTests
 
             var dto = new TicketDto
             {
-                Type = TicketType.VIP, // enum
+                Type = TicketType.VIP, 
                 Price = 100,
                 Quantity = 2
             };
@@ -46,13 +45,11 @@ namespace DixenXUnitTest.ServiceTests
             _ticketRepoMock.Setup(r => r.Create(It.IsAny<Ticket>()))
                 .ReturnsAsync((Ticket t) =>
                 {
-                    t.Id = 2222222; // simulate DB-generated ID
+                    t.Id = 2222222; 
                     return t;
                 });
-
             // Act
             var result = await _ticketService.CreateAsync(1, dto);
-
             // Assert
             Assert.NotNull(result);
             Assert.Equal(2222222, result.Id);
@@ -83,10 +80,8 @@ namespace DixenXUnitTest.ServiceTests
             };
             _ticketRepoMock.Setup(r => r.Find(t => t.BookingId == 1, null))
                 .ReturnsAsync(tickets);
-
             // Act
             var result = await _ticketService.GetByBookingAsync(1);
-
             // Assert
             Assert.Equal(2, result.Count);
             Assert.Contains(result, t => t.Type == TicketType.VIP);
@@ -99,10 +94,8 @@ namespace DixenXUnitTest.ServiceTests
             // Arrange
             var ticket = new Ticket { Id = 1, Type = TicketType.VIP, Price = 100, Quantity = 2 };
             _ticketRepoMock.Setup(r => r.GetById(1, null)).ReturnsAsync(ticket);
-
             // Act
             var result = await _ticketService.GetByIdAsync(1);
-
             // Assert
             Assert.NotNull(result);
             Assert.Equal(TicketType.VIP, result!.Type);
@@ -113,10 +106,8 @@ namespace DixenXUnitTest.ServiceTests
         {
             // Arrange
             _ticketRepoMock.Setup(r => r.GetById(1, null)).ReturnsAsync((Ticket?)null);
-
             // Act
             var result = await _ticketService.GetByIdAsync(1);
-
             // Assert
             Assert.Null(result);
         }
@@ -127,14 +118,11 @@ namespace DixenXUnitTest.ServiceTests
             // Arrange
             var ticket = new Ticket { Id = 1, Type = TicketType.VIP, Price = 100, Quantity = 2 };
             var dto = new TicketDto { Type = TicketType.General, Price = 50, Quantity = 1 };
-
             _ticketRepoMock.Setup(r => r.GetById(1, null)).ReturnsAsync(ticket);
             _ticketRepoMock.Setup(r => r.Update(It.IsAny<object>(), It.IsAny<Ticket>()))
                 .ReturnsAsync((object id, Ticket t) => t);
-
             // Act
             var result = await _ticketService.UpdateAsync(1, dto);
-
             // Assert
             Assert.NotNull(result);
             Assert.Equal(TicketType.General, result!.Type);
@@ -148,10 +136,8 @@ namespace DixenXUnitTest.ServiceTests
             // Arrange
             var dto = new TicketDto { Type = TicketType.General, Price = 50, Quantity = 1 };
             _ticketRepoMock.Setup(r => r.GetById(1, null)).ReturnsAsync((Ticket?)null);
-
             // Act
             var result = await _ticketService.UpdateAsync(1, dto);
-
             // Assert
             Assert.Null(result);
         }
@@ -161,10 +147,8 @@ namespace DixenXUnitTest.ServiceTests
         {
             // Arrange
             _ticketRepoMock.Setup(r => r.Delete(1)).ReturnsAsync(true);
-
             // Act
             var result = await _ticketService.DeleteAsync(1);
-
             // Assert
             Assert.True(result);
         }
@@ -174,10 +158,8 @@ namespace DixenXUnitTest.ServiceTests
         {
             // Arrange
             _ticketRepoMock.Setup(r => r.Delete(1)).ReturnsAsync(false);
-
             // Act
             var result = await _ticketService.DeleteAsync(1);
-
             // Assert
             Assert.False(result);
         }

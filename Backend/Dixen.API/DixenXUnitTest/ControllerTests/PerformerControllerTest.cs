@@ -17,13 +17,11 @@ namespace DixenXUnitTest.ControllerTests
     {
         private readonly Mock<IGRepo<Performer>> _performerRepoMock;
         private readonly PerformerController _controller;
-
         public PerformerControllerTest()
         {
             _performerRepoMock = new Mock<IGRepo<Performer>>();
             _controller = new PerformerController(_performerRepoMock.Object);
         }
-
         private Performer GetSamplePerformer(int id = 1)
         {
             return new Performer
@@ -34,7 +32,6 @@ namespace DixenXUnitTest.ControllerTests
                 EventId = 100 + id
             };
         }
-
         [Fact]
         public async Task GetAll_ReturnsOkWithList()
         {

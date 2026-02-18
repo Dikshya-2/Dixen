@@ -22,7 +22,6 @@ namespace Dixen.Repo.Model
         public DbSet<Performer> Performers { get; set; }
         public DbSet<EventSubmission> EventSubmissions { get; set; }
         public DbSet<SocialShare> SocialShares { get; set; }
-        //public DbSet<EventAttendance> EventAttendances { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Venue> Venues { get; set; }
@@ -46,28 +45,24 @@ namespace Dixen.Repo.Model
 
 
             #region Relationships
-            // Event - Organizer (one-to-many)
             modelBuilder.Entity<Evnt>()
                 .HasOne(e => e.Organizer)
                 .WithMany(o => o.Events)
                 .HasForeignKey(e => e.OrganizerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Hall - Event (one-to-many)
             modelBuilder.Entity<Hall>()
                 .HasOne(h => h.Event)
                 .WithMany(e => e.Halls)
                 .HasForeignKey(h => h.EventId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Hall - Venue (one-to-many)
             modelBuilder.Entity<Hall>()
                 .HasOne(h => h.Venue)
                 .WithMany(v => v.Halls)
                 .HasForeignKey(h => h.VenueId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // SocialShare - User
             modelBuilder.Entity<SocialShare>()
                 .HasOne(ss => ss.User)
                 .WithMany(u => u.SocialShares)
@@ -143,29 +138,8 @@ namespace Dixen.Repo.Model
                     });
 
             #endregion
-            // ToDO: Review and optimize indexes
-            //#region  Indexes
-            //var evntBuilder = modelBuilder.Entity<Evnt>();
-            //evntBuilder.HasIndex(nameof(Evnt.StartTime));
-            //evntBuilder.HasIndex(nameof(Evnt.Title));
-            //evntBuilder.HasIndex(e => new { e.StartTime, e.IsDeleted });
-            //var bookingBuilder = modelBuilder.Entity<Booking>();
-            //var eventCategories = modelBuilder.Entity("EventCategories");
-
-            //            modelBuilder.Entity<Evnt>()
-            //.HasIndex(nameof(Evnt.StartTime))     // Date filtering
-            //.HasIndex(nameof(Evnt.Title))         // Title search 
-            //.HasIndex(e => e.Description)         // Keyword search
-            //.HasIndex(e => new { e.StartTime, e.IsDeleted }); // Upcoming events
-
-            //#endregion
-
-            //#endregion
-
-
+           
             #region Property Configurations
-
-
             modelBuilder.Entity<Ticket>()
                 .Property(t => t.Price)
                 .HasPrecision(18, 2);
@@ -333,9 +307,7 @@ namespace Dixen.Repo.Model
             new Ticket { Id = 3, BookingId = 1, Type = TicketType.Student, Price = 30, Quantity = 50 }
              );
             #endregion
-
         }
-
     }
     // SOFT DELETE INTERCEPTOR 
     public class SoftDeleteInterceptor : SaveChangesInterceptor
@@ -346,19 +318,15 @@ namespace Dixen.Repo.Model
             ApplySoftDelete(eventData.Context);
             return base.SavingChanges(eventData, result);
         }
-
         public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData,
             InterceptionResult<int> result, CancellationToken cancellationToken = default)
         {
             ApplySoftDelete(eventData.Context);
             return base.SavingChangesAsync(eventData, result, cancellationToken);
         }
-
         private void ApplySoftDelete(DbContext? context)
         {
             if (context == null) return;
-
-
             foreach (var entry in context.ChangeTracker.Entries()
             .Where(e => e.State == EntityState.Deleted))
             {

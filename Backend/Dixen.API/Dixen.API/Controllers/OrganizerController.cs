@@ -116,18 +116,13 @@ namespace Dixen.API.Controllers
             var userExists = await _userManager.Users.AnyAsync(u => u.Id == userId);
             if (!userExists)
             {
-                userId = "9f0bd209-3b56-410c-b4fc-5654161c3925"; // fallback user
+                userId = "9f0bd209-3b56-410c-b4fc-5654161c3925"; 
                 Console.WriteLine($"Using fallback UserId: '{userId}'");
             }
 
             var duplicateExists = await _submissionRepo.GetAllQuery()
                 .Where(x => x.EventId == dto.EventId && x.SubmittedById == organizerId)
                 .AnyAsync();
-
-            //var submissions = await _submissionRepo.GetAll();
-            //var duplicateExists = submissions
-            //    .Any(x => x.EventId == dto.EventId && x.SubmittedById == organizerId);
-
 
             if (duplicateExists)
                 return Conflict("You have already submitted a proposal for this event.");

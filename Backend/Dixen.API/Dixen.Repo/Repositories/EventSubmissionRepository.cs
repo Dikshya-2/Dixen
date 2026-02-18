@@ -25,7 +25,6 @@ namespace Dixen.Repo.Repositories
                 await _context.SaveChangesAsync();
             }
         }
-
         public async Task RejectEventSubmission(int submissionId)
         {
             var submission = await _context.EventSubmissions.FindAsync(submissionId);

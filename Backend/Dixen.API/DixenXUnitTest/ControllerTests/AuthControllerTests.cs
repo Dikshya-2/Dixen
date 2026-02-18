@@ -29,7 +29,6 @@ namespace DixenXUnitTest.ControllerTests
 
         public AuthControllerTests()
         {
-            // Setup mocks for UserManager and SignInManager
             _userManagerMock = new Mock<UserManager<ApplicationUser>>(
                 Mock.Of<IUserStore<ApplicationUser>>(), null, null, null, null, null, null, null, null);
 

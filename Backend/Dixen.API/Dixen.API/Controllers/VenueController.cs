@@ -10,21 +10,16 @@ namespace Dixen.API.Controllers
     public class VenueController : ControllerBase
     {
         private readonly IGRepo<Venue> _venueRepo;
-
         public VenueController(IGRepo<Venue> venueRepo)
         {
             _venueRepo = venueRepo;
         }
-
-        // GET: api/venue
         [HttpGet]
         public async Task<ActionResult<List<Venue>>> GetAll()
         {
             var venues = await _venueRepo.GetAll();
             return Ok(venues);
         }
-
-        // GET: api/venue/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Venue>> GetById(int id)
         {
@@ -42,7 +37,6 @@ namespace Dixen.API.Controllers
                 Address = dto.Address,
                 City = dto.City
             };
-
             await _venueRepo.Create(venue);
             return CreatedAtAction(nameof(GetById), new { id = venue.Id }, venue);
         }
@@ -60,10 +54,6 @@ namespace Dixen.API.Controllers
             var updated = await _venueRepo.Update(id, venue);
             return Ok(updated);
         }
-
-
-
-        // DELETE: api/venue/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

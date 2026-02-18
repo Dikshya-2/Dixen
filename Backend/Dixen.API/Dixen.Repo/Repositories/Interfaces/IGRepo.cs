@@ -12,9 +12,7 @@ namespace Dixen.Repo.Repositories.Interfaces
     {
 
         Task<T> Create(T item);
-        //Task Delete(object id);
         Task<bool> Delete(object id);
-        //Task<List<T>> GetAll(Func<IQueryable<T>, IQueryable<T>>? configure = null); // for analysis
         Task<List<T>> GetAll(Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
         Task<T?> GetById(object id, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
         Task<bool> Exists(object id);

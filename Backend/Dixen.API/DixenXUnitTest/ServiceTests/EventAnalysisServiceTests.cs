@@ -17,14 +17,12 @@ namespace DixenXUnitTest.ServiceTests
         private readonly Mock<IGRepo<Evnt>> _eventRepoMock;
         private readonly Mock<IGRepo<SocialShare>> _socialShareRepoMock;
         private readonly EventAnalysisService _service;
-
         public EventAnalysisServiceTests()
         {
             _eventRepoMock = new Mock<IGRepo<Evnt>>();
             _socialShareRepoMock = new Mock<IGRepo<SocialShare>>();
             _service = new EventAnalysisService(_eventRepoMock.Object, _socialShareRepoMock.Object);
         }
-
         [Fact]
         public async Task AnalyzeEventsAsync_ShouldReturnEventSummary()
         {
@@ -45,8 +43,7 @@ namespace DixenXUnitTest.ServiceTests
                             Tickets = new List<Ticket>
                             {
                                 new Ticket { Id = 1, Quantity = 2, BookingId=1 },
-                                new Ticket { Id = 2, Quantity = 3, BookingId = 1 },
-                                
+                                new Ticket { Id = 2, Quantity = 3, BookingId = 1 },  
                             }
                         }
                     }
@@ -56,7 +53,7 @@ namespace DixenXUnitTest.ServiceTests
                     Id = 2,
                     Title = "Event 2",
                     Description = "Description 2",
-                    Categories = new List<Category>(), // no category
+                    Categories = new List<Category>(), 
                     Bookings = new List<Booking>
                     {
                         new Booking
@@ -83,9 +80,6 @@ namespace DixenXUnitTest.ServiceTests
             _socialShareRepoMock
                 .Setup(r => r.GetAll(It.IsAny<Func<IQueryable<SocialShare>, IIncludableQueryable<SocialShare, object>>?>()))
                 .ReturnsAsync(shares);
-
-
-
             // Act
             var result = await _service.AnalyzeEventsAsync();
 

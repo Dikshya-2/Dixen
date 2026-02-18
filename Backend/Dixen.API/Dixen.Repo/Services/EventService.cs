@@ -152,54 +152,6 @@ namespace Dixen.Repo.Services
 
             return true;
         }
-        //public async Task<List<EventResponseDto>> SearchEventsAsync(EventSearchFilterDto filter)
-        //{
-        //    IQueryable<Evnt> query = _eventRepo
-        //        .GetAllQuery()
-        //        .AsNoTracking()
-        //        .Include(e => e.Categories)
-        //        .Include(e => e.Halls)
-        //            .ThenInclude(h => h.Venue);
-
-        //    if (!string.IsNullOrWhiteSpace(filter.Title))
-        //    {
-        //        var titleLower = filter.Title.ToLower();
-        //        query = query.Where(e => e.Title.ToLower().StartsWith(titleLower)); //Contains for all letter
-        //    }
-
-        //    if (!string.IsNullOrWhiteSpace(filter.Keyword))
-        //    {
-        //        var keywordLower = filter.Keyword.ToLower();
-        //        query = query.Where(e => e.Title.ToLower().Contains(keywordLower)
-        //                              || e.Description.ToLower().Contains(keywordLower));
-        //    }
-
-        //    if (filter.OrganizerId.HasValue)
-        //        query = query.Where(e => e.OrganizerId == filter.OrganizerId.Value);
-
-        //    if (filter.CategoryIds != null && filter.CategoryIds.Count > 0)
-        //        query = query.Where(e => e.Categories.Any(c => filter.CategoryIds.Contains(c.Id)));
-
-        //    if (!string.IsNullOrWhiteSpace(filter.VenueCity))
-        //    {
-        //        var cityLower = filter.VenueCity.ToLower();
-        //        query = query.Where(e => e.Halls.Any(h => h.Venue.City.ToLower() == cityLower));
-        //    }
-
-        //    if (filter.EventDate.HasValue)
-        //    {
-        //        var dateUtc = filter.EventDate.Value.Date.ToUniversalTime();
-        //        var nextDayUtc = dateUtc.AddDays(1);
-        //        query = query.Where(e => e.StartTime >= dateUtc && e.StartTime < nextDayUtc);
-        //    }
-
-        //    query = query.OrderBy(e => e.Title);
-
-        //    var events = await query.ToListAsync();
-
-        //    return events.Select(MapToDto).ToList();
-        //}
-
         public async Task<List<EventResponseDto>> SearchEventsAsync(EventSearchFilterDto filter)
         {
             IQueryable<Evnt> query = _eventRepo

@@ -9,6 +9,5 @@ namespace Dixen.Repo.Services.Interfaces
     {
         Task<List<EventSummaryDto>> AnalyzeEventsAsync();
         AnalyticsResultDto CalculateAnalytics(List<EventSummaryDto> data);
-       
     }
 }

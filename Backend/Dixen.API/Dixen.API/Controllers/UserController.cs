@@ -13,11 +13,7 @@ namespace Dixen.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
-    /* 
-       ControllerBase: It gives your controller:Access to HTTP context, request, and response objects
-        Methods like Ok(), BadRequest(), NotFound(), etc. to easily return HTTP responses
-        Model binding, routing, and other controller functionality
-     */
+    
     {
         private readonly DatabaseContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
@@ -31,7 +27,7 @@ namespace Dixen.Controllers
         public async Task<ActionResult<List<UserDto>>> GetAll()
         {
             var users = await _userManager.Users
-                .AsNoTracking() // this forces EF to get fresh data without tracking
+                .AsNoTracking()
                 .Select(u => new UserDto
                 {
                     Id = u.Id,
@@ -90,12 +86,10 @@ namespace Dixen.Controllers
             if (user == null)
                 return NotFound();
 
-            // Delete related SocialShares (required to avoid FK constraint error)
             var shares = _context.SocialShares.Where(s => s.UserId == id);
             _context.SocialShares.RemoveRange(shares);
             await _context.SaveChangesAsync();
 
-            // Now delete the user
             var result = await _userManager.DeleteAsync(user);
             if (!result.Succeeded)
                 return BadRequest(result.Errors);

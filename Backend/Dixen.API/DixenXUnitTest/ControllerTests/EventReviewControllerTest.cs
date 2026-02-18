@@ -18,7 +18,6 @@ namespace DixenXUnitTest.ControllerTests
         private readonly Mock<IGRepo<EventReview>> _reviewRepoMock;
         private readonly Mock<UserManager<ApplicationUser>> _userManagerMock;
         private readonly EventReviewController _controller;
-
         public EventReviewControllerTest()
         {
             _reviewRepoMock = new Mock<IGRepo<EventReview>>();
@@ -26,7 +25,6 @@ namespace DixenXUnitTest.ControllerTests
             {
                 new ApplicationUser { Id = "user1", FullName = "Test User", Age = 25 }
             });
-
             _controller = new EventReviewController(_reviewRepoMock.Object, _userManagerMock.Object);
         }
 
@@ -35,10 +33,8 @@ namespace DixenXUnitTest.ControllerTests
             var store = new Mock<IUserStore<ApplicationUser>>();
             var mgr = new Mock<UserManager<ApplicationUser>>(
                 store.Object, null, null, null, null, null, null, null, null);
-
             mgr.Setup(x => x.FindByIdAsync(It.IsAny<string>()))
                .ReturnsAsync((string id) => users.FirstOrDefault(u => u.Id == id));
-
             return mgr;
         }
 
@@ -52,7 +48,6 @@ namespace DixenXUnitTest.ControllerTests
                 Comment = "Excellent"
             };
         }
-
         private EventReview GetSampleReview()
         {
             return new EventReview
@@ -64,13 +59,11 @@ namespace DixenXUnitTest.ControllerTests
                 Comment = "Excellent"
             };
         }
-
         [Fact]
         public async Task AddReview_ShouldAddNewReview_WhenNoExistingReview()
         {
             // Arrange
             var dto = GetSampleDto();
-
             _reviewRepoMock.Setup(r => r.GetAll(It.IsAny<Func<IQueryable<EventReview>,
                 Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<EventReview, object>>>()))
                 .ReturnsAsync(new List<EventReview>());
@@ -80,7 +73,6 @@ namespace DixenXUnitTest.ControllerTests
 
             // Act
             var result = await _controller.AddReview(dto);
-
             // Assert
             Assert.IsType<OkResult>(result);
             _reviewRepoMock.Verify(r => r.Create(It.IsAny<EventReview>()), Times.Once);
@@ -102,7 +94,6 @@ namespace DixenXUnitTest.ControllerTests
 
             // Act
             var result = await _controller.AddReview(dto);
-
             // Assert
             Assert.IsType<OkResult>(result);
             _reviewRepoMock.Verify(r => r.Update(existing.Id, existing), Times.Once);
@@ -119,7 +110,6 @@ namespace DixenXUnitTest.ControllerTests
 
             // Act
             var result = await _controller.GetReviews(1);
-
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var reviews = Assert.IsAssignableFrom<IEnumerable<EventReviewDto>>(okResult.Value);
@@ -143,7 +133,6 @@ namespace DixenXUnitTest.ControllerTests
 
             // Act
             var result = await _controller.GetAverageRating(1);
-
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var average = Assert.IsType<double>(okResult.Value);

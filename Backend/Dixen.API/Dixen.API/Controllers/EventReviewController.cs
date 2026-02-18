@@ -20,14 +20,12 @@ namespace Dixen.API.Controllers
             _userManager = userManager;
         }
 
-        // Add or update a review
         [HttpPost]
         public async Task<ActionResult> AddReview([FromBody] EventReviewDto reviewDto)
         {
             var user = await _userManager.FindByIdAsync(reviewDto.UserId);
             if (user == null) return BadRequest("User not found");
 
-            // Check if user already reviewed this event
             var existing = (await _reviewRepo.GetAll())
                 .FirstOrDefault(r => r.EventId == reviewDto.EventId && r.UserId == reviewDto.UserId);
 
@@ -52,7 +50,6 @@ namespace Dixen.API.Controllers
             return Ok();
         }
 
-        // Get all reviews for an event
         [HttpGet("{eventId}")]
         public async Task<ActionResult<IEnumerable<EventReviewDto>>> GetReviews(int eventId)
         {
@@ -70,7 +67,6 @@ namespace Dixen.API.Controllers
             return Ok(reviews);
         }
 
-        // Get average rating
         [HttpGet("average/{eventId}")]
         public async Task<ActionResult<double>> GetAverageRating(int eventId)
         {

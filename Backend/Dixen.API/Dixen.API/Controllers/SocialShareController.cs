@@ -24,7 +24,6 @@ namespace Dixen.Controllers
 
         }
 
-        // Get all social shares
         [HttpGet]
         public async Task<ActionResult<List<SocialShareDto>>> GetAll()
         {

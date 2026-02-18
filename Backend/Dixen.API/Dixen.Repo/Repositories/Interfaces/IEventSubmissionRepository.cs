@@ -11,8 +11,6 @@ namespace Dixen.Repo.Repositories.Interfaces
     {
         Task ApproveEventSubmission(int submissionId);
         Task RejectEventSubmission(int submissionId);
-        //Task<List<EventSubmission>> GetAll();
-        //Task<EventSubmission?> GetById(int id);
     }
 
 }

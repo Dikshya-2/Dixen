@@ -15,13 +15,11 @@ namespace DixenXUnitTest.ControllerTests
     {
         private readonly Mock<IEventService> _eventServiceMock;
         private readonly EventController _controller;
-
         public EventControllerTest()
         {
             _eventServiceMock = new Mock<IEventService>();
             _controller = new EventController(_eventServiceMock.Object);
         }
-
         private EventResponseDto GetSampleEvent()
         {
             return new EventResponseDto
@@ -32,17 +30,13 @@ namespace DixenXUnitTest.ControllerTests
                 StartTime = DateTime.Now
             };
         }
-
         [Fact]
         public async Task GetAll_ReturnsOk_WithEvents()
         {
             var events = new List<EventResponseDto> { GetSampleEvent() };
-
             _eventServiceMock.Setup(s => s.GetAllEventsAsync())
                              .ReturnsAsync(events);
-
             var result = await _controller.GetAll();
-
             var okResult = Assert.IsType<OkObjectResult>(result);
             var value = Assert.IsAssignableFrom<IEnumerable<EventResponseDto>>(okResult.Value);
             Assert.Single(value);
@@ -55,9 +49,7 @@ namespace DixenXUnitTest.ControllerTests
             var evt = GetSampleEvent();
             _eventServiceMock.Setup(s => s.GetEventByIdAsync(1))
                              .ReturnsAsync(evt);
-
             var result = await _controller.GetById(1);
-
             var okResult = Assert.IsType<OkObjectResult>(result);
             var value = Assert.IsType<EventResponseDto>(okResult.Value);
             Assert.Equal("Sample Event", value.Title);
@@ -68,9 +60,7 @@ namespace DixenXUnitTest.ControllerTests
         {
             _eventServiceMock.Setup(s => s.GetEventByIdAsync(99))
                              .ReturnsAsync((EventResponseDto)null);
-
             var result = await _controller.GetById(99);
-
             Assert.IsType<NotFoundResult>(result);
         }
 
@@ -79,12 +69,9 @@ namespace DixenXUnitTest.ControllerTests
         {
             var dto = new CreateUpdateEventDto { Title = "New Event", Description = "Desc" };
             var createdEvent = new EventResponseDto { Id = 2, Title = dto.Title, Description = dto.Description };
-
             _eventServiceMock.Setup(s => s.CreateEventAsync(dto))
                              .ReturnsAsync(createdEvent);
-
             var result = await _controller.Create(dto);
-
             var createdResult = Assert.IsType<CreatedAtActionResult>(result);
             var value = Assert.IsType<EventResponseDto>(createdResult.Value);
             Assert.Equal(2, value.Id);
@@ -98,12 +85,9 @@ namespace DixenXUnitTest.ControllerTests
         {
             var dto = new CreateUpdateEventDto { Title = "Updated", Description = "Updated Desc" };
             var updatedEvent = new EventResponseDto { Id = 1, Title = dto.Title, Description = dto.Description };
-
             _eventServiceMock.Setup(s => s.UpdateEventAsync(1, dto))
                              .ReturnsAsync(updatedEvent);
-
             var result = await _controller.Update(1, dto);
-
             var okResult = Assert.IsType<OkObjectResult>(result);
             var value = Assert.IsType<EventResponseDto>(okResult.Value);
             Assert.Equal("Updated", value.Title);
@@ -115,9 +99,7 @@ namespace DixenXUnitTest.ControllerTests
             var dto = new CreateUpdateEventDto { Title = "DoesNotExist" };
             _eventServiceMock.Setup(s => s.UpdateEventAsync(99, dto))
                              .ReturnsAsync((EventResponseDto)null);
-
             var result = await _controller.Update(99, dto);
-
             Assert.IsType<NotFoundResult>(result);
         }
 
@@ -126,9 +108,7 @@ namespace DixenXUnitTest.ControllerTests
         {
             _eventServiceMock.Setup(s => s.DeleteEventAsync(1))
                              .ReturnsAsync(true);
-
             var result = await _controller.Delete(1);
-
             Assert.IsType<NoContentResult>(result);
         }
 
@@ -137,9 +117,7 @@ namespace DixenXUnitTest.ControllerTests
         {
             _eventServiceMock.Setup(s => s.DeleteEventAsync(99))
                              .ReturnsAsync(false);
-
             var result = await _controller.Delete(99);
-
             Assert.IsType<NotFoundResult>(result);
         }
 
@@ -148,12 +126,9 @@ namespace DixenXUnitTest.ControllerTests
         {
             var filter = new EventSearchFilterDto { Keyword = "Sample" };
             var events = new List<EventResponseDto> { GetSampleEvent() };
-
             _eventServiceMock.Setup(s => s.SearchEventsAsync(filter))
                              .ReturnsAsync(events);
-
             var result = await _controller.Search(filter);
-
             var okResult = Assert.IsType<OkObjectResult>(result);
             var value = Assert.IsAssignableFrom<IEnumerable<EventResponseDto>>(okResult.Value);
             Assert.Single(value);

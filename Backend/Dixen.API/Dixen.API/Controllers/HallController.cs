@@ -41,10 +41,8 @@ namespace Dixen.API.Controllers
         {
             try
             {
-                // Make sure to pass eventId from dto
                 var hall = await _hallService.CreateHallAsync(dto.EventId, dto);
 
-                // Ensure you have a GetById method in the same controller
                 return CreatedAtAction(nameof(GetById), new { id = hall.Id }, hall);
             }
             catch (Exception ex)
@@ -53,12 +51,10 @@ namespace Dixen.API.Controllers
             }
         }
 
-        [HttpPut("{id}")]  // Route parameter name
-        public async Task<ActionResult<HallResponse>> UpdateHall(int id, [FromBody] HallDto dto)  // ← id not hallId
+        [HttpPut("{id}")]  
+        public async Task<ActionResult<HallResponse>> UpdateHall(int id, [FromBody] HallDto dto)  
         {
-            //if (id != dto.EventId)  // Optional validation
-            //    return BadRequest("ID mismatch");
-
+            
             var updated = await _hallService.UpdateHallAsync(id, dto);
             if (updated == null) return NotFound();
             return Ok(updated);

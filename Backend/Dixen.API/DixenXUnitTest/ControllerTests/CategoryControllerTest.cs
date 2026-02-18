@@ -18,14 +18,12 @@ namespace DixenXUnitTest.ControllerTests
         private readonly Mock<IGRepo<Category>> _categoryRepoMock;
         private readonly Mock<IGRepo<Evnt>> _eventRepoMock;
         private readonly CategoryController _controller;
-
         public CategoryControllerTest()
         {
             _categoryRepoMock = new Mock<IGRepo<Category>>();
             _eventRepoMock = new Mock<IGRepo<Evnt>>();
             _controller = new CategoryController(_categoryRepoMock.Object, _eventRepoMock.Object);
         }
-
         private Category GetSampleCategory()
         {
             return new Category
@@ -46,7 +44,6 @@ namespace DixenXUnitTest.ControllerTests
                 }
             };
         }
-
         [Fact]
         public async Task GetAll_ReturnsOk_WithCategories()
         {
@@ -67,7 +64,6 @@ namespace DixenXUnitTest.ControllerTests
             Assert.Single(value);
             Assert.Equal("Music", value.First().Name);
         }
-
         [Fact]
         public async Task GetById_ReturnsOk_WhenCategoryExists()
         {
@@ -87,7 +83,6 @@ namespace DixenXUnitTest.ControllerTests
             Assert.Equal("Music", value.Name);
             Assert.Single(value.Events);
         }
-
         [Fact]
         public async Task GetById_ReturnsNotFound_WhenCategoryMissing()
         {
@@ -131,10 +126,8 @@ namespace DixenXUnitTest.ControllerTests
             _categoryRepoMock
                 .Setup(r => r.Delete(1))
                 .ReturnsAsync(true);
-
             // Act
             var result = await _controller.Delete(1);
-
             // Assert
             Assert.IsType<NoContentResult>(result);
         }
@@ -145,14 +138,11 @@ namespace DixenXUnitTest.ControllerTests
             // Arrange
             var dto = new CategoryDto { Name = "Updated", ImageUrl = "updated.png" };
             var updatedCategory = new Category { Id = 1, Name = "Updated", ImageUrl = "updated.png" };
-
             _categoryRepoMock
                 .Setup(r => r.Update(1, It.IsAny<Category>()))
                 .ReturnsAsync(updatedCategory);
-
             // Act
             var result = await _controller.Update(1, dto);
-
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result);
             var value = Assert.IsType<CategoryResponse>(okResult.Value);
@@ -196,7 +186,6 @@ namespace DixenXUnitTest.ControllerTests
             var okResult = Assert.IsType<OkObjectResult>(result);
             var value = Assert.IsAssignableFrom<IEnumerable<CategoryResponse>>(okResult.Value);
 
-            // Ascending by Name: A, B
             Assert.Equal("A", value.First().Name);
             Assert.Equal("B", value.Skip(1).First().Name);
         }

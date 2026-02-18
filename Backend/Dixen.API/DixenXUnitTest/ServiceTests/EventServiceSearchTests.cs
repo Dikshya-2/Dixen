@@ -21,15 +21,12 @@ namespace DixenXUnitTest.ServiceTests
         private readonly Mock<IGRepo<Hall>> _hallRepoMock = new();
         private readonly Mock<IGRepo<Booking>> _bookingRepoMock = new();
         private readonly EventService _service;
-
         public EventServiceSearchTests()
         {
             var options = new DbContextOptionsBuilder<DatabaseContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
-
             _context = new DatabaseContext(options);
-
             var eventRepo = new GRepo<Evnt>(_context);
             _service = new EventService(eventRepo, _categoryRepoMock.Object,
                                        _hallRepoMock.Object, _bookingRepoMock.Object);
@@ -60,14 +57,11 @@ namespace DixenXUnitTest.ServiceTests
                 Halls = new List<Hall>(),
                 ImageUrl = "tech.jpg" 
             };
-
             await _context.Set<Evnt>().AddRangeAsync(techEvent, musicEvent);
             await _context.SaveChangesAsync();
-
             // Act
             var filter = new EventSearchFilterDto { Title = "Tech" };
             var result = await _service.SearchEventsAsync(filter);
-
             // Assert
             Assert.Single(result);
             Assert.Equal("Tech Conference", result.First().Title);

@@ -23,8 +23,6 @@ namespace DixenXUnitTest.ControllerTests
         { 
             _serviceMock = new Mock<IBookingService>();
             _controller = new BookingController(_serviceMock.Object);
-
-            // Mock a user with an email claim
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
             new Claim(ClaimTypes.Email, "test@test.com")
@@ -91,9 +89,7 @@ namespace DixenXUnitTest.ControllerTests
         public async Task CancelBooking_ReturnsNoContent_WhenDeleted()
         {
             _serviceMock.Setup(s => s.CancelBookingAsync(1)).ReturnsAsync(true);
-
             var result = await _controller.CancelBooking(1);
-
             Assert.IsType<NoContentResult>(result);
         }
 
@@ -101,9 +97,7 @@ namespace DixenXUnitTest.ControllerTests
         public async Task CancelBooking_ReturnsNotFound_WhenNotDeleted()
         {
             _serviceMock.Setup(s => s.CancelBookingAsync(1)).ReturnsAsync(false);
-
             var result = await _controller.CancelBooking(1);
-
             Assert.IsType<NotFoundResult>(result);
         }
 
@@ -111,15 +105,13 @@ namespace DixenXUnitTest.ControllerTests
         public async Task GetEventAvailability_ReturnsOk_WithList()
         {
             var availability = new List<HallCapacityDto>
-        {
-            new HallCapacityDto { HallId = 1, Capacity = 50 }
-        };
-
+            {
+                new HallCapacityDto { HallId = 1, Capacity = 50 }
+            };
             _serviceMock.Setup(s => s.GetEventAvailabilityAsync(42))
                         .ReturnsAsync(availability);
 
             var result = await _controller.GetEventAvailability(42);
-
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var returnedList = Assert.IsType<List<HallCapacityDto>>(okResult.Value);
             Assert.Single(returnedList);

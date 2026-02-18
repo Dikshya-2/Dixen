@@ -48,7 +48,7 @@ namespace Dixen.API.Controllers
         {
             var categoryList = await _categoryRepo.Find(
                 c => c.Id == id,
-                q => q.Include(c => c.Events) // only include events
+                q => q.Include(c => c.Events) 
             );
 
             var category = categoryList.FirstOrDefault();
@@ -70,8 +70,6 @@ namespace Dixen.API.Controllers
             return Ok(response);
         }
 
-
-
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CategoryDto dto)
         {
@@ -92,7 +90,6 @@ namespace Dixen.API.Controllers
             return NoContent();
         }
 
-
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] CategoryDto dto)
         {
@@ -108,7 +105,6 @@ namespace Dixen.API.Controllers
         {
             var categories = await _categoryRepo.GetAll(q => q.Include(c => c.Events));
 
-            // Example: sort dynamically
             var sorted = sortBy.ToLower() switch
             {
                 "name" => descending ? categories.OrderByDescending(c => c.Name) : categories.OrderBy(c => c.Name),

@@ -15,13 +15,11 @@ namespace DixenXUnitTest.ControllerTests
     {
         private readonly Mock<IHallService> _hallServiceMock;
         private readonly HallController _controller;
-
         public HallControllerTest()
         {
             _hallServiceMock = new Mock<IHallService>();
             _controller = new HallController(_hallServiceMock.Object);
         }
-
         private HallResponse GetSampleHall(int id = 1)
         {
             return new HallResponse
@@ -32,7 +30,6 @@ namespace DixenXUnitTest.ControllerTests
                 Capacity = 100
             };
         }
-
         [Fact]
         public async Task GetAllHalls_ReturnsOkWithList()
         {
@@ -48,7 +45,6 @@ namespace DixenXUnitTest.ControllerTests
             var value = Assert.IsAssignableFrom<List<HallResponse>>(okResult.Value);
             Assert.Equal(2, value.Count);
         }
-
         [Fact]
         public async Task GetById_ReturnsOk_WhenHallExists()
         {
@@ -71,10 +67,8 @@ namespace DixenXUnitTest.ControllerTests
         {
             // Arrange
             _hallServiceMock.Setup(s => s.GetByIdAsync(99)).ReturnsAsync((HallResponse)null);
-
             // Act
             var result = await _controller.GetById(99);
-
             // Assert
             Assert.IsType<NotFoundResult>(result.Result);
         }
@@ -86,10 +80,8 @@ namespace DixenXUnitTest.ControllerTests
             var dto = new HallDto { EventId = 1, Name = "New Hall", Capacity = 50, VenueId=1 };
             var createdHall = GetSampleHall();
             _hallServiceMock.Setup(s => s.CreateHallAsync(dto.EventId, dto)).ReturnsAsync(createdHall);
-
             // Act
             var result = await _controller.Create(dto);
-
             // Assert
             var createdResult = Assert.IsType<CreatedAtActionResult>(result.Result);
             var value = Assert.IsType<HallResponse>(createdResult.Value);
@@ -103,10 +95,8 @@ namespace DixenXUnitTest.ControllerTests
             var dto = new HallDto { EventId = 1, Name = "Updated Hall", Capacity = 120, VenueId=1 };
             var updatedHall = GetSampleHall();
             _hallServiceMock.Setup(s => s.UpdateHallAsync(1, dto)).ReturnsAsync(updatedHall);
-
             // Act
             var result = await _controller.UpdateHall(1, dto);
-
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var value = Assert.IsType<HallResponse>(okResult.Value);
@@ -119,10 +109,8 @@ namespace DixenXUnitTest.ControllerTests
             // Arrange
             var dto = new HallDto { EventId = 1, Name = "NonExistent", Capacity = 50, VenueId=1 };
             _hallServiceMock.Setup(s => s.UpdateHallAsync(99, dto)).ReturnsAsync((HallResponse)null);
-
             // Act
             var result = await _controller.UpdateHall(99, dto);
-
             // Assert
             Assert.IsType<NotFoundResult>(result.Result);
         }
@@ -132,10 +120,8 @@ namespace DixenXUnitTest.ControllerTests
         {
             // Arrange
             _hallServiceMock.Setup(s => s.DeleteHallAsync(1)).ReturnsAsync(true);
-
             // Act
             var result = await _controller.DeleteHall(1);
-
             // Assert
             Assert.IsType<NoContentResult>(result);
         }
@@ -145,10 +131,8 @@ namespace DixenXUnitTest.ControllerTests
         {
             // Arrange
             _hallServiceMock.Setup(s => s.DeleteHallAsync(99)).ReturnsAsync(false);
-
             // Act
             var result = await _controller.DeleteHall(99);
-
             // Assert
             Assert.IsType<NotFoundResult>(result);
         }
@@ -159,10 +143,8 @@ namespace DixenXUnitTest.ControllerTests
             // Arrange
             var halls = new List<HallResponse> { GetSampleHall(), GetSampleHall(2) };
             _hallServiceMock.Setup(s => s.GetHallsByEventAsync(1)).ReturnsAsync(halls);
-
             // Act
             var result = await _controller.GetHalls(1);
-
             // Assert
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var value = Assert.IsAssignableFrom<List<HallResponse>>(okResult.Value);

@@ -46,7 +46,6 @@ namespace DixenXUnitTest.ControllerTests
                 _eventSubmissionRepositoryMock.Object
             );
         }
-
         private Organizer GetSampleOrganizer()
         {
             return new Organizer
@@ -60,7 +59,7 @@ namespace DixenXUnitTest.ControllerTests
                     {
                         Id = 1,
                         Title = "Event1",
-                        Description = "Test Description",   // REQUIRED
+                        Description = "Test Description",
                         ImageUrl = "img.png",
                         StartTime = DateTime.UtcNow
                     }
@@ -72,7 +71,6 @@ namespace DixenXUnitTest.ControllerTests
         public async Task GetAll_ReturnsOk_WithOrganizers()
         {
             var organizers = new List<Organizer> { GetSampleOrganizer() };
-
             _organizerRepoMock
                 .Setup(r => r.GetAll(
                     It.IsAny<Func<IQueryable<Organizer>,
@@ -99,7 +97,6 @@ namespace DixenXUnitTest.ControllerTests
                 .ReturnsAsync((Organizer?)null);
 
             var result = await _controller.Get(99);
-
             Assert.IsType<NotFoundResult>(result.Result);
         }
 
@@ -111,7 +108,6 @@ namespace DixenXUnitTest.ControllerTests
                 OrganizationName = "NewOrg",
                 ContactEmail = "new@test.com"
             };
-
             _organizerRepoMock
                 .Setup(r => r.Create(It.IsAny<Organizer>()))
                 .ReturnsAsync((Organizer o) =>
@@ -121,10 +117,8 @@ namespace DixenXUnitTest.ControllerTests
                 });
 
             var result = await _controller.Create(dto);
-
             var created = Assert.IsType<CreatedAtActionResult>(result.Result);
             var value = Assert.IsType<OrganizerResponseDto>(created.Value);
-
             Assert.Equal(5, value.Id);
             Assert.Equal("NewOrg", value.OrganizationName);
         }
@@ -133,9 +127,7 @@ namespace DixenXUnitTest.ControllerTests
         public async Task Delete_ReturnsNoContent_WhenSuccess()
         {
             _organizerRepoMock.Setup(r => r.Delete(1)).ReturnsAsync(true);
-
             var result = await _controller.Delete(1);
-
             Assert.IsType<NoContentResult>(result);
         }
 

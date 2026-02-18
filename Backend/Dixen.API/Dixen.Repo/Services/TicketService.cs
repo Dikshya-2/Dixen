@@ -14,10 +14,8 @@ namespace Dixen.Repo.Services
 {
     public class TicketService: ITicketService
     {
-     
         private readonly IGRepo<Ticket> _ticketRepo;
         private readonly IGRepo<Booking> _bookingRepo;
-
         public TicketService(
             IGRepo<Ticket> ticketRepo,
             IGRepo<Booking> bookingRepo)
@@ -25,7 +23,6 @@ namespace Dixen.Repo.Services
             _ticketRepo = ticketRepo;
             _bookingRepo = bookingRepo;
         }
-
         public async Task<TicketResponse> CreateAsync(int bookingId, TicketDto dto)
         {
             var booking = await _bookingRepo.GetById(bookingId);
@@ -42,36 +39,30 @@ namespace Dixen.Repo.Services
 
             return Map(ticket);
         }
-
         public async Task<List<TicketResponse>> GetByBookingAsync(int bookingId)
         {
             var tickets = await _ticketRepo.Find(t => t.BookingId == bookingId);
             return tickets.Select(Map).ToList();
         }
-
         public async Task<TicketResponse?> GetByIdAsync(int id)
         {
             var ticket = await _ticketRepo.GetById(id);
             return ticket == null ? null : Map(ticket);
         }
-
         public async Task<TicketResponse?> UpdateAsync(int id, TicketDto dto)
         {
             var ticket = await _ticketRepo.GetById(id);
             if (ticket == null) return null;
-
             ticket.Type = dto.Type;
             ticket.Price = dto.Price;
             ticket.Quantity = dto.Quantity;
             await _ticketRepo.Update(id, ticket);
             return Map(ticket);
         }
-
         public async Task<bool> DeleteAsync(int id)
         {
             return await _ticketRepo.Delete(id);
         }
-
         private static TicketResponse Map(Ticket t) => new()
         {
             Id = t.Id,
@@ -79,6 +70,5 @@ namespace Dixen.Repo.Services
             Price = t.Price,
             Quantity = t.Quantity
         };
-
     }
 }

@@ -15,7 +15,6 @@ namespace Dixen.Repo.Repositories
     {
         private readonly DatabaseContext _context;
         private readonly DbSet<T> _dbSet;
-
         public GRepo(DatabaseContext context)
         {
             _context = context;
@@ -33,7 +32,6 @@ namespace Dixen.Repo.Repositories
         {
             T? data = await _dbSet.FindAsync(id);
             if (data == null) return false;
-
             _dbSet.Remove(data);
             await _context.SaveChangesAsync();
             return true;
@@ -45,7 +43,6 @@ namespace Dixen.Repo.Repositories
             IQueryable<T> query = _context.Set<T>().AsNoTracking();
             if (include != null)
                 query = include(query);
-
             return await query.ToListAsync();
         }
         public async Task<T?> GetById(object id, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null)
@@ -80,8 +77,6 @@ namespace Dixen.Repo.Repositories
         {
             var existingItem = await _dbSet.FindAsync(id);
             if (existingItem == null) return null;
-
-            // Update scalar properties only (ignore navigation props)
             _context.Entry(existingItem).CurrentValues.SetValues(item);
             await _context.SaveChangesAsync();
             return existingItem;

@@ -199,33 +199,5 @@ namespace DixenXUnitTest.ServiceTests
             Assert.Equal("New Title", result!.Title);
         }
 
-        //[Fact]
-        //public async Task SearchEventsAsync_ShouldReturnFilteredEvents()
-        //{
-        //    var events = new List<Evnt>
-        //    {
-        //        new Evnt { Id = 1, Title = "Tech Conference", Description = "Desc", StartTime = DateTime.UtcNow, Categories = new List<Category>(), Halls = new List<Hall>() },
-        //        new Evnt { Id = 2, Title = "Music Festival", Description = "Desc", StartTime = DateTime.UtcNow, Categories = new List<Category>(), Halls = new List<Hall>() }
-        //    }.ToAsyncQueryable(); // Uses helper class!
-
-        //    _eventRepoMock
-        //        .Setup(r => r.GetAllQuery())
-        //        .Returns(events);
-
-
-        //    var service = CreateService();
-
-        //    var filter = new EventSearchFilterDto
-        //    {
-        //        Title = "Tech"
-        //    };
-
-        //    var result = await service.SearchEventsAsync(filter);
-
-        //    Assert.Single(result);
-        //    Assert.Equal("Tech Conference", result.First().Title);
-        //}
-
-
     }
 }

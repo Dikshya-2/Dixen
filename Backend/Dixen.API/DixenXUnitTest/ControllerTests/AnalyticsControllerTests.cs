@@ -14,13 +14,11 @@ namespace DixenXUnitTest.ControllerTests
     {
         private readonly Mock<IEventAnalysisService> _serviceMock;
         private readonly AnalyticsController _controller;
-
         public AnalyticsControllerTests()
         {
             _serviceMock = new Mock<IEventAnalysisService>();
             _controller = new AnalyticsController(_serviceMock.Object);
         }
-
         [Fact]
         public async Task GetEventsSummary_ReturnsOkResult_WithData()
         {

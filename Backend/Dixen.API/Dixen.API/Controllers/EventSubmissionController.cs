@@ -27,11 +27,6 @@ namespace Dixen.API.Controllers
         [HttpPost("event-submissions/{id}/approve")]
         public async Task<IActionResult> ApproveSubmission(int id)
         {
-            //var repo = _eventSubmissionRepo as EventSubmissionRepository;
-            //if (repo == null) return BadRequest("Repository error");
-
-            //await repo.ApproveEventSubmission(id);
-            //return Ok(new { message = "Submission approved!" });
             await _eventSubmissionRepo.ApproveEventSubmission(id);
             return Ok(new { message = "Submission approved!" });
         }
@@ -39,11 +34,6 @@ namespace Dixen.API.Controllers
         [HttpPost("event-submissions/{id}/reject")]
         public async Task<IActionResult> RejectSubmission(int id)
         {
-            //var repo = _eventSubmissionRepo as EventSubmissionRepository;
-            //if (repo == null) return BadRequest("Repository error");
-
-            //await repo.RejectEventSubmission(id);
-            //return Ok(new { message = "Submission rejected!" });
             await _eventSubmissionRepo.RejectEventSubmission(id);
             return Ok(new { message = "Submission rejected!" });
         }
