@@ -37,7 +37,6 @@ export class RecommendedEvent {
   trackByEventId(index: number, event: Evnt): number {
     return event.id;
   }
-
   fetchShareCounts(): void {
     let completed = 0;
 
@@ -51,7 +50,7 @@ export class RecommendedEvent {
             this.recommended = this.events
               .filter((e) => this.shareCounts[e.id] > 3)
               .sort((a, b) => this.shareCounts[b.id] - this.shareCounts[a.id])
-              .slice(0, 5); // Top 5 most shared events
+              .slice(0, 5); 
           }
         },
         error: (err) => {
