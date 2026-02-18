@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dixen.Repo.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20260208193400_Init")]
+    [Migration("20260211130807_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -109,7 +109,7 @@ namespace Dixen.Repo.Migrations
                             Id = "9f0bd209-3b56-410c-b4fc-5654161c3925",
                             AccessFailedCount = 0,
                             Age = 10,
-                            ConcurrencyStamp = "fe983365-68ae-47ee-997a-a0d0732f7872",
+                            ConcurrencyStamp = "d8b795fc-f092-4bfa-8b63-8901776dfaf1",
                             Email = "It@gmail.com",
                             EmailConfirmed = false,
                             FullName = "Dikshya Singh",
@@ -117,7 +117,7 @@ namespace Dixen.Repo.Migrations
                             IsDeleted = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "53caaf77-570c-4d6e-a12a-9d83ea82ab8f",
+                            SecurityStamp = "5b8370ff-e319-4986-9cff-e0bc5971cd73",
                             TwoFactorEnabled = false,
                             UserName = "It@gmail.com"
                         });
@@ -161,7 +161,7 @@ namespace Dixen.Repo.Migrations
                         new
                         {
                             Id = 1,
-                            BookedTime = new DateTime(2026, 2, 8, 19, 33, 59, 788, DateTimeKind.Utc).AddTicks(8525),
+                            BookedTime = new DateTime(2026, 2, 11, 13, 8, 7, 586, DateTimeKind.Utc).AddTicks(6773),
                             EventId = 1,
                             HallId = 1,
                             IsDeleted = false,
@@ -295,7 +295,7 @@ namespace Dixen.Repo.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsApproved")
+                    b.Property<bool?>("IsApproved")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("StartTime")
@@ -330,9 +330,8 @@ namespace Dixen.Repo.Migrations
                             Description = "",
                             Details = "Wants to present on AI",
                             EventId = 1,
-                            IsApproved = false,
                             StartTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SubmittedAt = new DateTime(2026, 2, 8, 19, 33, 59, 788, DateTimeKind.Utc).AddTicks(8447),
+                            SubmittedAt = new DateTime(2026, 2, 11, 13, 8, 7, 586, DateTimeKind.Utc).AddTicks(6694),
                             SubmittedBy = "Alice",
                             SubmittedById = 0,
                             Title = ""
@@ -392,7 +391,7 @@ namespace Dixen.Repo.Migrations
                             ImageUrl = "art_icon.png",
                             IsDeleted = false,
                             OrganizerId = 2,
-                            StartTime = new DateTime(2026, 3, 10, 19, 33, 59, 788, DateTimeKind.Utc).AddTicks(8330),
+                            StartTime = new DateTime(2026, 3, 13, 13, 8, 7, 586, DateTimeKind.Utc).AddTicks(6566),
                             Title = "Painting Exibation"
                         },
                         new
@@ -402,7 +401,7 @@ namespace Dixen.Repo.Migrations
                             ImageUrl = "rock_concert.jpg",
                             IsDeleted = false,
                             OrganizerId = 2,
-                            StartTime = new DateTime(2026, 3, 10, 19, 33, 59, 788, DateTimeKind.Utc).AddTicks(8339),
+                            StartTime = new DateTime(2026, 3, 13, 13, 8, 7, 586, DateTimeKind.Utc).AddTicks(6578),
                             Title = "Rock Concert"
                         },
                         new
@@ -412,7 +411,7 @@ namespace Dixen.Repo.Migrations
                             ImageUrl = "images.jpeg",
                             IsDeleted = false,
                             OrganizerId = 2,
-                            StartTime = new DateTime(2026, 3, 10, 19, 33, 59, 788, DateTimeKind.Utc).AddTicks(8341),
+                            StartTime = new DateTime(2026, 3, 13, 13, 8, 7, 586, DateTimeKind.Utc).AddTicks(6580),
                             Title = " Jazz Night"
                         });
                 });
@@ -581,7 +580,7 @@ namespace Dixen.Repo.Migrations
                             Id = 1,
                             EventId = 1,
                             Platform = "Twitter",
-                            SharedAt = new DateTime(2026, 2, 8, 19, 33, 59, 788, DateTimeKind.Utc).AddTicks(8406),
+                            SharedAt = new DateTime(2026, 2, 11, 13, 8, 7, 586, DateTimeKind.Utc).AddTicks(6644),
                             UserId = "9f0bd209-3b56-410c-b4fc-5654161c3925"
                         },
                         new
@@ -589,7 +588,7 @@ namespace Dixen.Repo.Migrations
                             Id = 2,
                             EventId = 2,
                             Platform = "Facebook",
-                            SharedAt = new DateTime(2026, 2, 8, 19, 33, 59, 788, DateTimeKind.Utc).AddTicks(8409),
+                            SharedAt = new DateTime(2026, 2, 11, 13, 8, 7, 586, DateTimeKind.Utc).AddTicks(6647),
                             UserId = "9f0bd209-3b56-410c-b4fc-5654161c3925"
                         });
                 });

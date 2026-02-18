@@ -1,0 +1,123 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-900 p-4">
+  <div class="w-full max-w-md bg-white rounded-xl shadow-md p-6">
+
+    <div *ngIf="showRegistrationForm">
+      <h3 class="text-2xl font-bold text-gray-900 text-center mb-4">
+        Create Account
+      </h3>
+      <p class="text-gray-600 text-center text-sm mb-6">
+        Fill in your details to register
+      </p>
+
+      <form [formGroup]="registerForm" (ngSubmit)="register()" class="space-y-4">
+        <div>
+          <label for="email" class="block text-gray-700 mb-1">Email</label>
+          <input
+            id="email"
+            type="email"
+            placeholder="Enter your email"
+            formControlName="email"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <label for="password" class="block text-gray-700 mb-1">Password</label>
+          <input
+            id="password"
+            type="password"
+            placeholder="Enter your password"
+            formControlName="password"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <label for="fullName" class="block text-gray-700 mb-1">Full Name</label>
+          <input
+            id="fullName"
+            type="text"
+            placeholder="Enter your full name"
+            formControlName="fullName"
+            class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div class="flex gap-4">
+          <div class="flex-1">
+            <label for="age" class="block text-gray-700 mb-1">Age</label>
+            <input
+              id="age"
+              type="number"
+              placeholder="Age"
+              formControlName="age"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div class="flex-1">
+            <label for="gender" class="block text-gray-700 mb-1">Gender</label>
+            <select
+              id="gender"
+              formControlName="gender"
+              class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="" disabled>Select gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          [disabled]="registerForm.invalid"
+          class="w-full bg-blue-600 text-white py-2 rounded-md font-semibold hover:bg-blue-700 disabled:opacity-50"
+        >
+          Register
+        </button>
+
+        <div *ngIf="errorMessage && showRegistrationForm" class="text-red-600 text-center mt-2">
+          {{ errorMessage }}
+        </div>
+      </form>
+    </div>
+
+   
+<div *ngIf="showQRSection">
+  <h3 class="text-2xl font-bold text-green-900 text-center mb-4">
+    Setup Complete! Scan QR Code
+  </h3>
+  
+  <div class="p-6 bg-green-50 rounded-xl text-center">
+    <div *ngIf="qrCodeImage && qrCodeImage.length > 50" class="mb-4">
+      <img
+        [src]="qrCodeImage.startsWith('data:image') ? qrCodeImage : 'data:image/png;base64,' + qrCodeImage"
+        alt="QR Code"
+        class="mx-auto max-w-xs w-full border-4 border-green-200 rounded-lg shadow-lg"
+        onerror="this.style.display='none'"
+      />
+    </div>
+    
+    <div *ngIf="!qrCodeImage || qrCodeImage.length <= 50" class="text-yellow-600 p-4 bg-yellow-50 rounded-lg">
+      <p>QR Code not ready yet. Manual setup:</p>
+      <p class="font-mono text-lg mt-2">{{ manualKey }}</p>
+    </div>
+    
+    <p *ngIf="manualKey" class="text-sm text-gray-700 mt-4">
+      <strong>Manual key:</strong> {{ manualKey }}
+    </p>
+    
+    <div class="space-y-3 mt-6">
+      <button (click)="goToLogin()" class="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 shadow-md">
+        Go to Login
+      </button>
+      <button (click)="goBackToForm()" class="w-full bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600">
+        ← Back to Form
+      </button>
+    </div>
+  </div>
+</div>
+
+  </div>
+</div>

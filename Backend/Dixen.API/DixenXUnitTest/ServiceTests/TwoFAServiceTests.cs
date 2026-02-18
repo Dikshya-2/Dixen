@@ -2,45 +2,48 @@
 using System.Text.Encodings.Web;
 using Xunit;
 
-public class TwoFAServiceTests
+namespace DixenXUnitTest.ServiceTests
 {
-    private readonly TwoFAService _service;
-
-    public TwoFAServiceTests()
+    public class TwoFAServiceTests
     {
-        var urlEncoder = UrlEncoder.Default;
-        _service = new TwoFAService(urlEncoder);
-    }
+        private readonly TwoFAService _service;
 
-    [Fact]
-    public void GenerateQrCodeUri_ShouldReturnCorrectlyFormattedUri()
-    {
-        // Arrange
-        string email = "user@example.com";
-        string key = "SECRETKEY123";
+        public TwoFAServiceTests()
+        {
+            var urlEncoder = UrlEncoder.Default;
+            _service = new TwoFAService(urlEncoder);
+        }
 
-        // Act
-        string uri = _service.GenerateQrCodeUri(email, key);
+        [Fact]
+        public void GenerateQrCodeUri_ShouldReturnCorrectlyFormattedUri()
+        {
+            // Arrange
+            string email = "user@example.com";
+            string key = "SECRETKEY123";
 
-        // Assert
-        Assert.Contains("otpauth://totp/", uri);
-        Assert.Contains("DixenApp", uri);
-        Assert.Contains(email, uri);
-        Assert.Contains(key, uri);
-    }
+            // Act
+            string uri = _service.GenerateQrCodeUri(email, key);
 
-    [Fact]
-    public void GenerateQrCodeImage_ShouldReturnBase64Png()
-    {
-        // Arrange
-        string email = "user@example.com";
-        string key = "SECRETKEY123";
+            // Assert
+            Assert.Contains("otpauth://totp/", uri);
+            Assert.Contains("DixenApp", uri);
+            Assert.Contains(email, uri);
+            Assert.Contains(key, uri);
+        }
 
-        // Act
-        string qrImage = _service.GenerateQrCodeImage(email, key);
+        [Fact]
+        public void GenerateQrCodeImage_ShouldReturnBase64Png()
+        {
+            // Arrange
+            string email = "user@example.com";
+            string key = "SECRETKEY123";
 
-        // Assert
-        Assert.StartsWith("data:image/png;base64,", qrImage);
-        Assert.True(qrImage.Length > 100, "QR code image base64 is unexpectedly short.");
+            // Act
+            string qrImage = _service.GenerateQrCodeImage(email, key);
+
+            // Assert
+            Assert.StartsWith("data:image/png;base64,", qrImage);
+            Assert.True(qrImage.Length > 100, "QR code image base64 is unexpectedly short.");
+        }
     }
 }

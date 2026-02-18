@@ -46,7 +46,8 @@ namespace DixenXUnitTest.ServiceTests
                 Description = "Technology conference",
                 StartTime = DateTime.UtcNow,
                 Categories = new List<Category>(),
-                Halls = new List<Hall>()
+                Halls = new List<Hall>(),
+                ImageUrl = "tech.jpg" 
             };
 
             var musicEvent = new Evnt
@@ -56,7 +57,8 @@ namespace DixenXUnitTest.ServiceTests
                 Description = "Music event",
                 StartTime = DateTime.UtcNow,
                 Categories = new List<Category>(),
-                Halls = new List<Hall>()
+                Halls = new List<Hall>(),
+                ImageUrl = "tech.jpg" 
             };
 
             await _context.Set<Evnt>().AddRangeAsync(techEvent, musicEvent);
