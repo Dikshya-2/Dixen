@@ -107,7 +107,6 @@ rateEvent(eventId: number, rating: number) {
     rating: rating,
     comment: ''
   };
-
   // Send to backend
   this.reviewService.post('EventReview', payload as any)
     .subscribe(() => {
@@ -116,7 +115,6 @@ rateEvent(eventId: number, rating: number) {
 }
 
 averageRatings: { [eventId: number]: number } = {}; 
-
 loadAverageRating(eventId: number) {
   this.reviewService.getAny<number>(`EventReview/average/${eventId}`)
     .subscribe(avg => {

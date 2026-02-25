@@ -91,10 +91,17 @@ namespace Dixen.Repo.Services
                 ? (await _categoryRepo.Find(c => dto.CategoryIds.Contains(c.Id))).ToList()
                 : new List<Category>();
 
-            var halls = dto.HallIds.Any()
-                ? (await _hallRepo.Find(h => dto.HallIds.Contains(h.Id))).ToList()
-                : new List<Hall>();
-
+            var halls = new List<Hall>();
+            if (dto.HallIds.Any())
+            {
+                var fetchedHalls = await _hallRepo.Find(h => dto.HallIds.Contains(h.Id));
+                foreach (var hall in fetchedHalls)
+                {
+                    if (hall.EventId != null)
+                        throw new Exception($"Hall '{hall.Name}' is already assigned to another event.");
+                    halls.Add(hall);
+                }
+            }
             var evt = new Evnt
             {
                 Title = dto.Title,
@@ -128,15 +135,23 @@ namespace Dixen.Repo.Services
                 var categories = await _categoryRepo.Find(c => dto.CategoryIds.Contains(c.Id));
                 evt.Categories.AddRange(categories);
             }
-
             evt.Halls.Clear();
-            if (dto.HallIds.Any())
+            if (dto.HallIds != null && dto.HallIds.Any())
             {
                 var halls = await _hallRepo.Find(h => dto.HallIds.Contains(h.Id));
+
+                foreach (var hall in halls)
+                {
+                    // Prevent assigning hall to another event
+                    if (hall.EventId != null && hall.EventId != eventId)
+                    {
+                        throw new Exception($"Hall '{hall.Name}' is already assigned to another event.");
+                    }
+                }
+
                 evt.Halls.AddRange(halls);
             }
-            //await _eventRepo.Update(eventId, evt);
-            await _eventRepo.Save();
+            await _eventRepo.Update(eventId, evt);
             return await GetEventByIdAsync(eventId);
         }
         public async Task<bool> DeleteEventAsync(int eventId)
@@ -144,8 +159,7 @@ namespace Dixen.Repo.Services
             var evt = await _eventRepo.GetById(eventId, null);
             if (evt == null) return false;
             evt.IsDeleted = true;
-            //await _eventRepo.Update(eventId, evt);
-            await _eventRepo.Save();
+            await _eventRepo.Update(eventId, evt);
             return true;
         }
         public async Task<List<EventResponseDto>> SearchEventsAsync(EventSearchFilterDto filter)
