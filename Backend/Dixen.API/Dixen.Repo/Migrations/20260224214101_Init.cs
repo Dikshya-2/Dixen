@@ -263,7 +263,8 @@ namespace Dixen.Repo.Migrations
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     EventId = table.Column<int>(type: "int", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -298,6 +299,7 @@ namespace Dixen.Repo.Migrations
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Details = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsApproved = table.Column<bool>(type: "bit", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
@@ -353,7 +355,8 @@ namespace Dixen.Repo.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Bio = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EventId = table.Column<int>(type: "int", nullable: false)
+                    EventId = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -375,7 +378,8 @@ namespace Dixen.Repo.Migrations
                     Platform = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SharedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EventId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -439,6 +443,7 @@ namespace Dixen.Repo.Migrations
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     EvntId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -470,7 +475,7 @@ namespace Dixen.Repo.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "Age", "ConcurrencyStamp", "Email", "EmailConfirmed", "FullName", "Gender", "IsDeleted", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "9f0bd209-3b56-410c-b4fc-5654161c3925", 0, 10, "d8b795fc-f092-4bfa-8b63-8901776dfaf1", "It@gmail.com", false, "Dikshya Singh", "Female", false, false, null, null, null, null, null, false, "5b8370ff-e319-4986-9cff-e0bc5971cd73", false, "It@gmail.com" });
+                values: new object[] { "9f0bd209-3b56-410c-b4fc-5654161c3925", 0, 10, "55ae7eb5-becf-4a92-a27c-f34e3a057669", "It@gmail.com", false, "Dikshya Singh", "Female", false, false, null, null, null, null, null, false, "93e61385-2f1f-4ff4-bd2e-731f749271b2", false, "It@gmail.com" });
 
             migrationBuilder.InsertData(
                 table: "Categories",
@@ -511,9 +516,9 @@ namespace Dixen.Repo.Migrations
                 values: new object[,]
                 {
                     { 1, "Annual tech event", "tech_icon.jpg", false, 1, new DateTime(2026, 3, 1, 18, 0, 0, 0, DateTimeKind.Utc), "Tech Future 2025" },
-                    { 2, "test", "art_icon.png", false, 2, new DateTime(2026, 3, 13, 13, 8, 7, 586, DateTimeKind.Utc).AddTicks(6566), "Painting Exibation" },
-                    { 3, "test", "rock_concert.jpg", false, 2, new DateTime(2026, 3, 13, 13, 8, 7, 586, DateTimeKind.Utc).AddTicks(6578), "Rock Concert" },
-                    { 4, "test", "images.jpeg", false, 2, new DateTime(2026, 3, 13, 13, 8, 7, 586, DateTimeKind.Utc).AddTicks(6580), " Jazz Night" }
+                    { 2, "test", "art_icon.png", false, 2, new DateTime(2026, 3, 26, 21, 41, 1, 230, DateTimeKind.Utc).AddTicks(9416), "Painting Exibation" },
+                    { 3, "test", "rock_concert.jpg", false, 2, new DateTime(2026, 3, 26, 21, 41, 1, 230, DateTimeKind.Utc).AddTicks(9425), "Rock Concert" },
+                    { 4, "test", "images.jpeg", false, 2, new DateTime(2026, 3, 26, 21, 41, 1, 230, DateTimeKind.Utc).AddTicks(9427), " Jazz Night" }
                 });
 
             migrationBuilder.InsertData(
@@ -529,8 +534,8 @@ namespace Dixen.Repo.Migrations
 
             migrationBuilder.InsertData(
                 table: "EventSubmissions",
-                columns: new[] { "Id", "ApplicationUserId", "Description", "Details", "EventId", "ImageUrl", "IsApproved", "StartTime", "SubmittedAt", "SubmittedBy", "SubmittedById", "Title" },
-                values: new object[] { 1, null, "", "Wants to present on AI", 1, null, null, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2026, 2, 11, 13, 8, 7, 586, DateTimeKind.Utc).AddTicks(6694), "Alice", 0, "" });
+                columns: new[] { "Id", "ApplicationUserId", "Description", "Details", "EventId", "ImageUrl", "IsApproved", "IsDeleted", "StartTime", "SubmittedAt", "SubmittedBy", "SubmittedById", "Title" },
+                values: new object[] { 1, null, "", "Wants to present on AI", 1, null, null, false, new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2026, 2, 24, 21, 41, 1, 230, DateTimeKind.Utc).AddTicks(9555), "Alice", 0, "" });
 
             migrationBuilder.InsertData(
                 table: "Halls",
@@ -543,31 +548,31 @@ namespace Dixen.Repo.Migrations
 
             migrationBuilder.InsertData(
                 table: "Performers",
-                columns: new[] { "Id", "Bio", "EventId", "Name" },
-                values: new object[] { 1, "Tech Speaker", 1, "John Doe" });
+                columns: new[] { "Id", "Bio", "EventId", "IsDeleted", "Name" },
+                values: new object[] { 1, "Tech Speaker", 1, false, "John Doe" });
 
             migrationBuilder.InsertData(
                 table: "SocialShares",
-                columns: new[] { "Id", "EventId", "Platform", "SharedAt", "UserId" },
+                columns: new[] { "Id", "EventId", "IsDeleted", "Platform", "SharedAt", "UserId" },
                 values: new object[,]
                 {
-                    { 1, 1, "Twitter", new DateTime(2026, 2, 11, 13, 8, 7, 586, DateTimeKind.Utc).AddTicks(6644), "9f0bd209-3b56-410c-b4fc-5654161c3925" },
-                    { 2, 2, "Facebook", new DateTime(2026, 2, 11, 13, 8, 7, 586, DateTimeKind.Utc).AddTicks(6647), "9f0bd209-3b56-410c-b4fc-5654161c3925" }
+                    { 1, 1, false, "Twitter", new DateTime(2026, 2, 24, 21, 41, 1, 230, DateTimeKind.Utc).AddTicks(9512), "9f0bd209-3b56-410c-b4fc-5654161c3925" },
+                    { 2, 2, false, "Facebook", new DateTime(2026, 2, 24, 21, 41, 1, 230, DateTimeKind.Utc).AddTicks(9513), "9f0bd209-3b56-410c-b4fc-5654161c3925" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Bookings",
                 columns: new[] { "Id", "BookedTime", "EventId", "HallId", "IsDeleted", "UserId" },
-                values: new object[] { 1, new DateTime(2026, 2, 11, 13, 8, 7, 586, DateTimeKind.Utc).AddTicks(6773), 1, 1, false, "9f0bd209-3b56-410c-b4fc-5654161c3925" });
+                values: new object[] { 1, new DateTime(2026, 2, 24, 21, 41, 1, 230, DateTimeKind.Utc).AddTicks(9601), 1, 1, false, "9f0bd209-3b56-410c-b4fc-5654161c3925" });
 
             migrationBuilder.InsertData(
                 table: "Tickets",
-                columns: new[] { "Id", "BookingId", "EvntId", "Price", "Quantity", "Type" },
+                columns: new[] { "Id", "BookingId", "EvntId", "IsDeleted", "Price", "Quantity", "Type" },
                 values: new object[,]
                 {
-                    { 1, 1, null, 50m, 100, "General" },
-                    { 2, 1, null, 120m, 20, "VIP" },
-                    { 3, 1, null, 30m, 50, "Student" }
+                    { 1, 1, null, false, 50m, 100, "General" },
+                    { 2, 1, null, false, 120m, 20, "VIP" },
+                    { 3, 1, null, false, 30m, 50, "Student" }
                 });
 
             migrationBuilder.CreateIndex(

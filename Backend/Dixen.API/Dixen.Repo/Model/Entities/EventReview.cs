@@ -16,6 +16,7 @@ namespace Dixen.Repo.Model.Entities
         public Evnt Event { get; set; }
         public int Rating { get; set; }
         public string Comment { get; set; }
+        public bool IsDeleted { get; set; } = false;
 
     }
 }

@@ -57,6 +57,7 @@ namespace Dixen.Repo.Services
             ticket.Price = dto.Price;
             ticket.Quantity = dto.Quantity;
             await _ticketRepo.Update(id, ticket);
+            //await _ticketRepo.Save();
             return Map(ticket);
         }
         public async Task<bool> DeleteAsync(int id)

@@ -32,7 +32,7 @@ namespace Dixen.Repo.Services
             {
                 throw new InvalidOperationException("SMTP configuration is missing or incomplete.");
             }
-            if (!int.TryParse(smtpPortString, out int smtpPort)) //TODO: may be i dont need to convert 
+            if (!int.TryParse(smtpPortString, out int smtpPort)) 
             {
                 throw new InvalidOperationException("SMTP port is not a valid integer.");
             }

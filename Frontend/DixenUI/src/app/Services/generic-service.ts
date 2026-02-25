@@ -34,9 +34,6 @@ export class GenericService<T, TCreate = T> {
     return this.httpClient.get<T>(`${this.buildUrl(endpoint)}/${id}`, httpOptions);
   }
 
-  // post(endpoint: string, body: T): Observable<T> {
-  //   return this.httpClient.post<T>(this.buildUrl(endpoint), body, httpOptions);
-  // }
   post(endpoint: string, body: TCreate): Observable<T> {
     return this.httpClient.post<T>(this.buildUrl(endpoint), body, httpOptions);
   }

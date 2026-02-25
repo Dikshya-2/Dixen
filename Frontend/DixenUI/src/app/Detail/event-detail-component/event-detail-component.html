@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-linear-to-b from-slate-50 to-slate-200 p-8">
+<!-- <div class="min-h-screen bg-linear-to-b from-slate-50 to-slate-200 p-8">
   <div class="max-w-7xl mx-auto">
     <div
       class="bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl shadow-2xl overflow-hidden mb-12"
@@ -28,7 +28,7 @@
             *ngIf="event.minPrice"
             class="bg-white/20 px-4 py-2 rounded-full"
           >
-            ${{ event.minPrice }} - ${{ event.maxPrice || event.minPrice }}
+            kr{{ event.minPrice }} - kr{{ event.maxPrice || event.minPrice }}
           </span>
         </div>
       </div>
@@ -178,7 +178,7 @@
           <p class="text-xl">Booking confirmed for {{ eventName }}</p>
           <p class="text-lg opacity-90">Hall: {{ getSelectedHallName() }}</p>
           <p class="text-lg opacity-90 mt-2">
-            {{ getTicketTypeName(selectedTicketType) }} × {{ quantity }} = ${{
+            {{ getTicketTypeName(selectedTicketType) }} × {{ quantity }} = kr{{
               getTotalPrice()
             }}
           </p>
@@ -232,5 +232,143 @@
         </div>
       </div>
     </div>
+  </div>
+</div> -->
+
+<div class="min-h-screen bg-linear-to-b from-slate-50 to-slate-200 p-4 sm:p-6 lg:p-8">
+  <div class="max-w-7xl mx-auto flex flex-col gap-12">
+
+    <!-- HERO SECTION -->
+    <div class="lg:flex lg:gap-8 bg-linear-to-br from-indigo-500 via-purple-500 to-pink-500 
+                rounded-3xl shadow-2xl overflow-hidden relative">
+      <!-- IMAGE -->
+      <div class="lg:w-1/2 h-56 sm:h-72 md:h-80 lg:h-auto relative overflow-hidden">
+        <img
+          *ngIf="event.imageUrl"
+          [src]="event.imageUrl"
+          [alt]="event.title || 'Event'"
+          class="w-full h-full object-cover"
+        />
+        <div class="absolute inset-0 bg-black/30 lg:bg-transparent"></div>
+      </div>
+
+      <!-- HERO CONTENT -->
+      <div class="lg:w-1/2 p-6 sm:p-8 lg:p-12 text-white flex flex-col justify-center">
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold mb-4 leading-tight">
+          {{ event.title || "Loading Event..." }}
+        </h1>
+
+        <p class="text-sm sm:text-base md:text-lg lg:text-xl mb-6 max-w-xl">
+          {{ event.description || "Event details loading..." }}
+        </p>
+
+        <div class="flex flex-wrap gap-2 sm:gap-3 text-sm sm:text-base lg:text-lg">
+          <span class="bg-white/20 px-3 py-1 sm:px-4 sm:py-2 rounded-full">
+            {{ event.startTime | date: "mediumDate" }}
+          </span>
+
+          <span class="bg-white/20 px-3 py-1 sm:px-4 sm:py-2 rounded-full">
+            {{ event.startTime | date: "shortTime" }}
+          </span>
+
+          <span
+            *ngIf="event.minPrice"
+            class="bg-white/20 px-3 py-1 sm:px-4 sm:py-2 rounded-full"
+          >
+            kr{{ event.minPrice }} - kr{{ event.maxPrice || event.minPrice }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- DETAILS + HALL SECTION -->
+    <div *ngIf="event" class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
+
+      <!-- VENUE DETAILS -->
+      <div class="bg-white/80 backdrop-blur-md rounded-2xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-shadow">
+        <!-- <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-6">Venue Details</h2> -->
+        <div class="space-y-4">
+          <div>
+            <!-- <label class="block text-sm font-semibold text-gray-600 mb-1">Venue</label> -->
+            <p class="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">{{ eventName }}</p>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-gray-600 mb-1">Address</label>
+            <p class="text-sm sm:text-base lg:text-lg text-gray-700">{{ eventAddress }}</p>
+                        <p class="text-sm sm:text-base lg:text-lg text-gray-700"> {{ eventCity }}</p>
+
+          </div>
+          <a
+            [href]="getGoogleMapsLink()"
+            target="_blank"
+            class="inline-flex items-center bg-linear-to-r from-indigo-500 to-purple-600 
+                   text-white px-4 sm:px-6 py-2 sm:py-3 rounded-xl font-semibold shadow-md hover:shadow-lg transition-all duration-300"
+          >
+            Get Directions
+          </a>
+        </div>
+      </div>
+
+      <!-- HALL SELECTION -->
+      <div class="bg-white/80 backdrop-blur-md rounded-2xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-shadow">
+        <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800 mb-6">Select Hall</h2>
+        <select
+          [(ngModel)]="selectedHallId"
+          class="w-full p-3 sm:p-4 border-2 border-gray-200 rounded-xl mb-4 text-sm sm:text-base focus:ring-2 focus:ring-indigo-400"
+        >
+          <option value="0" disabled>Select a hall</option>
+          <option *ngFor="let hall of getAvailableHalls()" [value]="hall.id">
+            {{ hall.name }} ({{ hall.seatsAvailable }}/{{ hall.capacity }})
+          </option>
+        </select>
+
+        <button
+          (click)="processPayment()"
+          [disabled]="!selectedHallId || selectedHallId === 0"
+          class="w-full bg-linear-to-r from-emerald-500 to-teal-600 
+                 text-white py-3 sm:py-4 px-6 rounded-xl 
+                 font-semibold sm:font-bold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all"
+        >
+          Pay {{ getTotalPrice() }} kr →
+        </button>
+      </div>
+    </div>
+
+    <!-- TICKET SECTION -->
+    <div *ngIf="bookingStep === 'selection'" class="max-w-2xl mx-auto">
+      <div class="bg-white/80 backdrop-blur-md rounded-2xl p-6 sm:p-8 shadow-xl hover:shadow-2xl transition-shadow">
+        <h3 class="text-lg sm:text-xl lg:text-2xl font-bold text-gray-800 mb-6">Choose Tickets</h3>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+          <button
+            *ngFor="let type of [1,2,3]"
+            (click)="selectedTicketType = type"
+            [ngClass]="{
+              'bg-indigo-100 border-indigo-500': selectedTicketType === type,
+              'border-gray-200 hover:bg-indigo-50': selectedTicketType !== type
+            }"
+            class="p-3 sm:p-4 rounded-xl border-2 text-sm sm:text-base transition-colors"
+          >
+            {{ getTicketTypeName(type) }} ({{ ticketPrices[type] }} kr)
+          </button>
+        </div>
+
+        <div class="bg-indigo-50 rounded-xl p-4 sm:p-6">
+          <div class="flex justify-between items-center text-sm sm:text-base mb-4">
+            <span>{{ getTicketTypeName(selectedTicketType) }} × {{ quantity }}</span>
+            <span class="text-xl sm:text-2xl font-bold text-indigo-600">{{ getTotalPrice() }} kr</span>
+          </div>
+
+          <input
+            type="number"
+            [(ngModel)]="quantity"
+            min="1"
+            max="10"
+            class="w-full p-3 border-2 border-indigo-200 rounded-xl focus:ring-2 focus:ring-indigo-400"
+          />
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>

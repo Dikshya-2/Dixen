@@ -106,7 +106,7 @@ namespace Dixen.Repo.Migrations
                             Id = "9f0bd209-3b56-410c-b4fc-5654161c3925",
                             AccessFailedCount = 0,
                             Age = 10,
-                            ConcurrencyStamp = "d8b795fc-f092-4bfa-8b63-8901776dfaf1",
+                            ConcurrencyStamp = "55ae7eb5-becf-4a92-a27c-f34e3a057669",
                             Email = "It@gmail.com",
                             EmailConfirmed = false,
                             FullName = "Dikshya Singh",
@@ -114,7 +114,7 @@ namespace Dixen.Repo.Migrations
                             IsDeleted = false,
                             LockoutEnabled = false,
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "5b8370ff-e319-4986-9cff-e0bc5971cd73",
+                            SecurityStamp = "93e61385-2f1f-4ff4-bd2e-731f749271b2",
                             TwoFactorEnabled = false,
                             UserName = "It@gmail.com"
                         });
@@ -158,7 +158,7 @@ namespace Dixen.Repo.Migrations
                         new
                         {
                             Id = 1,
-                            BookedTime = new DateTime(2026, 2, 11, 13, 8, 7, 586, DateTimeKind.Utc).AddTicks(6773),
+                            BookedTime = new DateTime(2026, 2, 24, 21, 41, 1, 230, DateTimeKind.Utc).AddTicks(9601),
                             EventId = 1,
                             HallId = 1,
                             IsDeleted = false,
@@ -251,6 +251,9 @@ namespace Dixen.Repo.Migrations
                     b.Property<int>("EventId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
@@ -295,6 +298,9 @@ namespace Dixen.Repo.Migrations
                     b.Property<bool?>("IsApproved")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
@@ -327,8 +333,9 @@ namespace Dixen.Repo.Migrations
                             Description = "",
                             Details = "Wants to present on AI",
                             EventId = 1,
+                            IsDeleted = false,
                             StartTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            SubmittedAt = new DateTime(2026, 2, 11, 13, 8, 7, 586, DateTimeKind.Utc).AddTicks(6694),
+                            SubmittedAt = new DateTime(2026, 2, 24, 21, 41, 1, 230, DateTimeKind.Utc).AddTicks(9555),
                             SubmittedBy = "Alice",
                             SubmittedById = 0,
                             Title = ""
@@ -388,7 +395,7 @@ namespace Dixen.Repo.Migrations
                             ImageUrl = "art_icon.png",
                             IsDeleted = false,
                             OrganizerId = 2,
-                            StartTime = new DateTime(2026, 3, 13, 13, 8, 7, 586, DateTimeKind.Utc).AddTicks(6566),
+                            StartTime = new DateTime(2026, 3, 26, 21, 41, 1, 230, DateTimeKind.Utc).AddTicks(9416),
                             Title = "Painting Exibation"
                         },
                         new
@@ -398,7 +405,7 @@ namespace Dixen.Repo.Migrations
                             ImageUrl = "rock_concert.jpg",
                             IsDeleted = false,
                             OrganizerId = 2,
-                            StartTime = new DateTime(2026, 3, 13, 13, 8, 7, 586, DateTimeKind.Utc).AddTicks(6578),
+                            StartTime = new DateTime(2026, 3, 26, 21, 41, 1, 230, DateTimeKind.Utc).AddTicks(9425),
                             Title = "Rock Concert"
                         },
                         new
@@ -408,7 +415,7 @@ namespace Dixen.Repo.Migrations
                             ImageUrl = "images.jpeg",
                             IsDeleted = false,
                             OrganizerId = 2,
-                            StartTime = new DateTime(2026, 3, 13, 13, 8, 7, 586, DateTimeKind.Utc).AddTicks(6580),
+                            StartTime = new DateTime(2026, 3, 26, 21, 41, 1, 230, DateTimeKind.Utc).AddTicks(9427),
                             Title = " Jazz Night"
                         });
                 });
@@ -521,6 +528,9 @@ namespace Dixen.Repo.Migrations
                     b.Property<int>("EventId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -537,6 +547,7 @@ namespace Dixen.Repo.Migrations
                             Id = 1,
                             Bio = "Tech Speaker",
                             EventId = 1,
+                            IsDeleted = false,
                             Name = "John Doe"
                         });
                 });
@@ -551,6 +562,9 @@ namespace Dixen.Repo.Migrations
 
                     b.Property<int>("EventId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Platform")
                         .IsRequired()
@@ -576,16 +590,18 @@ namespace Dixen.Repo.Migrations
                         {
                             Id = 1,
                             EventId = 1,
+                            IsDeleted = false,
                             Platform = "Twitter",
-                            SharedAt = new DateTime(2026, 2, 11, 13, 8, 7, 586, DateTimeKind.Utc).AddTicks(6644),
+                            SharedAt = new DateTime(2026, 2, 24, 21, 41, 1, 230, DateTimeKind.Utc).AddTicks(9512),
                             UserId = "9f0bd209-3b56-410c-b4fc-5654161c3925"
                         },
                         new
                         {
                             Id = 2,
                             EventId = 2,
+                            IsDeleted = false,
                             Platform = "Facebook",
-                            SharedAt = new DateTime(2026, 2, 11, 13, 8, 7, 586, DateTimeKind.Utc).AddTicks(6647),
+                            SharedAt = new DateTime(2026, 2, 24, 21, 41, 1, 230, DateTimeKind.Utc).AddTicks(9513),
                             UserId = "9f0bd209-3b56-410c-b4fc-5654161c3925"
                         });
                 });
@@ -603,6 +619,9 @@ namespace Dixen.Repo.Migrations
 
                     b.Property<int?>("EvntId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 2)
@@ -628,6 +647,7 @@ namespace Dixen.Repo.Migrations
                         {
                             Id = 1,
                             BookingId = 1,
+                            IsDeleted = false,
                             Price = 50m,
                             Quantity = 100,
                             Type = "General"
@@ -636,6 +656,7 @@ namespace Dixen.Repo.Migrations
                         {
                             Id = 2,
                             BookingId = 1,
+                            IsDeleted = false,
                             Price = 120m,
                             Quantity = 20,
                             Type = "VIP"
@@ -644,6 +665,7 @@ namespace Dixen.Repo.Migrations
                         {
                             Id = 3,
                             BookingId = 1,
+                            IsDeleted = false,
                             Price = 30m,
                             Quantity = 50,
                             Type = "Student"
@@ -886,7 +908,8 @@ namespace Dixen.Repo.Migrations
                     b.HasOne("Dixen.Repo.Model.Entities.Evnt", "Event")
                         .WithMany("Bookings")
                         .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Dixen.Repo.Model.Entities.Hall", "Hall")
                         .WithMany()

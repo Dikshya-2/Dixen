@@ -16,7 +16,8 @@ import { EventReview } from '../../Models/EventReview';
 })
 export class CategoryDetail {
   events: Evnt[] = [];
-  category!: Category;
+  // category!: Category;
+  category: Category = { id: 0, name: '', imageUrl: '', events: [] };
   fallbackImage: string = '/assets/default.jpg';
   shareCounts:{[eventId:number]:number}={}
 shareVisible:{[eventId:number]:boolean}={}
@@ -114,7 +115,7 @@ rateEvent(eventId: number, rating: number) {
     });
 }
 
-averageRatings: { [eventId: number]: number } = {}; // declare at top
+averageRatings: { [eventId: number]: number } = {}; 
 
 loadAverageRating(eventId: number) {
   this.reviewService.getAny<number>(`EventReview/average/${eventId}`)

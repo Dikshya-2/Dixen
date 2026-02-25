@@ -20,6 +20,7 @@ namespace Dixen.Repo.Model.Entities
         public DateTime SubmittedAt { get; set; }
         public string? ImageUrl { get; set; }
         public string Details { get; set; } = string.Empty;
-        public bool? IsApproved { get; set; } 
+        public bool? IsApproved { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

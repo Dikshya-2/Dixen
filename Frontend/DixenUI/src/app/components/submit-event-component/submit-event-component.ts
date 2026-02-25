@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './submit-event-component.css',
 })
 export class SubmitEventComponent {
-organizerId = 1; 
+  organizerId = 1;
   loading = false;
   message = '';
   submittedEvents: EventSubmission[] = [];
@@ -20,12 +20,10 @@ organizerId = 1;
     eventId: 0,
     title: '',
     description: '',
-    startTime: ''
+    startTime: '',
   };
 
-  constructor(
-    private service: GenericService<any, EventSubmission>
-  ) {}
+  constructor(private service: GenericService<any, EventSubmission>) {}
 
   submit() {
     this.loading = true;
@@ -34,15 +32,14 @@ organizerId = 1;
       .post(`Organizer/${this.organizerId}/submit-event`, this.submission)
       .subscribe({
         next: (res: any) => {
-          console.log(res)
+          console.log(res);
           this.message = res.message;
           this.loading = false;
         },
-        error: err => {
+        error: (err) => {
           this.message = err.error;
           this.loading = false;
-        }
+        },
       });
   }
-  
 }

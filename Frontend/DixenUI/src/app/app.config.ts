@@ -17,8 +17,8 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withFetch(),
-    withInterceptors([jwtInterceptor])
+    provideHttpClient(withFetch(),// Allow the app to call backend APIs.withFetch use modern browser fetch instead of old system
+    withInterceptors([jwtInterceptor]) //Before sending a request to backend, attach JWT token automatically.
   
   ),
      { provide: TRANSLATE_HTTP_LOADER_CONFIG, useValue: { prefix: './assets/i18n/', suffix: '.json' } },

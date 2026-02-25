@@ -16,5 +16,6 @@ namespace Dixen.Repo.Model.Entities
         public Evnt Event { get; set; }
         public string? UserId { get; set; }
         public ApplicationUser? User { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

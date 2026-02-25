@@ -44,26 +44,31 @@ export const routes: Routes = [
       ),
   },
 
-{
-  path: 'user-profile/:email',
-  component: Userprofile,
-  canActivate: [authGuard],
-  data: { roles: ['User', 'Admin', 'Host'] }  
-},
-{
-  path: 'user-dashboard',
-  loadComponent: () =>
-    import('./Dashboards/user-dashboard/user-dashboard').then(m => m.UserDashboard),
-  canActivate: [authGuard],
-  data: { roles: ['User'] },
-},
+  {
+    path: 'user-profile/:email',
+    component: Userprofile,
+    canActivate: [authGuard],
+    data: { roles: ['User', 'Admin', 'Host'] },
+  },
+  {
+    path: 'user-dashboard',
+    loadComponent: () =>
+      import('./Dashboards/user-dashboard/user-dashboard').then(
+        (m) => m.UserDashboard,
+      ),
+    canActivate: [authGuard],
+    data: { roles: ['User'] },
+  },
 
- {
-  path: 'admin-dashboard',
-  loadComponent: () => import('./Dashboards/admin-dashboard/admin-dashboard').then(m => m.AdminDashboard),
-  canActivate: [authGuard],
-  data: { roles: ['Admin'] }, 
-},
+  {
+    path: 'admin-dashboard',
+    loadComponent: () =>
+      import('./Dashboards/admin-dashboard/admin-dashboard').then(
+        (m) => m.AdminDashboard,
+      ),
+    canActivate: [authGuard],
+    data: { roles: ['Admin'] },
+  },
 
   {
     path: 'host-dashboard',
@@ -71,14 +76,30 @@ export const routes: Routes = [
       import('./Dashboards/host-dashboard/host-dashboard').then(
         (m) => m.HostDashboard,
       ),
+    canActivate: [authGuard],
+    data: { roles: ['Host'] },
   },
 
   {
-    path: 'admin/category',
-    component: CategoryComponent,
-    canActivate: [authGuard],
-    data: { roles: ['Admin'] },
-  },
+  path: 'admin',
+  canActivate: [authGuard],
+  data: { roles: ['Admin'] },
+  children: [
+    { path: 'category', component: CategoryComponent },
+    { path: 'event', component: EventComponent },
+    { path: 'venue', component: VenueComponent },
+    { path: 'hall', component: HallComponent },
+    { path: 'booking', component: BookingComponent },
+
+  ]
+},
+
+  // {
+  //   path: 'admin/category',
+  //   component: CategoryComponent,
+  //   canActivate: [authGuard],
+  //   data: { roles: ['Admin'] },
+  // },
   {
     path: 'admin/event-submissions',
     component: AdminSubmissionsComponent,
@@ -86,35 +107,35 @@ export const routes: Routes = [
     data: { roles: ['Admin'] },
   },
 
-  {
-    path: 'admin/event',
-    component: EventComponent,
-    canActivate: [authGuard],
-    data: { roles: ['Admin'] },
-  },
-  {
-    path: 'admin/venue',
-    component: VenueComponent,
-    canActivate: [authGuard],
-    data: { roles: ['Admin'] },
-  },
-  {
-    path: 'admin/hall',
-    component: HallComponent,
-    canActivate: [authGuard],
-    data: { roles: ['Admin'] },
-  },
-  {
-    path: 'admin/booking',
-    component: BookingComponent,
-    canActivate: [authGuard],
-    data: { roles: ['Admin'] },
-  },
+  // {
+  //   path: 'admin/event',
+  //   component: EventComponent,
+  //   canActivate: [authGuard],
+  //   data: { roles: ['Admin'] },
+  // },
+  // {
+  //   path: 'admin/venue',
+  //   component: VenueComponent,
+  //   canActivate: [authGuard],
+  //   data: { roles: ['Admin'] },
+  // },
+  // {
+  //   path: 'admin/hall',
+  //   component: HallComponent,
+  //   canActivate: [authGuard],
+  //   data: { roles: ['Admin'] },
+  // },
+  // {
+  //   path: 'admin/booking',
+  //   component: BookingComponent,
+  //   canActivate: [authGuard],
+  //   data: { roles: ['Admin'] },
+  // },
   {
     path: 'admin/performer',
     component: PerformerComponent,
     canActivate: [authGuard],
-    data: { roles: ['Admin', 'Host'] },// need to add host as well
+    data: { roles: ['Admin', 'Host'] },
   },
 
   {
@@ -125,7 +146,7 @@ export const routes: Routes = [
   },
 
   // PUBLIC DETAIL PAGES
-  {path: 'submit', component:SubmitEventComponent},
+  { path: 'submit', component: SubmitEventComponent },
   { path: 'filter/search', component: Search },
   { path: 'recommended', component: RecommendedEvent },
   { path: 'category/:categoryId', component: CategoryDetail },
@@ -135,4 +156,3 @@ export const routes: Routes = [
   { path: 'unauthorized', component: Unauthorized },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
 ];
-

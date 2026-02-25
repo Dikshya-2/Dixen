@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-conform-email',
@@ -30,10 +31,13 @@ export class ConformEmail {
     console.log('TOKEN:', token);
 
     if (this.email && token) {
-      this.http
-        .get<any>(
-          `https://localhost:7204/api/auth/confirm-email?email=${this.email}&token=${token}`,
-        )
+      this.http.get<any>(
+  `${environment.Apiurl}auth/confirm-email?email=${this.email}&token=${token}`
+)
+      // this.http
+      //   .get<any>(
+      //     `https://localhost:7204/api/auth/confirm-email?email=${this.email}&token=${token}`,
+      //   )
         .subscribe({
           next: (res) => {
             this.message = res.message || res.Message;

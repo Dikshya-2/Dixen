@@ -72,7 +72,8 @@ namespace Dixen.Repo.Services
                 EventId = dto.EventId,
                 VenueId = dto.VenueId
             };
-
+            //await _hallRepo.Save();
+            //return MapToResponse(hall);
             var updatedHall = await _hallRepo.Update(hallId, updateData);
             return updatedHall != null ? MapToResponse(updatedHall) : null;
         }

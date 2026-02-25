@@ -57,12 +57,9 @@ namespace Dixen.API.Controllers
                 Age = request.Age,
                 Gender = request.Gender
             };
-
             var result = await _userManager.CreateAsync(user, request.Password);
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
-
-            // TODO: Maybe i should think of role assign
             var roleName = string.IsNullOrWhiteSpace(request.Role) ? "User" : request.Role;
 
             if (!await _roleManager.RoleExistsAsync(roleName))
@@ -71,13 +68,10 @@ namespace Dixen.API.Controllers
                 if (!roleResult.Succeeded)
                     return BadRequest("Failed to create role.");
             }
-
             await _userManager.AddToRoleAsync(user, roleName);
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
-
             var confirmationUrl = $"http://localhost:4200/conform-email?email={user.Email}&token={encodedToken}";
-
             await _emailSender.SendEmailAsync(
                  user.Email!,
                 "Confirm your email",

@@ -35,7 +35,6 @@ namespace Dixen.Repo.Services
                 .Include(e => e.Halls)
                     .ThenInclude(h => h.Venue)
                 .Include(e => e.Organizer));
-
             return events.Select(e => new EventResponseDto
             {
                 Id = e.Id,
@@ -64,7 +63,6 @@ namespace Dixen.Repo.Services
                 .Include(e => e.Organizer));
 
             if (evt == null) return null;
-
             return new EventResponseDto
             {
                 Id = evt.Id,
@@ -109,10 +107,8 @@ namespace Dixen.Repo.Services
             };
 
             await _eventRepo.Create(evt);
-
             return (await GetEventByIdAsync(evt.Id))!;
         }
-
         public async Task<EventResponseDto?> UpdateEventAsync(int eventId, CreateUpdateEventDto dto)
         {
             var evt = await _eventRepo.GetById(eventId, q => q
@@ -139,17 +135,17 @@ namespace Dixen.Repo.Services
                 var halls = await _hallRepo.Find(h => dto.HallIds.Contains(h.Id));
                 evt.Halls.AddRange(halls);
             }
-            await _eventRepo.Update(eventId, evt);
+            //await _eventRepo.Update(eventId, evt);
+            await _eventRepo.Save();
             return await GetEventByIdAsync(eventId);
         }
         public async Task<bool> DeleteEventAsync(int eventId)
         {
             var evt = await _eventRepo.GetById(eventId, null);
             if (evt == null) return false;
-
             evt.IsDeleted = true;
-            await _eventRepo.Update(eventId, evt);
-
+            //await _eventRepo.Update(eventId, evt);
+            await _eventRepo.Save();
             return true;
         }
         public async Task<List<EventResponseDto>> SearchEventsAsync(EventSearchFilterDto filter)
@@ -177,33 +173,25 @@ namespace Dixen.Repo.Services
             {
                 query = query.Where(e => e.OrganizerId == filter.OrganizerId.Value);
             }
-
-
             if (filter.CategoryIds != null && filter.CategoryIds.Any())
             {
                 query = query.Where(e => e.Categories.Any(c => filter.CategoryIds.Contains(c.Id)));
             }
-
             if (!string.IsNullOrWhiteSpace(filter.VenueCity))
             {
                 var cityLower = filter.VenueCity.ToLower();
                 query = query.Where(e => e.Halls.Any(h => h.Venue.City.ToLower() == cityLower));
             }
-
             if (filter.EventDate.HasValue)
             {
                 var dateUtc = filter.EventDate.Value.Date.ToUniversalTime();
                 var nextDayUtc = dateUtc.AddDays(1);
                 query = query.Where(e => e.StartTime >= dateUtc && e.StartTime < nextDayUtc);
             }
-
             query = query.OrderBy(e => e.Title);
-
             var events = await query.ToListAsync();
-
             return events.Select(MapToDto).ToList();
         }
-
         private EventResponseDto MapToDto(Evnt e)
         {
             var venue = e.Halls?.FirstOrDefault()?.Venue;

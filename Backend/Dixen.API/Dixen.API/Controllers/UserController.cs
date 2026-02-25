@@ -13,11 +13,9 @@ namespace Dixen.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
-    
     {
         private readonly DatabaseContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-
         public UserController(UserManager<ApplicationUser> userManager, DatabaseContext context)
         {
             _userManager = userManager;
@@ -37,10 +35,8 @@ namespace Dixen.Controllers
                     Gender = u.Gender
                 })
                 .ToListAsync();
-
             return Ok(users);
         }
-
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDto>> GetById(string id)
         {

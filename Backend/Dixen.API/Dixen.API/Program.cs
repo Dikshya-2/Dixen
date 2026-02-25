@@ -20,7 +20,8 @@ builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<ITicketService, TicketService>();
 builder.Services.AddScoped<IHallService, HallService>();
-builder.Services.AddScoped<EventAnalysisService>();
+//builder.Services.AddScoped<EventAnalysisService>();
+builder.Services.AddScoped<IEventAnalysisService, EventAnalysisService>();
 builder.Services.AddScoped<IGRepo<SocialShare>, GRepo<SocialShare>>();
 builder.Services.AddScoped<IEventSubmissionRepository, EventSubmissionRepository>();
 

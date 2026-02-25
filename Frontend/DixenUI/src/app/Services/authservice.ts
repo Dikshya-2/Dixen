@@ -9,11 +9,9 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class Authservice {
-  // private baseUrl = 'https://localhost:7204/api/auth';
   private baseUrl = `${environment.Apiurl}auth`;
   
   constructor(private http: HttpClient, private router: Router) {}
-
   login(email: string, password: string): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/login`, { email, password }).pipe(
       tap(response => {
@@ -76,6 +74,5 @@ autoSetup2FA(email: string, confirmationLink: string): Observable<any> {
   const token = url.searchParams.get('token')!;
   return this.confirmEmail(email, token);
 }
-
   
 }

@@ -11,7 +11,7 @@ namespace Dixen.Repo.Model.Entities
     {
         public int Id { get; set; }
         public DateTime BookedTime { get; set; }
-        public required string UserId { get; set; }=string.Empty;
+        public string UserId { get; set; }
         public ApplicationUser User { get; set; }
         public int EventId { get; set; }
         public Evnt Event { get; set; }
@@ -19,10 +19,5 @@ namespace Dixen.Repo.Model.Entities
         public Hall Hall { get; set; }
         public List<Ticket> Tickets { get; set; } = new();
         public bool IsDeleted { get; set; } = false;
-
-        ////just to test
-        //public BookingStatus Status { get; set; } = BookingStatus.Pending;
-        //public decimal TotalAmount { get; set; }
-        //public DateTime? PaymentCompletedAt { get; set; }
     }
 }

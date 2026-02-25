@@ -27,6 +27,10 @@ namespace Dixen.Repo.Model
         public DbSet<Venue> Venues { get; set; }
         public DbSet<EventReview> EventReviews { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.AddInterceptors(new SoftDeleteInterceptor());
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -35,11 +39,11 @@ namespace Dixen.Repo.Model
             modelBuilder.Entity<Evnt>().HasQueryFilter(e => !e.IsDeleted);
             modelBuilder.Entity<Booking>().HasQueryFilter(b => !b.IsDeleted);
             modelBuilder.Entity<Hall>().HasQueryFilter(h => !h.IsDeleted);
-            modelBuilder.Entity<EventReview>().HasQueryFilter(er => !er.Event.IsDeleted);
-            modelBuilder.Entity<EventSubmission>().HasQueryFilter(es => !es.Event.IsDeleted);
-            modelBuilder.Entity<Performer>().HasQueryFilter(p => !p.Event.IsDeleted);
-            modelBuilder.Entity<SocialShare>().HasQueryFilter(ss => !ss.Event.IsDeleted);
-            modelBuilder.Entity<Ticket>().HasQueryFilter(t => !t.Booking.IsDeleted);
+            modelBuilder.Entity<EventReview>().HasQueryFilter(er => !er.IsDeleted);
+            modelBuilder.Entity<EventSubmission>().HasQueryFilter(es => !es.IsDeleted);
+            modelBuilder.Entity<Performer>().HasQueryFilter(p => !p.IsDeleted);
+            modelBuilder.Entity<SocialShare>().HasQueryFilter(ss => !ss.IsDeleted);
+            modelBuilder.Entity<Ticket>().HasQueryFilter(t => !t.IsDeleted);
             modelBuilder.Entity<Organizer>().HasQueryFilter(o => !o.IsDeleted);
             #endregion
 
@@ -74,7 +78,7 @@ namespace Dixen.Repo.Model
                 .HasOne(b => b.Event)
                 .WithMany(e => e.Bookings)
                 .HasForeignKey(b => b.EventId)
-                .IsRequired(false)
+                .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Booking>()

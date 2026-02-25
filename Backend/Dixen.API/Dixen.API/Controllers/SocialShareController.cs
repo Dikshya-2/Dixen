@@ -21,14 +21,12 @@ namespace Dixen.Controllers
             _socialShareRepo = socialShareRepo;
             _userManager = userManager;
             _eventRepo = eventRepo;
-
         }
 
         [HttpGet]
         public async Task<ActionResult<List<SocialShareDto>>> GetAll()
         {
             var socialShares = await _socialShareRepo.GetAll();
-
             var socialShareDtos = socialShares.Select(share => new SocialShareDto
             {
                 Id = share.Id,
@@ -40,15 +38,12 @@ namespace Dixen.Controllers
 
             return Ok(socialShareDtos);
         }
-
-
         [HttpGet("{id}")]
         public async Task<ActionResult<SocialShareDto>> GetById(int id)
         {
             var socialShare = await _socialShareRepo.GetById(id);
             if (socialShare == null)
                 return NotFound();
-
             var socialShareDto = new SocialShareDto
             {
                 Id = socialShare.Id,
@@ -57,7 +52,6 @@ namespace Dixen.Controllers
                 EventId = socialShare.EventId,
                 UserEmail = socialShare.UserId
             };
-
             return Ok(socialShareDto);
         }
 
@@ -71,7 +65,6 @@ namespace Dixen.Controllers
             var eventExists = await _eventRepo.Exists(socialShareDto.EventId);
             if (!eventExists)
                 return NotFound("Event not found.");
-
             var share = new SocialShare
             {
                 Platform = socialShareDto.Platform,
@@ -79,9 +72,7 @@ namespace Dixen.Controllers
                 EventId = socialShareDto.EventId,
                 UserId = user.Id 
             };
-
             await _socialShareRepo.Create(share);
-
             var resultDto = new SocialShareDto
             {
                 Id = share.Id,
@@ -90,7 +81,6 @@ namespace Dixen.Controllers
                 EventId = share.EventId,
                 UserEmail = user.Email
             };
-
             return CreatedAtAction(nameof(GetById), new { id = share.Id }, resultDto);
         }
 
@@ -108,7 +98,6 @@ namespace Dixen.Controllers
             var count = socialShares.Count(s => s.EventId == eventId);
             return Ok(count);
         }
-
 
         [HttpGet("shared/{eventId}")]
         public async Task<ActionResult<List<SocialShareDto>>> GetSharesByEventId(int eventId)
@@ -150,8 +139,8 @@ namespace Dixen.Controllers
             existing.EventId = socialShareDto.EventId;
             existing.UserId = user.Id;
             existing.SharedAt = DateTime.UtcNow;
-
-            await _socialShareRepo.Update(id, existing);
+            //await _socialShareRepo.Update(id, existing);
+            await _socialShareRepo.Save();
 
             var resultDto = new SocialShareDto
             {
@@ -161,7 +150,6 @@ namespace Dixen.Controllers
                 EventId = existing.EventId,
                 UserEmail = user.Email
             };
-
             return Ok(resultDto);
         }
 

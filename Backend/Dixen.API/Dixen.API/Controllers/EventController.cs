@@ -9,6 +9,8 @@ namespace Dixen.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
+
     public class EventController : ControllerBase
     {
         private readonly IEventService _eventService;

@@ -14,5 +14,6 @@ namespace Dixen.Repo.Model.Entities
         public string Bio { get; set; } = string.Empty;
         public int EventId { get; set; }
         public Evnt Event { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }
